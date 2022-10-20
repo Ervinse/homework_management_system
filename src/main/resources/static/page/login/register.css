@@ -1,0 +1,59 @@
+body {
+    background-image: url(../../images/background/wallhaven-2kjry6.jpg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+#register {
+    margin: 100px auto;
+    background-color: rgba(255, 255, 255, 0.4);
+    width: 80%;
+    height: 600px;
+    box-shadow: 0 5px 15px rgba(20, 20, 20, 0.8);
+    display: flex;
+    border-radius: 50px;
+    align-items: center;
+    top: 100px;
+    backdrop-filter: blur(50px);
+}
+
+#register-area {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50px;
+}
+
+#register-form {
+    width: 80%;
+    margin: 40px auto;
+}
+
+#form-left {
+    width: 40%;
+    float: left;
+}
+
+#form-right {
+    margin-top: 60px;
+    width: 40%;
+    float: right;
+}
+/*修改element UI 按钮默认按钮颜色*/
+.el-button--primary.is-active, .el-button--primary:active {
+    background: #70b7b7;
+    border-color: #70b7b7;
+    color: #FFF;
+}
+
+.el-button--primary:focus, .el-button--primary:hover {
+    background: #91dbdb;
+    border-color: #91dbdb;
+    color: #FFF;
+}
+
+.el-button--primary {
+    color: #FFF;
+    background-color: #66cccc;
+    border-color: #66cccc;
+}

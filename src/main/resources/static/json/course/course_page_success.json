@@ -1,0 +1,76 @@
+{
+  "code": 1,
+  "msg": "",
+  "data": {
+    "records": [
+      {
+        "courseId": 1001,
+        "courseName": "英语",
+        "courseAddress": "南教101",
+        "courseTeacherId": 1001,
+        "courseTeacherName": "王老师",
+        "courseDescription": "这是课程描述"
+      },
+      {
+        "courseId": 1002,
+        "courseName": "语文",
+        "courseAddress": "南教102",
+        "courseTeacherId": 1002,
+        "courseTeacherName": "李老师",
+        "courseDescription": "这是课程描述"
+      },
+      {
+        "courseId": 1003,
+        "courseName": "数学",
+        "courseAddress": "南教103",
+        "courseTeacherId": 1003,
+        "courseTeacherName": "韩老师",
+        "courseDescription": "这是课程描述"
+      },
+      {
+        "courseId": 1004,
+        "courseName": "物理",
+        "courseAddress": "南教104",
+        "courseTeacherId": 1004,
+        "courseTeacherName": "汪老师",
+        "courseDescription": "这是课程描述"
+      },
+      {
+        "courseId": 1005,
+        "courseName": "化学",
+        "courseAddress": "南教105",
+        "courseTeacherId": 1005,
+        "courseTeacherName": "郑老师",
+        "courseDescription": "这是课程描述"
+      },
+      {
+        "courseId": 1006,
+        "courseName": "地理",
+        "courseAddress": "南教106",
+        "courseTeacherId": 1006,
+        "courseTeacherName": "杨老师",
+        "courseDescription": "这是课程描述"
+      },
+      {
+        "courseId": 1007,
+        "courseName": "历史",
+        "courseAddress": "南教107",
+        "courseTeacherId": 1007,
+        "courseTeacherName": "金老师",
+        "courseDescription": "这是课程描述"
+      },
+      {
+        "courseId": 1008,
+        "courseName": "生物",
+        "courseAddress": "南教108",
+        "courseTeacherId": 1008,
+        "courseTeacherName": "萧老师",
+        "courseDescription": "这是课程描述"
+      }
+    ],
+    "total": 14,
+    "size": 8,
+    "current": 1,
+    "pages": 2
+  }
+}

@@ -1,0 +1,106 @@
+body {
+    background-image: url(../../images/background/wallhaven-2kjry6.jpg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+#login {
+    margin: 100px auto;
+    background-color: rgba(255, 255, 255, 0.4);
+    width: 80%;
+    height: 600px;
+    box-shadow: 0 5px 15px rgba(20, 20, 20, 0.8);
+    display: flex;
+    border-radius: 50px;
+    align-items: center;
+    top: 100px;
+    backdrop-filter: blur(50px);
+}
+
+#login-area {
+    width: 50%;
+    height: 100%;
+    position: relative;
+}
+
+#login-area-background {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50px 0 0 50px;
+}
+
+#login-form {
+    width: 70%;
+    margin: 70px auto;
+}
+
+#login-form .el-link--inner {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+
+
+#forgetPassword-form {
+    width: 70%;
+    margin: 70px auto;
+}
+
+#forgetPassword-form .el-link--inner {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+#register-form {
+    width: 70%;
+    margin: 40px auto;
+}
+
+#register-form-form .el-link--inner {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+#system-title{
+    float: right;
+    margin: auto auto;
+}
+
+
+
+#login-form .el-form-item{
+    margin-top: 60px;
+}
+
+#login-form .el-input{
+    font-size: 18px;
+}
+#login-form .el-input__inner {
+    border: none;
+    border-bottom: solid 1px;
+    border-radius: 0;
+    border-color: #BCBCBC;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+/*修改element UI 按钮默认按钮颜色*/
+.el-button--primary.is-active, .el-button--primary:active {
+    background: #70b7b7;
+    border-color: #70b7b7;
+    color: #FFF;
+}
+
+.el-button--primary:focus, .el-button--primary:hover {
+    background: #91dbdb;
+    border-color: #91dbdb;
+    color: #FFF;
+}
+
+.el-button--primary {
+    color: #FFF;
+    background-color: #66cccc;
+    border-color: #66cccc;
+}

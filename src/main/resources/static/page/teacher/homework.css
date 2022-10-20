@@ -1,0 +1,216 @@
+.el-main {
+    padding: 0 0 0 0;
+    background-color: #F3F4F7;
+}
+
+/*主标题栏*/
+#header {
+    background-color: #4AA3A5;
+    color: #333;
+    line-height: 60px;
+}
+
+/*用户头像容器*/
+#aside-user {
+    width: 249px;
+    height: 140px;
+    background-color: #353740;
+    position: relative;
+}
+
+/*用户头像*/
+#aside-userPortrait {
+    position: absolute;
+    left: 20px;
+    top: 30px;
+}
+
+/*用户姓名容器*/
+#aside-user-name-box {
+    position: absolute;
+    left: 125px;
+    top: 45px;
+}
+
+/*用户姓名文字*/
+#aside-user-name-box .name {
+    color: #4AA3A4;
+    font-size: 24px;
+    font-weight: 900;
+}
+
+#aside-user-name-box .text1 {
+    color: #A5A7AC;
+}
+
+#aside-user-name-box .text2 {
+    color: #A5A7AC;
+    line-height: 40px;
+}
+
+/*分割线*/
+#cut-off {
+    height: 1px;
+    background-color: #62A1A4;
+}
+
+/*侧边栏菜单*/
+#aside-menu .item {
+    height: 70px;
+    font-size: 16px;
+    line-height: 65px;
+}
+
+#fill {
+    height: 304px;
+    width: 249px;
+    background-color: #353740;
+}
+
+/*面包屑导航*/
+#breadcrumb-box {
+    background-color: #fff;
+    padding: 20px;
+    height: 20px;
+    /*border-bottom: 1px solid #aaa;*/
+    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+}
+
+/*列表表格容器*/
+#list {
+    margin: 20px;
+    position: relative;
+}
+
+/*标题*/
+#list-title {
+    line-height: 12px;
+    font-size: 18px;
+}
+
+/*搜索框*/
+#list-search_input {
+    width: 200px;
+}
+
+/*搜索按钮*/
+#list-search_button {
+    position: absolute;
+    top: 70px;
+    left: 235px;
+}
+
+/*添加按钮*/
+#list-add_button {
+    position: absolute;
+    top: 72px;
+    right: 178px;
+}
+
+#list-table {
+    margin-top: 10px;
+}
+
+/*分页*/
+#list-pagination {
+    margin: 30px;
+    text-align: center;
+}
+
+
+/*添加表格容器*/
+#add {
+    margin: 20px;
+    position: relative;
+}
+
+#add-title {
+    line-height: 12px;
+    font-size: 18px;
+    position: relative;
+}
+
+#add-form {
+    width: 80%;
+    margin: 30px auto;
+}
+
+
+/*作业详情表格容器*/
+#detailHomework {
+    margin: 20px;
+}
+
+#detailHomework-info {
+    margin: 0 10px;
+}
+
+#detailHomework-table {
+    margin-top: 10px;
+}
+
+#detailHomework-pagination {
+    margin: 30px;
+    text-align: center;
+}
+
+
+/*作业答案详情表格容器*/
+#detailHomeworkAnswer {
+    margin: 20px;
+}
+
+#detailHomeworkAnswer-info {
+    margin: 0 10px;
+}
+
+#detailHomeworkAnswer-table {
+    margin-top: 10px;
+}
+
+#detailHomeworkAnswer-pagination {
+    margin: 30px;
+    text-align: center;
+}
+
+#detailHomeworkAnswer-info .info-descriptions {
+    margin-top: 20px;
+}
+
+#rate {
+    margin: 20px;
+}
+
+#rate-form{
+    width: 50%;
+    margin: 0 auto;
+}
+
+#rate-button{
+    width: 160px;
+    margin: 20px auto;
+}
+
+
+
+/*修改element UI 按钮默认按钮颜色*/
+.el-button--primary.is-active, .el-button--primary:active {
+    background: #70b7b7;
+    border-color: #70b7b7;
+    color: #FFF;
+}
+
+.el-button--primary:focus, .el-button--primary:hover {
+    background: #91dbdb;
+    border-color: #91dbdb;
+    color: #FFF;
+}
+
+.el-button--primary {
+    color: #FFF;
+    background-color: #66cccc;
+    border-color: #66cccc;
+}
+
+
+

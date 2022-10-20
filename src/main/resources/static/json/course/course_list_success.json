@@ -1,0 +1,30 @@
+{
+  "code": 1,
+  "msg": "",
+  "data": [
+      {
+        "courseId": 1001,
+        "courseName": "英语"
+      },
+      {
+        "courseId": 1002,
+        "courseName": "语文"
+      },
+      {
+        "courseId": 1003,
+        "courseName": "数学"
+      },
+      {
+        "courseId": 1004,
+        "courseName": "物理"
+      },
+      {
+        "courseId": 1005,
+        "courseName": "化学"
+      },
+      {
+        "courseId": 1006,
+        "courseName": "地理"
+      }
+    ]
+}

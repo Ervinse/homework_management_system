@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>云作业-教师端</title>
+
+        <!--引入vue框架-->
+        <script src="../../framework/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+        <!--引入element UI样式和组件-->
+        <link href="../../framework/element/index.css" rel="stylesheet" type="text/css">
+        <script src="../../framework/element/index.js" type="text/javascript" charset="utf-8"></script>
+        <!--引入axios框架-->
+        <script src="../../framework/axios/axios.js" type="text/javascript" charset="utf-8"></script>
+        <!--引入当前页面样式-->
+        <link href="teacher.css" rel="stylesheet" type="text/css">
+        <!--引入请求相关文件-->
+        <script src="../../api/teacher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../api/common.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../js/request.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body>
+
+        <div id="vue">
+
+            <el-container id="container">
+                <!--主标题栏开始-->
+                <el-header id="header" style="text-align: left; font-size: 12px">
+                    <span style="color: #fff; font-size: 20px">云作业管理系统--教师端</span>
+                </el-header>
+                <!--主标题栏结束-->
+                <!--主页开始-->
+                <el-container id="main">
+                    <!--主页侧边栏开始-->
+                    <el-aside id="aside" width="250px">
+                        <!--用户容器开始-->
+                        <div id="aside-user" @click="skipUser">
+                            <!--用户头像开始-->
+                            <el-avatar id="aside-userPortrait" :size="80"
+                                       :src="loginUser.userPortrait"></el-avatar>
+                            <!--用户头像结束-->
+                            <div id="aside-user-name-box">
+                                <span class="name">{{loginUser.userName}}</span>
+                                <span class="text1">老师</span>
+                                <br>
+                                <span class="text2">欢迎回来!</span>
+                            </div>
+                        </div>
+                        <!--用户容器结束-->
+                        <div id="cut-off"></div>
+                        <!--主页菜单开始-->
+                        <el-menu id="aside-menu"
+                                 default-active="1"
+                                 @select="handleSelect"
+                                 class="el-menu-vertical-demo"
+                                 background-color="#353741"
+                                 text-color="#fff"
+                                 active-text-color="#62A1A4">
+                            <el-menu-item class="item" index="1">
+                                <i class="el-icon-service"></i>
+                                <span class="text" slot="title">教师管理</span>
+                            </el-menu-item>
+                            <el-menu-item class="item" index="2">
+                                <i class="el-icon-user"></i>
+                                <span class="text" slot="title">学生管理</span>
+                            </el-menu-item>
+                            <el-menu-item class="item" index="3">
+                                <i class="el-icon-date"></i>
+                                <span class="text" slot="title">课程管理</span>
+                            </el-menu-item>
+                            <el-menu-item class="item" index="4">
+                                <i class="el-icon-tickets"></i>
+                                <span class="text" slot="title">班级管理</span>
+                            </el-menu-item>
+                            <el-menu-item class="item" index="5">
+                                <i class="el-icon-edit-outline"></i>
+                                <span class="text" slot="title">作业管理</span>
+                            </el-menu-item>
+                            <el-menu-item class="item" index="6">
+                                <i class="el-icon-setting"></i>
+                                <span class="text" slot="title">账号信息</span>
+                            </el-menu-item>
+                            <el-menu-item class="item" index="7">
+                                <i class="el-icon-back"></i>
+                                <span class="text" slot="title">退出系统</span>
+                            </el-menu-item>
+                        </el-menu>
+                        <!--主页菜单结束-->
+                        <div id="fill"></div>
+                    </el-aside>
+                    <!--主页侧边栏结束-->
+
+
+                    <!--主页内容开始-->
+                    <el-main>
+                        <!--面包屑导航开始-->
+                        <div id="breadcrumb-box">
+                            <el-breadcrumb separator-class="el-icon-arrow-right">
+                                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                                <el-breadcrumb-item :to="{ path: '/' }"><a @click="goBack">教师管理</a>
+                                </el-breadcrumb-item>
+                                <el-breadcrumb-item :to="{ path: '/' }" v-if="addPageBreadcrumbShow">新增教师账号
+                                </el-breadcrumb-item>
+                                <el-breadcrumb-item :to="{ path: '/' }" v-if="editPageBreadcrumbShow">编辑教师账号
+                                </el-breadcrumb-item>
+                            </el-breadcrumb>
+                        </div>
+                        <!--面包屑导航结束-->
+
+
+                        <!--列表表格容器开始-->
+                        <el-card id="list" class="box-card" v-if="listPageShow">
+                            <!--标题开始-->
+                            <div id="list-title" slot="header" class="clearfix">
+                                <span>教师管理</span>
+                            </div>
+                            <!--标题结束-->
+                            <!--输入框开始-->
+                            <el-input id="list-search_input"
+                                      placeholder="请输入查询内容"
+                                      v-model="teacher_search"
+                                      clearable>
+                            </el-input>
+                            <!--输入框结束-->
+                            <!--按钮组开始-->
+                            <el-button id="list-search_button" type="primary" icon="el-icon-search"
+                                       @click="handleSearch">搜索
+                            </el-button>
+                            <el-button id="list-add_button" type="primary" @click="showAddPage">新增</el-button>
+                            <!--按钮组开结束-->
+
+
+                            <template>
+                                <el-table id="list-table"
+                                          :data="tableData"
+                                          stripe
+                                          style="width: 100%">
+                                    <el-table-column
+                                            type="selection"
+                                            width="55">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="teacherName"
+                                            label="教师姓名"
+                                            width="150">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="accountName"
+                                            label="登录账号名"
+                                            width="100">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="teacherGender"
+                                            label="教师性别"
+                                            :formatter="teacherGenderFormatter"
+                                            width="80">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="accountType"
+                                            label="账号属性"
+                                            :formatter="accountTypeFormatter"
+                                            width="100">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="accountStatus"
+                                            label="账号状态"
+                                            :formatter="accountStatusFormatter"
+                                            width="100">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="clase"
+                                            label="管理班级">
+                                    </el-table-column>
+                                    <el-table-column label="操作">
+                                        <template slot-scope="scope">
+                                            <el-button
+                                                    v-if="scope.row.accountStatus !== 1"
+                                                    size="mini"
+                                                    @click="handleEnable(scope.$index, scope.row)">启用
+                                            </el-button>
+                                            <el-button
+                                                    v-if="scope.row.accountStatus === 1"
+                                                    size="mini"
+                                                    @click="handleDisable(scope.$index, scope.row)">禁用
+                                            </el-button>
+                                            <el-button
+                                                    size="mini"
+                                                    @click="handleEdit(scope.$index, scope.row)">编辑
+                                            </el-button>
+                                            <el-button
+                                                    size="mini"
+                                                    @click="handleDelete(scope.$index, scope.row)">删除
+                                            </el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+
+                                <div id="list-pagination">
+                                    <el-pagination
+                                            background
+                                            layout="total , prev, pager, next , jumper"
+                                            :total="total"
+                                            :page-size="pageSize"
+                                            :current-page="current">
+                                    </el-pagination>
+                                </div>
+                            </template>
+
+
+                        </el-card>
+                        <!--列表表格容器结束-->
+
+
+                        <!--添加表格容器开始-->
+                        <el-card id="add" class="box-card" v-if="addPageShow">
+                            <!--标题开始-->
+                            <div id="add-title" slot="header" class="clearfix">
+                                <i class="el-icon-arrow-left" @click="goBack"></i>
+                                <span id="add-title-span2">新增教师账号</span>
+                            </div>
+                            <!--标题结束-->
+                            <div id="add-form">
+                                <el-form ref="addForm" :model="form" :rules="addRules" label-width="120px">
+                                    <el-form-item label="教师姓名" prop="teacherName">
+                                        <el-input class="input" v-model="form.teacherName"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="登录账号名" prop="accountName">
+                                        <el-input class="input" v-model="form.accountName"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="登录账号密码" prop="accountPassword">
+                                        <el-input type="password" v-model="form.accountPassword"
+                                                  auto-complete="off"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="手机号" prop="phoneNumber">
+                                        <el-input class="input" v-model="form.phoneNumber"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="教师性别" prop="teacherGender">
+                                        <el-radio-group v-model="form.teacherGender">
+                                            <el-radio label="1">男</el-radio>
+                                            <el-radio label="2">女</el-radio>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                    <el-form-item label="账号类型" prop="accountType">
+                                        <el-radio-group v-model="form.accountType">
+                                            <el-radio label="1">管理员</el-radio>
+                                            <el-radio label="2">用户</el-radio>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                    <el-form-item label="管理班级" prop="claseList">
+                                        <el-checkbox-group v-model="form.claseList">
+                                            <el-checkbox v-for="claseItem in claseList" :label="claseItem.claseName"
+                                                         :value="claseItem.claseId" name="type"></el-checkbox>
+                                        </el-checkbox-group>
+                                    </el-form-item>
+                                    <el-form-item>
+                                        <el-button type="primary" @click="submitAddForm">提交</el-button>
+                                        <el-button @click="resetForm('ruleForm2')">重置</el-button>
+                                    </el-form-item>
+                                </el-form>
+                            </div>
+
+                        </el-card>
+                        <!--添加表格容器结束-->
+
+                        <!--修改表格容器开始-->
+                        <el-card id="edit" class="box-card" v-if="editPageShow">
+                            <!--标题开始-->
+                            <div id="edit-title" slot="header" class="clearfix">
+                                <i class="el-icon-arrow-left" @click="goBack"></i>
+                                <span id="edit-title-span2">编辑教师账号</span>
+                            </div>
+                            <!--标题结束-->
+                            <div id="edit-form">
+                                <el-form ref="editForm" :model="form" :rules="editRules" label-width="120px">
+                                    <el-form-item label="教师姓名" prop="teacherName">
+                                        <el-input class="input" v-model="form.teacherName"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="登录账号名" prop="accountName">
+                                        <el-input class="input" v-model="form.accountName"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="登录账号密码" prop="accountPassword">
+                                        <el-input type="password" v-model="form.accountPassword"
+                                                  auto-complete="off"></el-input>
+                                    </el-form-item>
+                                    </el-form-item>
+                                    <el-form-item label="手机号" prop="phoneNumber">
+                                        <el-input class="input" v-model="form.phoneNumber"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="教师性别"prop="teacherGender">
+                                        <el-radio-group v-model="form.teacherGender">
+                                            <el-radio label="1">男</el-radio>
+                                            <el-radio label="2">女</el-radio>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                    <el-form-item label="账号类型" prop="accountType">
+                                        <el-radio-group v-model="form.accountType">
+                                            <el-radio label="1">管理员</el-radio>
+                                            <el-radio label="2">用户</el-radio>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                    <el-form-item label="管理班级" prop="claseList">
+                                        <el-checkbox-group v-model="form.claseList">
+                                            <el-checkbox v-for="claseItem in claseList" :label="claseItem.claseName"
+                                                         :value="claseItem.claseId" name="type"></el-checkbox>
+                                        </el-checkbox-group>
+                                    </el-form-item>
+                                    <el-form-item>
+                                        <el-button type="primary" @click="submitEditForm">提交</el-button>
+                                        <el-button @click="resetForm('ruleForm2')">重置</el-button>
+                                    </el-form-item>
+                                </el-form>
+                            </div>
+                        </el-card>
+                        <!--添加表格容器结束-->
+
+                    </el-main>
+                </el-container>
+                <!--主页结束-->
+            </el-container>
+
+        </div>
+
+
+        <script>
+
+            var vueObj = new Vue({
+                el: "#vue",  //基本方式绑定元素
+                data: {      //定义数据变量
+
+                    //当前登录的用户
+                    loginUser: {},
+                    //搜索输入框内容
+                    teacher_search: "",
+
+                    // 选项数据
+                    claseList: [],
+
+                    //页面显示
+                    //列表页面显示
+                    listPageShow: true,
+
+                    //添加页面显示
+                    addPageShow: false,
+                    //添加页面面包屑显示
+                    addPageBreadcrumbShow: false,
+
+                    //编辑页面显示
+                    editPageShow: false,
+                    //编辑页面面包屑显示
+                    editPageBreadcrumbShow: false,
+
+
+                    //分页教师列表数据
+                    total: 0,
+                    pageSize: 10,
+                    current: 0,
+                    pages: 0,
+
+                    //显示表格数据
+                    tableData: [],
+                    //编辑/添加表单数据
+                    form: {
+                        teacherId: 1001,
+                        teacherName: "",
+                        teacherGender: "",
+                        accountName: "",
+                        accountType: "",
+                        accountStatus: "1",
+                        phoneNumber: "",
+                        claseList: []
+                    },
+                    tableDetailData: {},
+                    addRules: {
+                        teacherName: [
+                            {required: true, message: '请输入姓名', trigger: 'blur'},
+                            {min: 1, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur'}
+                        ],
+                        teacherGender: [
+                            {required: true, message: '请勾选教师性别', trigger: 'blur'},
+                        ],
+                        accountName: [
+                            {required: true, message: '请输入账户名', trigger: 'blur'},
+                            {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
+                        ],
+                        accountPassword: [
+                            {required: true, message: '请输入账户密码', trigger: 'blur'},
+                            {min: 4, max: 20, message: '长度在 4 到 20 个字符', trigger: 'blur'}
+                        ],
+                        phoneNumber: [
+                            {required: true, message: '请输入手机号', trigger: 'blur'},
+                            {pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur'},
+                        ],
+                        accountType: [
+                            {required: true, message: '请勾选入账号类型', trigger: 'blur'},
+                        ],
+                        claseList: [
+                            {required: true, message: '请勾选班级', trigger: 'blur'},
+                        ],
+                    },
+                    editRules: {
+                        teacherName: [
+                            {required: true, message: '请输入教师姓名', trigger: 'blur'},
+                            {min: 1, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur'}
+                        ],
+                        teacherGender: [
+                            {required: true, message: '勾选教师性别', trigger: 'blur'},
+                        ],
+                        accountName: [
+                            {required: true, message: '请输入账户名', trigger: 'blur'},
+                            {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
+                        ],
+                        accountPassword: [
+                            {required: true, message: '请输入账户密码', trigger: 'blur'},
+                            {min: 4, max: 20, message: '长度在 4 到 20 个字符', trigger: 'blur'}
+                        ],
+                        phoneNumber: [
+                            {required: true, message: '请输入手机号', trigger: 'blur'},
+                            {pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur'},
+                        ],
+                        accountType: [
+                            {required: true, message: '勾选入账号类型', trigger: 'blur'},
+                        ],
+                        claseList: [
+                            {required: true, message: '勾选班级', trigger: 'blur'},
+                        ],
+                    }
+
+                },
+                methods: {
+
+                    //公共页面函数
+                    handleSelect(key, keyPath) {
+
+                        switch (key) {
+                            case "1":
+                                window.location.href = "teacher.html";
+                                break;
+                            case "2":
+                                window.location.href = "student.html";
+                                break;
+                            case "3":
+                                window.location.href = "course.html";
+                                break;
+                            case "4":
+                                window.location.href = "clase.html";
+                                break;
+                            case "5":
+                                window.location.href = "homework.html";
+                                break;
+                            case "6":
+                                window.location.href = "user.html";
+                                break;
+                        }
+
+                    },
+                    //从session中获取当前登录用户
+                    getUser: function () {
+                        //登录用户
+                        const loginUser = {
+                            userId: 1,
+                            userName: "张三",
+                            userPortrait: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+                            accountType: 1
+                        };
+                        this.loginUser = loginUser;
+
+                    },
+
+                    //点击用户信息跳转函数
+                    skipUser: function () {
+                        window.location.href = "user.html";
+                    },
+                    // 清空表单数据函数
+                    clearFormData: function () {
+                        this.resetForm();
+                    },
+                    // 表单数据格式转换
+                    teacherGenderFormatter: function (row) {
+                        if (row.teacherGender === 1) {
+                            return "男";
+                        } else if (row.teacherGender === 2) {
+                            return "女";
+                        } else {
+                            return "未知";
+                        }
+                    },
+                    accountTypeFormatter: function (row) {
+                        if (row.accountType === 1) {
+                            return "管理员";
+                        } else if (row.accountType === 2) {
+                            return "用户";
+                        } else {
+                            return "未知";
+                        }
+                    },
+                    accountStatusFormatter: function (row) {
+                        if (row.accountStatus === 1) {
+                            return "启用";
+                        } else if (row.accountStatus === 0) {
+                            return "禁用";
+                        } else {
+                            return "未知";
+                        }
+                    },
+
+                    //数据请求函数
+                    //候选数据函数
+                    getClaseList: function () {
+                        var vueObj = this;
+                        getClaseListAxios().then(
+                            (response) => {
+                                if (response.data.code === 1) {
+                                    vueObj.claseList = response.data.data;
+                                } else {
+                                    this.$message.error(response.data.msg)
+                                }
+                            }).catch((err) => {
+                            this.$message.error('请求出错了：' + err);
+                        })
+                    },
+                    //表格数据函数
+                    getTeacherPage: function () {
+                        var returnObj = this;//当运行axios中的回调函数时，this对象已经改变，要把this暂存到一个变量中，等之后输出
+                        getTeacherPageAxios().then(
+                            function (response) {
+                                returnObj.tableData = response.data.data.records;
+                                returnObj.total = response.data.data.total;
+                                returnObj.pageSize = response.data.data.size;
+                                returnObj.current = response.data.data.current;
+                                returnObj.pages = response.data.data.pages;
+                            })
+                    },
+
+                    //页面跳转函数
+                    //返回函数
+                    goBack: function () {
+                        this.listPageShow = true;
+                        this.addPageBreadcrumbShow = false;
+                        this.addPageShow = false;
+                        this.editPageBreadcrumbShow = false;
+                        this.editPageShow = false;
+                        this.clearFormData();
+                    },
+                    // 显示新增表单页面函数
+                    showAddPage: function () {
+                        this.listPageShow = false;
+                        this.addPageBreadcrumbShow = true;
+                        this.addPageShow = true;
+                    },
+                    // 显示新增表单页面函数
+                    showEditPage: function () {
+                        this.listPageShow = false;
+                        this.editPageBreadcrumbShow = true;
+                        this.editPageShow = true;
+                    },
+
+
+                    // 按钮函数
+                    //搜索按钮
+                    handleSearch: function () {
+                        var vueObj = this;
+                        getTeacherPageSearchAxios(this.teacher_search).then(
+                            (response) => {
+                                if (response.data.code === 1) {
+                                    this.$message.success('搜索成功！共搜索到' + response.data.data.total + '条记录');
+                                    vueObj.tableData = response.data.data.records;
+                                    vueObj.total = response.data.data.total;
+                                    vueObj.pageSize = response.data.data.size;
+                                    vueObj.current = response.data.data.current;
+                                    vueObj.pages = response.data.data.pages;
+                                } else {
+                                    this.$message.error(response.data.msg)
+                                }
+                            }).catch((err) => {
+                            this.$message.error('请求出错了：' + err);
+                        })
+                    },
+                    // 添加表单重置函数
+                    resetForm: function () {
+                        this.form = {
+                            teacherId: "",
+                            teacherName: "",
+                            teacherGender: "",
+                            accountName: "",
+                            accountType: "",
+                            accountStatus: "1",
+                            phoneNumber: "",
+                            claseList: []
+                        }
+                    },
+                    // 编辑按钮处理函数
+                    handleEdit: async function (index, row) {
+                        this.showEditPage();
+
+                        var vueObj = this;
+                        await getTeacherDetailAxios(row.teacherId).then(
+                            (response) => {
+                                if (response.data.code === 1) {
+                                    vueObj.tableDetailData = response.data.data;
+                                } else {
+                                    this.$message.error(response.data.msg)
+                                }
+                            }).catch((err) => {
+                            this.$message.error('请求出错了：' + err);
+                        });
+
+                        this.form.teacherId = this.tableDetailData.teacherId;
+                        this.form.teacherName = this.tableDetailData.teacherName;
+                        this.form.teacherGender = this.tableDetailData.teacherGender;
+                        this.form.accountName = this.tableDetailData.accountName;
+                        this.form.accountType = this.tableDetailData.accountType;
+                        this.form.accountStatus = this.tableDetailData.accountStatus;
+                        this.form.phoneNumber = this.tableDetailData.phoneNumber;
+                        this.form.claseList = this.tableDetailData.claseList;
+                    },
+                    //删除按钮处理函数
+                    handleDelete: function (index, row) {
+                        this.$confirm('此操作将永久删除该项内容, 是否继续?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            deleteTeacherAxios(row.teacherId).then(
+                                res => {
+                                    if (res.data.code === 1) {
+                                        this.$message.success('删除成功！')
+                                        this.getTeacherPage()
+                                    } else {
+                                        this.$message.error(res.data.msg + '，操作失败!')
+                                    }
+                                }
+                            ).catch((err) => {
+                                this.$message.error('请求出错了：' + err);
+                            })
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消删除'
+                            });
+                        });
+                    },
+                    handleEnable: function (index, row) {
+                        this.$confirm('此操作将启用该账户, 是否继续?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            enableAccountAxios(row.teacherId).then(
+                                res => {
+                                    if (res.data.code === 1) {
+                                        this.$message.success('启用成功！')
+                                        this.getTeacherPage()
+                                    } else {
+                                        this.$message.error(res.data.msg + '，操作失败!')
+                                    }
+                                }
+                            ).catch((err) => {
+                                this.$message.error('请求出错了：' + err);
+                            })
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消启用'
+                            });
+                        });
+                    },
+                    handleDisable: function (index, row) {
+                        this.$confirm('此操作将禁用该账户, 是否继续?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            disableAccountAxios(row.teacherId).then(
+                                res => {
+                                    if (res.data.code === 1) {
+                                        this.$message.success('禁用成功！')
+                                        this.getTeacherPage()
+                                    } else {
+                                        this.$message.error(res.data.msg + '，操作失败!')
+                                    }
+                                }
+                            ).catch((err) => {
+                                this.$message.error('请求出错了：' + err);
+                            })
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消禁用'
+                            });
+                        });
+                    },
+
+                    // 表单提交函数
+                    // 添加表单提交
+                    submitAddForm: function () {
+                        let verification = this.validateForm("addForm");
+                        if (verification){
+                            this.$confirm('此操作将提交表单内容, 是否继续?', '提示', {
+                                confirmButtonText: '确定',
+                                cancelButtonText: '取消',
+                                type: 'warning'
+                            }).then(() => {
+                                console.log(this.form);
+                                addTeacherAxios(this.form).then(
+                                    res => {
+                                        if (res.data.code === 1) {
+                                            this.$message.success('提交成功！')
+                                            this.getTeacherPage()
+                                        } else {
+                                            this.$message.error(res.data.msg + '，操作失败!')
+                                        }
+                                    }
+                                )
+                            }).catch(() => {
+                                this.$message({
+                                    type: 'info',
+                                    message: '已取消提交'
+                                });
+                            });
+                        }
+                    },
+                    // 修改表单提交
+                    submitEditForm: function () {
+
+                        let verification = this.validateForm("editForm");
+                        if (verification) {
+                            this.$confirm('此操作将提交表单内容, 是否继续?', '提示', {
+                                confirmButtonText: '确定',
+                                cancelButtonText: '取消',
+                                type: 'warning'
+                            }).then(() => {
+                                console.log(this.form);
+                                editTeacherAxios(this.form).then(
+                                    res => {
+                                        if (res.data.code === 1) {
+                                            this.$message.success('提交成功！')
+                                            this.getTeacherPage()
+                                        } else {
+                                            this.$message.error(res.data.msg + '，操作失败!')
+                                        }
+                                    }
+                                )
+                            }).catch(() => {
+                                this.$message({
+                                    type: 'info',
+                                    message: '已取消提交'
+                                });
+                            });
+                        }
+                    },
+                    //验证表单
+                    validateForm: function (formRef) {
+                        let flag = false;
+                        this.$refs[formRef].validate((valid) => {
+                            if (valid === true) {
+                                flag = true;
+                            }
+                        });
+                        return flag;
+                    },
+                },
+                mounted() {
+                    this.getUser();
+                    this.getTeacherPage();
+                    this.getClaseList();
+                }
+            })
+        </script>
+
+    </body>
+</html>

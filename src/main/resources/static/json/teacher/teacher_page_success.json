@@ -1,0 +1,64 @@
+{
+  "code": 1,
+  "msg": "",
+  "data": {
+    "records": [
+      {
+        "teacherId": 1001,
+        "teacherName": "王老师",
+        "teacherGender": 1,
+        "accountName": "wls",
+        "accountType": 1,
+        "accountStatus": 1,
+        "clase": [
+          "21级1班",
+          "21级2班",
+          "21级3班"
+        ]
+      },
+      {
+        "teacherId": 1002,
+        "teacherName": "李老师",
+        "teacherGender": 1,
+        "accountName": "lls",
+        "accountType": 2,
+        "accountStatus": 1,
+        "clase": [
+          "21级1班",
+          "21级2班",
+          "21级3班"
+        ]
+      },
+      {
+        "teacherId": 1003,
+        "teacherName": "韩老师",
+        "teacherGender": 2,
+        "accountName": "hls",
+        "accountType": 2,
+        "accountStatus": 1,
+        "clase": [
+          "21级1班",
+          "21级2班",
+          "21级3班"
+        ]
+      },{
+        "teacherId": 1004,
+        "teacherName": "汪老师",
+        "teacherGender": 1,
+        "accountName": "wls",
+        "accountType": 2,
+        "accountStatus": 0,
+        "clase": [
+          "21级1班",
+          "21级2班",
+          "21级3班"
+        ]
+      }
+
+    ],
+    "total": 3,
+    "size": 8,
+    "current": 1,
+    "pages": 1
+  }
+}

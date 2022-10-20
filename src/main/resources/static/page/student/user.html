@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>云作业-学生端</title>
+
+        <!--引入vue框架-->
+        <script src="../../framework/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+        <!--引入element UI样式和组件-->
+        <link href="../../framework/element/index.css" rel="stylesheet" type="text/css">
+        <script src="../../framework/element/index.js" type="text/javascript" charset="utf-8"></script>
+        <!--引入axios框架-->
+        <script src="../../framework/axios/axios.js" type="text/javascript" charset="utf-8"></script>
+        <!--引入当前页面样式-->
+        <link href="user.css" rel="stylesheet" type="text/css">
+        <!--引入请求相关文件-->
+        <script src="../../api/student.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../api/common.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../js/request.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body>
+
+        <div id="vue">
+
+            <el-container id="container">
+                <!--主标题栏开始-->
+                <el-header id="header" style="text-align: left; font-size: 12px">
+                    <span style="color: #fff; font-size: 20px">云作业管理系统--学生端</span>
+                </el-header>
+                <!--主标题栏结束-->
+                <!--主页开始-->
+                <el-container id="main">
+                    <!--主页侧边栏开始-->
+                    <el-aside id="aside" width="250px">
+                        <!--用户容器开始-->
+                        <div id="aside-user" @click="skipUser">
+                            <!--用户头像开始-->
+                            <el-avatar id="aside-userPortrait" :size="80"
+                                       :src="loginUser.userPortrait"></el-avatar>
+                            <!--用户头像结束-->
+                            <div id="aside-user-name-box">
+                                <span class="name">{{loginUser.userName}}</span>
+                                <span class="text1">同学</span>
+                                <br>
+                                <span class="text2">欢迎回来!</span>
+                            </div>
+                        </div>
+                        <!--用户容器结束-->
+                        <div id="cut-off"></div>
+                        <!--主页菜单开始-->
+                        <el-menu id="aside-menu"
+                                 default-active="2"
+                                 @select="handleSelect"
+                                 class="el-menu-vertical-demo"
+                                 background-color="#353741"
+                                 text-color="#fff"
+                                 active-text-color="#62A1A4">
+                            <el-menu-item class="item" index="1">
+                                <i class="el-icon-service"></i>
+                                <span class="text" slot="title">作业列表</span>
+                            </el-menu-item>
+                            <el-menu-item class="item" index="2">
+                                <i class="el-icon-setting"></i>
+                                <span class="text" slot="title">账号信息</span>
+                            </el-menu-item>
+                            <el-menu-item class="item" index="3">
+                                <i class="el-icon-back"></i>
+                                <span class="text" slot="title">退出系统</span>
+                            </el-menu-item>
+                        </el-menu>
+                        <!--主页菜单结束-->
+                        <div id="fill"></div>
+                    </el-aside>
+                    <!--主页侧边栏结束-->
+
+
+                    <!--主页内容开始-->
+                    <el-main>
+                        <!--面包屑导航开始-->
+                        <div id="breadcrumb-box">
+                            <el-breadcrumb separator-class="el-icon-arrow-right">
+                                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                                <el-breadcrumb-item :to="{ path: '/' }"><a @click="goBack">账号设置</a>
+                                </el-breadcrumb-item>
+                                <el-breadcrumb-item :to="{ path: '/' }" v-if="editPageBreadcrumbShow">编辑账号信息
+                                </el-breadcrumb-item>
+                            </el-breadcrumb>
+                        </div>
+                        <!--面包屑导航结束-->
+
+
+                        <!--列表表格容器开始-->
+                        <el-card id="info" class="box-card" v-if="listPageShow">
+                            <!--标题开始-->
+                            <div id="info-title" slot="header" class="clearfix">
+                                <span>账号信息</span>
+                            </div>
+
+                            <div id="info-descriptions">
+                                <el-descriptions direction="vertical" :column="3" border>
+                                    <el-descriptions-item label="学号">{{userData.studentNumber}}
+                                    </el-descriptions-item>
+                                    <el-descriptions-item label="学生姓名">{{userData.studentName}}
+                                    </el-descriptions-item>
+                                    <el-descriptions-item label="学生性别">{{userData.studentGender}}
+                                    </el-descriptions-item>
+                                    <el-descriptions-item label="账号名">{{userData.accountName}}
+                                    </el-descriptions-item>
+                                    <el-descriptions-item label="注册手机号">{{userData.phoneNumber}}
+                                    </el-descriptions-item>
+                                    <el-descriptions-item label="班级">{{userData.claseName}}
+                                    </el-descriptions-item>
+                                </el-descriptions>
+                            </div>
+
+                            <div id="info-button">
+                                <el-button type="primary" @click="handleEdit">编辑账号信息</el-button>
+                            </div>
+
+                        </el-card>
+                        <!--列表表格容器结束-->
+
+                        <!--修改表格容器开始-->
+                        <el-card id="edit" class="box-card" v-if="editPageShow">
+                            <!--标题开始-->
+                            <div id="edit-title" slot="header" class="clearfix">
+                                <i class="el-icon-arrow-left" @click="goBack"></i>
+                                <span id="edit-title-span2">编辑账号信息</span>
+                            </div>
+                            <!--标题结束-->
+                            <div id="edit-form">
+                                <el-form ref="form" :model="form" label-width="120px">
+                                    <el-form-item label="学号">
+                                        <el-input class="input" v-model="form.studentNumber"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="学生姓名">
+                                        <el-input class="input" v-model="form.studentName"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="登录账号名">
+                                        <el-input class="input" v-model="form.accountName"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="登录账号密码">
+                                        <el-input type="password" v-model="form.accountPassword"
+                                                  auto-complete="off"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="学生手机号">
+                                        <el-input class="input" v-model="form.phoneNumber"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="学生性别">
+                                        <el-radio-group v-model="form.studentGender">
+                                            <el-radio label="1">男</el-radio>
+                                            <el-radio label="2">女</el-radio>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                    <!--上传图片开始-->
+                                    <el-form-item label="上传头像">
+                                        <el-upload
+                                                class="avatar-uploader"
+                                                :action="imageUploadAction"
+                                                :show-file-list="false"
+                                                :on-success="handleAvatarSuccess"
+                                                :before-upload="beforeAvatarUpload">
+                                            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                        </el-upload>
+
+                                    </el-form-item>
+                                    <!--上传图片结束-->
+
+                                    <el-form-item>
+                                        <el-button type="primary" @click="submitEditForm">提交</el-button>
+                                        <el-button @click="resetForm('ruleForm2')">重置</el-button>
+                                    </el-form-item>
+                                </el-form>
+                            </div>
+                        </el-card>
+                        <!--需改表格容器结束-->
+
+                    </el-main>
+                </el-container>
+                <!--主页结束-->
+            </el-container>
+
+        </div>
+
+
+        <script>
+
+            var vueObj = new Vue({
+                el: "#vue",  //基本方式绑定元素
+                data: {      //定义数据变量
+
+                    //接口地址
+                    imageUploadAction: imageUploadUrl,
+
+                    //当前登录的用户
+                    loginUser: {},
+
+                    //页面显示
+                    //列表页面显示
+                    listPageShow: true,
+
+                    //编辑页面显示
+                    editPageShow: false,
+                    //编辑页面面包屑显示
+                    editPageBreadcrumbShow: false,
+
+
+                    //显示表格数据
+                    userData: {},
+                    //编辑/添加表单数据
+                    form: {
+                        studentNumber: "",
+                        studentName: "",
+                        studentGender: "",
+                        accountName: "",
+                        phoneNumber: "",
+                        claseId: "",
+                        imageUploadName: {}
+                    },
+                    //图片墙图片显示标志位
+                    imageUploadVisible: false,
+                    imageUrl: ''
+                },
+                methods: {
+
+                    //公共页面函数
+                    handleSelect(key, keyPath) {
+
+                        switch (key) {
+                            case "1":
+                                window.location.href = "homework.html";
+                                break;
+                            case "2":
+                                window.location.href = "user.html";
+                                break;
+                        }
+
+                    },
+                    //从session中获取当前登录用户
+                    getUser: function () {
+                        //登录用户
+                        this.loginUser = {
+                            userId: 1,
+                            userName: "张三",
+                            userPortrait: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+                            accountType: 1
+                        };
+
+                    },
+                    //点击用户信息跳转函数
+                    skipUser: function () {
+                        window.location.href = "user.html";
+                    },
+
+                    // 清空表单数据函数
+                    clearFormData: function () {
+                        this.resetForm();
+                    },
+                    // 表单数据格式转换
+                    studentGenderFormatter: function (vueObj) {
+                        if (vueObj.userData.studentGender === "1") {
+                            vueObj.userData.studentGender = "男";
+                        } else if (vueObj.userData.studentGender === "2") {
+                            vueObj.userData.studentGender = "女";
+                        } else {
+                            vueObj.userData.studentGender = "未知";
+                        }
+                    },
+
+                    //数据请求函数
+                    //获取当前登录用户详细数据
+                    getUserDetail: function () {
+
+                        var vueObj = this;
+                        getStudentDetailAxios(this.loginUser.userId).then(
+                            (response) => {
+                                if (response.data.code === 1) {
+                                    vueObj.userData = response.data.data;
+                                    vueObj.studentGenderFormatter(vueObj);
+                                } else {
+                                    this.$message.error(response.data.msg)
+                                }
+                            }).catch((err) => {
+                            this.$message.error('请求出错了：' + err);
+                        })
+                    },
+
+                    //页面跳转函数
+                    //返回函数
+                    goBack: function () {
+                        this.listPageShow = true;
+                        this.addPageBreadcrumbShow = false;
+                        this.addPageShow = false;
+                        this.editPageBreadcrumbShow = false;
+                        this.editPageShow = false;
+                        this.handleRemove();
+                        this.clearFormData();
+                    },
+                    // 显示新增表单页面函数
+                    showEditPage: function () {
+                        this.listPageShow = false;
+                        this.editPageBreadcrumbShow = true;
+                        this.editPageShow = true;
+                    },
+
+
+                    // 按钮函数
+                    // 添加表单重置函数
+                    resetForm: function () {
+                        this.form = {
+                            teacherId: "",
+                            teacherName: "",
+                            teacherGender: "",
+                            accountName: "",
+                            accountType: "",
+                            accountStatus: "1",
+                            phoneNumber: "",
+                            imageUploadName: {}
+                        };
+                        this.imagePreviewSrcList = [];
+                    },
+                    // 编辑按钮处理函数
+                    handleEdit: async function () {
+                        this.showEditPage();
+
+                        var vueObj = this;
+                        await getStudentDetailAxios(this.loginUser.userId).then(
+                            (response) => {
+                                if (response.data.code === 1) {
+                                    vueObj.form = response.data.data;
+                                } else {
+                                    this.$message.error(response.data.msg)
+                                }
+                            }).catch((err) => {
+                            this.$message.error('请求出错了：' + err);
+                        });
+
+                    },
+                    // 表单提交函数
+                    // 修改表单提交
+                    submitEditForm: function () {
+
+                        this.$confirm('此操作将提交表单内容, 是否继续?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            editStudentAxios(this.form).then(
+                                res => {
+                                    if (res.data.code === 1) {
+                                        this.$message.success('提交成功！')
+                                        this.getUserDetail()
+                                    } else {
+                                        this.$message.error(res.data.msg + '，操作失败!')
+                                    }
+                                }
+                            )
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消提交'
+                            });
+                        });
+
+                    },
+                    //图片上传成功回调函数
+                    handleAvatarSuccess: function (response) {
+                        if (response.code === 1) {
+                            this.form.imageUploadName = response.data.imageName;
+                            this.imageUrl = '../../imageItem/' + this.form.imageUploadName;
+                        } else {
+                            this.$message.error(response.msg)
+                        }
+                        console.log(this.form.imageUploadName);
+                    },
+                    //图片删除回调函数
+                    async handleRemove() {
+                        //通知服务器删除存储的图片
+                        await removeImageAxios(this.form.imageUploadName).then(
+                            (response) => {
+                                if (response.data.code === 1) {
+                                    console.log('图片删除成功')
+                                } else {
+                                    this.$message.error(response.data.msg)
+                                }
+                            }).catch((err) => {
+                            this.$message.error('请求出错了：' + err);
+                        });
+                    },
+                    //上传图片前校验
+                    beforeAvatarUpload(file) {
+                        const isJPG = file.type === 'image/jpeg';
+                        const isLt2M = file.size / 1024 / 1024 < 10;
+
+                        if (!isJPG) {
+                            this.$message.error('上传头像图片只能是 JPG 格式!');
+                        } else if (!isLt2M) {
+                            this.$message.error('上传头像图片大小不能超过 10MB!');
+                        }
+                        return isJPG && isLt2M;
+                    }
+                },
+                mounted() {
+                    this.getUser();
+                    this.getUserDetail();
+                }
+            })
+        </script>
+
+    </body>
+</html>

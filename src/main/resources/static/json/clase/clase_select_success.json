@@ -1,0 +1,44 @@
+{
+  "code": 1,
+  "msg": "",
+  "data": {
+    "claseId" : 1001,
+    "claseName": "21级1班",
+    "timeOfEnrollment": "2021",
+    "claseTeacherId": 1001,
+    "claseTeacherName": "王老师",
+    "claseLeaderId": 1003,
+    "claseLeaderName": "王五",
+    "courseList": [
+      {
+        "courseId": 1001,
+        "courseName": "英语",
+        "courseAddress": "南教101",
+        "courseTeacherName": "仙桃老师",
+        "courseDescription": "这是课程描述"
+      },
+      {
+        "courseId": 1003,
+        "courseName": "数学",
+        "teacherName": "仙仙桃",
+        "courseAddress": "南教102",
+        "courseTeacherName": "仙桃老师",
+        "courseDescription": "这是课程描述"
+      },
+      {
+        "courseId": 1004,
+        "courseName": "物理",
+        "courseAddress": "南教103",
+        "courseTeacherName": "仙桃老师",
+        "courseDescription": "这是课程描述"
+      },
+      {
+        "courseId": 1005,
+        "courseName": "化学",
+        "courseAddress": "南教104",
+        "courseTeacherName": "仙桃老师",
+        "courseDescription": "这是课程描述"
+      }
+    ]
+  }
+}

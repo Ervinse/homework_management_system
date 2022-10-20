@@ -1,0 +1,18 @@
+{
+  "code": 1,
+  "msg": "",
+  "data": {
+    "teacherId": 1001,
+    "teacherName": "王老师",
+    "teacherGender": "1",
+    "accountName": "wls",
+    "accountType": "1",
+    "accountStatus": "1",
+    "phoneNumber": "18827393847",
+    "claseList": [
+      "21级1班",
+      "21级2班",
+      "21级3班"
+    ]
+  }
+}

@@ -1,0 +1,194 @@
+.el-main {
+    padding: 0 0 0 0;
+    background-color: #F3F4F7;
+}
+
+/*主标题栏*/
+#header {
+    background-color: #4AA3A5;
+    color: #333;
+    line-height: 60px;
+}
+
+/*用户头像容器*/
+#aside-user {
+    width: 249px;
+    height: 140px;
+    background-color: #353740;
+    position: relative;
+}
+
+/*用户头像*/
+#aside-userPortrait {
+    position: absolute;
+    left: 20px;
+    top: 30px;
+}
+
+/*用户姓名容器*/
+#aside-user-name-box {
+    position: absolute;
+    left: 125px;
+    top: 45px;
+}
+
+/*用户姓名文字*/
+#aside-user-name-box .name {
+    color: #4AA3A4;
+    font-size: 24px;
+    font-weight: 900;
+}
+
+#aside-user-name-box .text1 {
+    color: #A5A7AC;
+}
+
+#aside-user-name-box .text2 {
+    color: #A5A7AC;
+    line-height: 40px;
+}
+
+/*分割线*/
+#cut-off {
+    height: 1px;
+    background-color: #62A1A4;
+}
+
+/*侧边栏菜单*/
+#aside-menu .item {
+    height: 70px;
+    font-size: 16px;
+    line-height: 65px;
+}
+
+#fill {
+    height: 304px;
+    width: 249px;
+    background-color: #353740;
+}
+
+/*面包屑导航*/
+#breadcrumb-box {
+    background-color: #fff;
+    padding: 20px;
+    height: 20px;
+    /*border-bottom: 1px solid #aaa;*/
+    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+}
+
+/*列表表格容器*/
+#info {
+    margin: 20px;
+    position: relative;
+}
+
+/*标题*/
+#info-title {
+    line-height: 12px;
+    font-size: 18px;
+}
+
+#info-button {
+    width: 240px;
+    margin: 20px auto;
+}
+
+
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 188px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+}
+.avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+}
+
+/*#info-avatar {*/
+/*    display: inline-block;*/
+/*    width: 200px;*/
+/*    height: 200px;*/
+/*    position: relative;*/
+/*}*/
+
+/*#info-avatar-userPortrait {*/
+/*    position: absolute;*/
+/*    left: 20px;*/
+/*    top: 20px;*/
+/*}*/
+
+
+/*添加表格容器*/
+#add {
+    margin: 20px;
+    position: relative;
+}
+
+/*标题*/
+#add-title {
+    line-height: 12px;
+    font-size: 18px;
+    position: relative;
+}
+
+#add-form {
+    width: 50%;
+    margin: 30px auto;
+}
+
+
+/*添加表格容器*/
+#edit {
+    margin: 20px;
+    position: relative;
+}
+
+/*标题*/
+#edit-title {
+    line-height: 12px;
+    font-size: 18px;
+    position: relative;
+}
+
+#edit-form {
+    width: 50%;
+    margin: 30px auto;
+}
+
+
+
+/*修改element UI 按钮默认按钮颜色*/
+.el-button--primary.is-active, .el-button--primary:active {
+    background: #70b7b7;
+    border-color: #70b7b7;
+    color: #FFF;
+}
+
+.el-button--primary:focus, .el-button--primary:hover {
+    background: #91dbdb;
+    border-color: #91dbdb;
+    color: #FFF;
+}
+
+.el-button--primary {
+    color: #FFF;
+    background-color: #66cccc;
+    border-color: #66cccc;
+}
+
+
+

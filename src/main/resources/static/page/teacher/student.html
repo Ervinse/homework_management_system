@@ -185,7 +185,7 @@
                                             layout="total , prev, pager, next , jumper"
                                             :total="total"
                                             :page-size="pageSize"
-                                            :current-page="current">
+                                            :current-page="currentPage">
                                     </el-pagination>
                                 </div>
                             </template>
@@ -277,7 +277,7 @@
                     //分页教师列表数据
                     total: 0,
                     pageSize: 10,
-                    current: 0,
+                    currentPage: 1,
                     pages: 0,
 
                     //显示表格数据
@@ -399,7 +399,7 @@
                     //表格数据函数
                     getStudentPage: function () {
                         var returnObj = this;//当运行axios中的回调函数时，this对象已经改变，要把this暂存到一个变量中，等之后输出
-                        getStudentPageAxios().then(
+                        getStudentPageAxios(this.currentPage,this.pageSize,null).then(
                             function (response) {
                                 returnObj.tableData = response.data.data.records;
                                 returnObj.total = response.data.data.total;
@@ -429,7 +429,7 @@
                     //搜索按钮
                     handleSearch: function () {
                         var vueObj = this;
-                        getStudentPageSearchAxios(this.student_search).then(
+                        getStudentPageAxios(this.currentPage,this.pageSize,this.student_search).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     this.$message.success('搜索成功！共搜索到' + response.data.data.total + '条记录');

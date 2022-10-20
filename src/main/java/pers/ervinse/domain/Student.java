@@ -19,7 +19,7 @@ public class Student implements Serializable {
     //学生姓名
     private String studentName;
     //学生性别
-    private int studentGender;
+    private String studentGender;
     //账号名
     private String accountName;
     //账号密码

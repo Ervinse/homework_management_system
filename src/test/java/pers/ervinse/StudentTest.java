@@ -50,4 +50,19 @@ public class StudentTest {
 
         System.out.println(page);
     }
+
+    @Test
+    void addStudent(){
+
+        Student student = new Student();
+        student.setStudentNumber(211001);
+        student.setStudentName("AA");
+        student.setStudentGender("1");
+        student.setAccountName("AA");
+        student.setAccountPassword("123456");
+        student.setPhoneNumber("13589987656");
+
+        int insert = studentMapper.insert(student);
+        System.out.println(insert);
+    }
 }

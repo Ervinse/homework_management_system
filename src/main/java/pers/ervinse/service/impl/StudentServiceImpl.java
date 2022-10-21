@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Student;
 import pers.ervinse.mapper.StudentMapper;
 import pers.ervinse.service.StudentService;
@@ -86,24 +87,23 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public int addStudent(Student student) {
+    public void addStudent(Student student) {
         log.info("StudentService - addStudent :student = {}", student);
 
         Student studentByStudentNumberAndAccountName = studentMapper.getStudentByStudentNumberAndAccountName(student);
         //学号重复
         if (studentByStudentNumberAndAccountName.getStudentNumber() == student.getStudentNumber()){
-            return 2;
+            throw new CustomException("学号重复!");
             //账号名重复
         } else if (studentByStudentNumberAndAccountName.getAccountName() == student.getAccountName()) {
-            return 3;
+            throw new CustomException("账号名重复!");
         }else {
             int insert = studentMapper.insert(student);
             if (insert > 0){
                 log.info("添加学生成功,影响了" + insert + "条数据");
-                return 1;
             }else {
                 log.info("添加学生失败,影响了" + insert + "条数据");
-                return 0;
+                throw new CustomException("服务器错误,添加失败!");
             }
         }
     }

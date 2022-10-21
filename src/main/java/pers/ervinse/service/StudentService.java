@@ -11,5 +11,5 @@ public interface StudentService {
 
     Student selectStudentByCondition(Student student);
 
-    int addStudent(Student student);
+    void addStudent(Student student);
 }

@@ -15,7 +15,7 @@ const getStudentPageAxios = (currentPage,pageSize,studentName) => {
 // 查询学生详情接口
 const getStudentDetailAxios = (studentId) => {
     return $axios({
-        url: '../../json/student/student_select_success.json',
+        url: '/student',
         method: 'get',
         params: {
             studentId: studentId

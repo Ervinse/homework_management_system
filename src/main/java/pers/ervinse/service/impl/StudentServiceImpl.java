@@ -65,4 +65,11 @@ public class StudentServiceImpl implements StudentService {
         return page;
     }
 
+    @Override
+    public Student selectStudentById(String studentId) {
+        log.info("StudentService - selectStudentById :studentId = {}", studentId);
+
+        return studentMapper.selectById(studentId);
+    }
+
 }

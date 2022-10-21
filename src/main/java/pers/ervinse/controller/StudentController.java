@@ -27,4 +27,16 @@ public class StudentController {
 
         return R.getSuccessInstance(studentPage);
     }
+
+    @GetMapping
+    public R<Student> getStudentById(String studentId){
+        log.info("StudentController - getStudentById :studentId = {}", studentId);
+
+        Student student = studentService.selectStudentById(studentId);
+        if (student.getClaseId() == null){
+            student.setClaseId(0L);
+        }
+
+        return R.getSuccessInstance(student);
+    }
 }

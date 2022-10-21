@@ -6,4 +6,6 @@ import pers.ervinse.domain.Student;
 public interface StudentService {
 
     Page<Student> selectStudentPage(int currentPage, int pageSize, String name);
+
+    Student selectStudentById(String studentId);
 }

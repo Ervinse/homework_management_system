@@ -55,7 +55,7 @@ public class StudentTest {
     void addStudent(){
 
         Student student = new Student();
-        student.setStudentNumber(211001);
+        student.setStudentNumber("211001");
         student.setStudentName("AA");
         student.setStudentGender("1");
         student.setAccountName("AA");
@@ -64,5 +64,21 @@ public class StudentTest {
 
         int insert = studentMapper.insert(student);
         System.out.println(insert);
+    }
+
+    @Test
+    void getStudentByStudentNumberAndAccountName(){
+
+        Student student = new Student();
+        student.setStudentNumber("211002");
+        student.setStudentName("AA");
+        student.setStudentGender("1");
+        student.setAccountName("BB");
+        student.setAccountPassword("123456");
+        student.setPhoneNumber("13589987656");
+
+        Student studentByStudentNumberAndAccountName = studentMapper.getStudentByStudentNumberAndAccountName(student);
+        System.out.println(studentByStudentNumberAndAccountName);
+
     }
 }

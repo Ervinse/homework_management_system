@@ -78,4 +78,34 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectById(studentId);
     }
 
+    @Override
+    public Student selectStudentByCondition(Student student) {
+        log.info("StudentService - selectStudentByCondition :student = {}", student);
+
+        return null;
+    }
+
+    @Override
+    public int addStudent(Student student) {
+        log.info("StudentService - addStudent :student = {}", student);
+
+        Student studentByStudentNumberAndAccountName = studentMapper.getStudentByStudentNumberAndAccountName(student);
+        //学号重复
+        if (studentByStudentNumberAndAccountName.getStudentNumber() == student.getStudentNumber()){
+            return 2;
+            //账号名重复
+        } else if (studentByStudentNumberAndAccountName.getAccountName() == student.getAccountName()) {
+            return 3;
+        }else {
+            int insert = studentMapper.insert(student);
+            if (insert > 0){
+                log.info("添加学生成功,影响了" + insert + "条数据");
+                return 1;
+            }else {
+                log.info("添加学生失败,影响了" + insert + "条数据");
+                return 0;
+            }
+        }
+    }
+
 }

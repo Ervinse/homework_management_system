@@ -15,7 +15,7 @@ public class Student implements Serializable {
     @TableId("id")
     private Long studentId;
     //学生学号
-    private int studentNumber;
+    private String  studentNumber;
     //学生姓名
     private String studentName;
     //学生性别

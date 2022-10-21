@@ -7,5 +7,10 @@ import pers.ervinse.domain.Student;
 @Mapper
 public interface StudentMapper extends BaseMapper<Student> {
 
-
+    /**
+     * 根据学号和账号名获取学生,判断学号和账号是否重名
+     * @param student 条件
+     * @return 重名账号
+     */
+    Student getStudentByStudentNumberAndAccountName(Student student);
 }

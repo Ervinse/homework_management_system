@@ -3,10 +3,7 @@ package pers.ervinse.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pers.ervinse.common.R;
 import pers.ervinse.domain.Student;
 import pers.ervinse.service.StudentService;
@@ -51,5 +48,14 @@ public class StudentController {
         }
 
         return R.getSuccessInstance(student);
+    }
+
+
+    @PostMapping
+    public R<String> addStudent(@RequestBody Student student){
+        log.info("StudentController - updateStudent :Student = {}", student);
+
+        studentService.addStudent(student);
+        return R.getSuccessInstance("");
     }
 }

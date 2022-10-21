@@ -8,4 +8,8 @@ public interface StudentService {
     Page<Student> selectStudentPage(int currentPage, int pageSize, String name);
 
     Student selectStudentById(String studentId);
+
+    Student selectStudentByCondition(Student student);
+
+    int addStudent(Student student);
 }

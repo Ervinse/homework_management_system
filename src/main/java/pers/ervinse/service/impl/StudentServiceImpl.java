@@ -65,6 +65,12 @@ public class StudentServiceImpl implements StudentService {
         return page;
     }
 
+
+    /**
+     * 根据学生id获取学生数据详情
+     * @param studentId 学生id
+     * @return 学生数据详情
+     */
     @Override
     public Student selectStudentById(String studentId) {
         log.info("StudentService - selectStudentById :studentId = {}", studentId);

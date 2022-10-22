@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pers.ervinse.domain.Student;
 import pers.ervinse.mapper.StudentMapper;
+import pers.ervinse.service.StudentService;
 
 @Slf4j
 @SpringBootTest
@@ -17,7 +18,8 @@ public class StudentTest {
     @Autowired
     private StudentMapper studentMapper;
 
-
+    @Autowired
+    private StudentService studentService;
 
     //mapper层
 
@@ -85,6 +87,18 @@ public class StudentTest {
 
 
     //service层
+    @Test
+    void addStudentService(){
 
+        Student student = new Student();
+        student.setStudentNumber("211001");
+        student.setStudentName("AA");
+        student.setStudentGender("1");
+        student.setAccountName("BB");
+        student.setAccountPassword("123456");
+        student.setPhoneNumber("13589987656");
+
+        studentService.addStudent(student);
+    }
 
 }

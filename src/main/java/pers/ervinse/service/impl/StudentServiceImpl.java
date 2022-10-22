@@ -11,6 +11,8 @@ import pers.ervinse.domain.Student;
 import pers.ervinse.mapper.StudentMapper;
 import pers.ervinse.service.StudentService;
 
+import java.util.Objects;
+
 @Slf4j
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -20,8 +22,9 @@ public class StudentServiceImpl implements StudentService {
 
     /**
      * 根据条件获取学生分页
+     *
      * @param currentPage 当前页
-     * @param pageSize 每页条数
+     * @param pageSize    每页条数
      * @param searchValue 搜索值
      * @return 学生分页
      */
@@ -69,6 +72,7 @@ public class StudentServiceImpl implements StudentService {
 
     /**
      * 根据学生id获取学生数据详情
+     *
      * @param studentId 学生id
      * @return 学生数据详情
      */
@@ -91,20 +95,26 @@ public class StudentServiceImpl implements StudentService {
         log.info("StudentService - addStudent :student = {}", student);
 
         Student studentByStudentNumberAndAccountName = studentMapper.getStudentByStudentNumberAndAccountName(student);
-        //学号重复
-        if (studentByStudentNumberAndAccountName.getStudentNumber() == student.getStudentNumber()){
-            throw new CustomException("学号重复!");
-            //账号名重复
-        } else if (studentByStudentNumberAndAccountName.getAccountName() == student.getAccountName()) {
-            throw new CustomException("账号名重复!");
-        }else {
+
+        log.debug("studentByStudentNumberAndAccountName = {}", studentByStudentNumberAndAccountName);
+
+        if (studentByStudentNumberAndAccountName == null) {
             int insert = studentMapper.insert(student);
-            if (insert > 0){
+            if (insert > 0) {
                 log.info("添加学生成功,影响了" + insert + "条数据");
-            }else {
+            } else {
                 log.info("添加学生失败,影响了" + insert + "条数据");
                 throw new CustomException("服务器错误,添加失败!");
             }
+        }
+        //学号重复
+        else if (Objects.equals(studentByStudentNumberAndAccountName.getStudentNumber(), student.getStudentNumber())) {
+            throw new CustomException("学号重复!");
+            //账号名重复
+        } else if (Objects.equals(studentByStudentNumberAndAccountName.getAccountName(), student.getAccountName())) {
+            throw new CustomException("账号名重复!");
+        } else {
+            throw new CustomException("未知错误!");
         }
     }
 

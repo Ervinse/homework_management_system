@@ -72,6 +72,7 @@ public class StudentTest {
     }
 
     @Test
+    @Deprecated
     void getStudentByStudentNumberAndAccountName(){
 
         Student student = new Student();

@@ -7,9 +7,11 @@ public interface StudentService {
 
     Page<Student> selectStudentPage(int currentPage, int pageSize, String name);
 
-    Student selectStudentById(String studentId);
+    Student selectStudentById(Long studentId);
 
     Student selectStudentByCondition(Student student);
 
     void addStudent(Student student);
+
+    void deleteStudent(Long studentId);
 }

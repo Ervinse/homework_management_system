@@ -77,7 +77,7 @@ public class StudentServiceImpl implements StudentService {
      * @return 学生数据详情
      */
     @Override
-    public Student selectStudentById(String studentId) {
+    public Student selectStudentById(Long studentId) {
         log.info("StudentService - selectStudentById :studentId = {}", studentId);
 
         return studentMapper.selectById(studentId);
@@ -115,6 +115,19 @@ public class StudentServiceImpl implements StudentService {
             throw new CustomException("账号名重复!");
         } else {
             throw new CustomException("未知错误!");
+        }
+    }
+
+    @Override
+    public void deleteStudent(Long studentId) {
+        log.info("StudentService - deleteStudent :studentId = {}", studentId);
+
+        int delete = studentMapper.deleteById(studentId);
+        if (delete > 0) {
+            log.info("删除学生成功,影响了" + delete + "条数据");
+        } else {
+            log.info("删除学生失败,影响了" + delete + "条数据");
+            throw new CustomException("服务器错误,删除失败!");
         }
     }
 

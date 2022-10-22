@@ -23,5 +23,5 @@ logging:
   logback:
     rollingpolicy:
       max-file-size: 10MB
-  level:
-    pers: DEBUG
+#  level:
+#    pers: DEBUG

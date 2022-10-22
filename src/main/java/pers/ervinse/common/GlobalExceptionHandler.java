@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)   //处理的异常类
     public R<String> exceptionHandler(CustomException exception){
         String exceptionMessage = exception.getMessage();
-        log.info("GlobalExceptionHandler: {}",exceptionMessage);
+        log.info("GlobalExceptionHandler - CustomException : {}",exceptionMessage);
 
         return R.getErrorInstance(exceptionMessage);
     }

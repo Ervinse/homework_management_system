@@ -39,7 +39,7 @@ public class StudentController {
      * @return 学生数据详情
      */
     @GetMapping
-    public R<Student> getStudentById(String studentId){
+    public R<Student> getStudentById(Long studentId){
         log.info("StudentController - getStudentById :studentId = {}", studentId);
 
         Student student = studentService.selectStudentById(studentId);
@@ -56,6 +56,14 @@ public class StudentController {
         log.info("StudentController - updateStudent :Student = {}", student);
 
         studentService.addStudent(student);
-        return R.getSuccessInstance("");
+        return R.getSuccessInstance(null);
+    }
+
+    @DeleteMapping
+    public R<String> deleteStudent(Long studentId){
+        log.info("StudentController - deleteStudent :studentId = {}", studentId);
+
+        studentService.deleteStudent(studentId);
+        return R.getSuccessInstance(null);
     }
 }

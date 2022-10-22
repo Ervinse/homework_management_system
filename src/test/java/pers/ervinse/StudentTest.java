@@ -94,7 +94,7 @@ public class StudentTest {
         student.setStudentNumber("211001");
         student.setStudentName("AA");
         student.setStudentGender("1");
-        student.setAccountName("BB");
+        student.setAccountName("AA");
         student.setAccountPassword("123456");
         student.setPhoneNumber("13589987656");
 

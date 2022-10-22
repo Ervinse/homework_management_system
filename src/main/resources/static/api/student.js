@@ -37,8 +37,8 @@ const getStudentPageSearchAxios = (params) => {
 //修改接口
 const editStudentAxios = (params) => {
     return $axios({
-        url: '../../json/common/success.json',
-        method: 'post',
+        url: '/student',
+        method: 'put',
         data: {...params}
     })
 }

@@ -91,10 +91,10 @@ public class StudentTest {
     void addStudentService(){
 
         Student student = new Student();
-        student.setStudentNumber("211001");
+        student.setStudentNumber("211005");
         student.setStudentName("AA");
         student.setStudentGender("1");
-        student.setAccountName("AA");
+        student.setAccountName("211005");
         student.setAccountPassword("123456");
         student.setPhoneNumber("13589987656");
 

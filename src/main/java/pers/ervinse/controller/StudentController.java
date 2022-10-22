@@ -59,6 +59,14 @@ public class StudentController {
         return R.getSuccessInstance(null);
     }
 
+    @PutMapping
+    public R<String> updateStudent(@RequestBody Student student){
+        log.info("StudentController - updateStudent :Student = {}", student);
+
+        studentService.updateStudent(student);
+        return R.getSuccessInstance(null);
+    }
+
     @DeleteMapping
     public R<String> deleteStudent(Long studentId){
         log.info("StudentController - deleteStudent :studentId = {}", studentId);

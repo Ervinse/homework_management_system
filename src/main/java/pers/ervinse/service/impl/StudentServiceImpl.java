@@ -119,6 +119,34 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public void updateStudent(Student student) {
+        log.info("StudentService - updateStudent :student = {}", student);
+
+        Student studentByStudentNumberAndAccountName = studentMapper.getStudentByStudentNumberAndAccountName(student);
+
+        log.info("studentByStudentNumberAndAccountName = {}", studentByStudentNumberAndAccountName);
+
+        if (studentByStudentNumberAndAccountName == null) {
+            int insert = studentMapper.updateById(student);
+            if (insert > 0) {
+                log.info("修改学生成功,影响了" + insert + "条数据");
+            } else {
+                log.info("修改学生失败,影响了" + insert + "条数据");
+                throw new CustomException("服务器错误,添加失败!");
+            }
+        }
+        //学号重复
+        else if (Objects.equals(studentByStudentNumberAndAccountName.getStudentNumber(), student.getStudentNumber())) {
+            throw new CustomException("学号重复!");
+            //账号名重复
+        } else if (Objects.equals(studentByStudentNumberAndAccountName.getAccountName(), student.getAccountName())) {
+            throw new CustomException("账号名重复!");
+        } else {
+            throw new CustomException("未知错误!");
+        }
+    }
+
+    @Override
     public void deleteStudent(Long studentId) {
         log.info("StudentService - deleteStudent :studentId = {}", studentId);
 

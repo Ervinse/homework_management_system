@@ -11,6 +11,7 @@ import pers.ervinse.domain.Student;
 import pers.ervinse.mapper.StudentMapper;
 import pers.ervinse.service.StudentService;
 
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -94,27 +95,12 @@ public class StudentServiceImpl implements StudentService {
     public void addStudent(Student student) {
         log.info("StudentService - addStudent :student = {}", student);
 
-        Student studentByStudentNumberAndAccountName = studentMapper.getStudentByStudentNumberAndAccountName(student);
-
-        log.debug("studentByStudentNumberAndAccountName = {}", studentByStudentNumberAndAccountName);
-
-        if (studentByStudentNumberAndAccountName == null) {
-            int insert = studentMapper.insert(student);
-            if (insert > 0) {
-                log.info("添加学生成功,影响了" + insert + "条数据");
-            } else {
-                log.info("添加学生失败,影响了" + insert + "条数据");
-                throw new CustomException("服务器错误,添加失败!");
-            }
-        }
-        //学号重复
-        else if (Objects.equals(studentByStudentNumberAndAccountName.getStudentNumber(), student.getStudentNumber())) {
-            throw new CustomException("学号重复!");
-            //账号名重复
-        } else if (Objects.equals(studentByStudentNumberAndAccountName.getAccountName(), student.getAccountName())) {
-            throw new CustomException("账号名重复!");
+        int affectRows = studentMapper.insert(student);
+        if (affectRows > 0) {
+            log.info("添加学生成功,影响了" + affectRows + "条数据");
         } else {
-            throw new CustomException("未知错误!");
+            log.error("添加学生失败,影响了" + affectRows + "条数据");
+            throw new CustomException("服务器错误,添加失败!");
         }
     }
 
@@ -122,28 +108,14 @@ public class StudentServiceImpl implements StudentService {
     public void updateStudent(Student student) {
         log.info("StudentService - updateStudent :student = {}", student);
 
-        Student studentByStudentNumberAndAccountName = studentMapper.getStudentByStudentNumberAndAccountName(student);
-
-        log.info("studentByStudentNumberAndAccountName = {}", studentByStudentNumberAndAccountName);
-
-        if (studentByStudentNumberAndAccountName == null) {
-            int insert = studentMapper.updateById(student);
-            if (insert > 0) {
-                log.info("修改学生成功,影响了" + insert + "条数据");
-            } else {
-                log.info("修改学生失败,影响了" + insert + "条数据");
-                throw new CustomException("服务器错误,添加失败!");
-            }
-        }
-        //学号重复
-        else if (Objects.equals(studentByStudentNumberAndAccountName.getStudentNumber(), student.getStudentNumber())) {
-            throw new CustomException("学号重复!");
-            //账号名重复
-        } else if (Objects.equals(studentByStudentNumberAndAccountName.getAccountName(), student.getAccountName())) {
-            throw new CustomException("账号名重复!");
+        int affectRows = studentMapper.updateById(student);
+        if (affectRows > 0) {
+            log.info("修改学生成功,影响了" + affectRows + "条数据");
         } else {
-            throw new CustomException("未知错误!");
+            log.error("修改学生失败,影响了" + affectRows + "条数据");
+            throw new CustomException("服务器错误,修改失败!");
         }
+
     }
 
     @Override
@@ -154,7 +126,7 @@ public class StudentServiceImpl implements StudentService {
         if (delete > 0) {
             log.info("删除学生成功,影响了" + delete + "条数据");
         } else {
-            log.info("删除学生失败,影响了" + delete + "条数据");
+            log.error("删除学生失败,影响了" + delete + "条数据");
             throw new CustomException("服务器错误,删除失败!");
         }
     }

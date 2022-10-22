@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import pers.ervinse.domain.Student;
 
+import java.util.List;
+
 @Mapper
 public interface StudentMapper extends BaseMapper<Student> {
 
@@ -12,5 +14,6 @@ public interface StudentMapper extends BaseMapper<Student> {
      * @param student 条件
      * @return 重名账号
      */
-    Student getStudentByStudentNumberAndAccountName(Student student);
+    @Deprecated
+    List<Student> getStudentByStudentNumberAndAccountName(Student student);
 }

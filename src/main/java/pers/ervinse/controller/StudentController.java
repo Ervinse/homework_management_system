@@ -74,4 +74,5 @@ public class StudentController {
         studentService.deleteStudent(studentId);
         return R.getSuccessInstance(null);
     }
+
 }

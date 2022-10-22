@@ -11,6 +11,8 @@ import pers.ervinse.domain.Student;
 import pers.ervinse.mapper.StudentMapper;
 import pers.ervinse.service.StudentService;
 
+import java.util.List;
+
 @Slf4j
 @SpringBootTest
 public class StudentTest {
@@ -80,7 +82,7 @@ public class StudentTest {
         student.setAccountPassword("123456");
         student.setPhoneNumber("13589987656");
 
-        Student studentByStudentNumberAndAccountName = studentMapper.getStudentByStudentNumberAndAccountName(student);
+        List<Student> studentByStudentNumberAndAccountName = studentMapper.getStudentByStudentNumberAndAccountName(student);
         System.out.println(studentByStudentNumberAndAccountName);
 
     }

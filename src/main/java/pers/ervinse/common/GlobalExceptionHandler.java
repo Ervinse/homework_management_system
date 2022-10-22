@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
 
             return R.getErrorInstance(returnMessage);
         } else {
-            return R.getErrorInstance("未知错误");
+            return R.getErrorInstance("数据库未知错误");
         }
     }
 

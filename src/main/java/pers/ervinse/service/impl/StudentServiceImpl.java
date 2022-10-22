@@ -11,9 +11,6 @@ import pers.ervinse.domain.Student;
 import pers.ervinse.mapper.StudentMapper;
 import pers.ervinse.service.StudentService;
 
-import java.util.List;
-import java.util.Objects;
-
 @Slf4j
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -91,6 +88,12 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
 
+    /**
+     * 添加学生
+     * 当学生信息中的学号和账户名重名时,抛出sql异常
+     *
+     * @param student 含有学生信息的对象
+     */
     @Override
     public void addStudent(Student student) {
         log.info("StudentService - addStudent :student = {}", student);
@@ -104,8 +107,14 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    /**
+     * 根据id修改学生信息
+     * 当学生信息中的学号和账户名重名时,抛出sql异常
+     *
+     * @param student 含有学生修改信息的对象
+     */
     @Override
-    public void updateStudent(Student student) {
+    public void updateStudentById(Student student) {
         log.info("StudentService - updateStudent :student = {}", student);
 
         int affectRows = studentMapper.updateById(student);
@@ -118,8 +127,13 @@ public class StudentServiceImpl implements StudentService {
 
     }
 
+    /**
+     * 根据id删除学生
+     *
+     * @param studentId 要删除的学生id
+     */
     @Override
-    public void deleteStudent(Long studentId) {
+    public void deleteStudentById(Long studentId) {
         log.info("StudentService - deleteStudent :studentId = {}", studentId);
 
         int delete = studentMapper.deleteById(studentId);

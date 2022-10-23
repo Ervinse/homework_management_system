@@ -1,0 +1,87 @@
+{
+  "dbName": "homework_management_system",
+  "tableName": "Teacher",
+  "mockNum": 20,
+  "fieldList": [
+    {
+      "fieldName": "id",
+      "comment": "用户名",
+      "fieldType": "bigint",
+      "mockType": "随机",
+      "mockParams": "整数",
+      "notNull": true,
+      "primaryKey": true,
+      "autoIncrement": false
+    },
+    {
+      "fieldName": "teacher_name",
+      "comment": "用户名",
+      "fieldType": "varchar(256)",
+      "mockType": "随机",
+      "mockParams": "人名",
+      "notNull": true,
+      "primaryKey": false,
+      "autoIncrement": false
+    },
+    {
+      "fieldName": "teacher_gender",
+      "comment": "用户名",
+      "fieldType": "varchar",
+      "mockType": "规则",
+      "mockParams": "[12]",
+      "notNull": true,
+      "primaryKey": false,
+      "autoIncrement": false
+    },
+    {
+      "fieldName": "account_name",
+      "comment": "用户名",
+      "fieldType": "varchar(256)",
+      "mockType": "随机",
+      "mockParams": "字符串",
+      "notNull": true,
+      "primaryKey": false,
+      "autoIncrement": false
+    },
+    {
+      "fieldName": "account_password",
+      "comment": "用户名",
+      "fieldType": "varchar(256)",
+      "mockType": "随机",
+      "mockParams": "字符串",
+      "notNull": true,
+      "primaryKey": false,
+      "autoIncrement": false
+    },
+    {
+      "fieldName": "account_type",
+      "comment": "用户名",
+      "fieldType": "varchar(256)",
+      "mockType": "固定",
+      "mockParams": "1",
+      "notNull": true,
+      "primaryKey": false,
+      "autoIncrement": false
+    },
+    {
+      "fieldName": "account_status",
+      "comment": "用户名",
+      "fieldType": "varchar(256)",
+      "mockType": "固定",
+      "mockParams": "1",
+      "notNull": true,
+      "primaryKey": false,
+      "autoIncrement": false
+    },
+    {
+      "fieldName": "phone_number",
+      "comment": "用户名",
+      "fieldType": "varchar(256)",
+      "mockType": "随机",
+      "mockParams": "手机号",
+      "notNull": true,
+      "primaryKey": false,
+      "autoIncrement": false
+    }
+  ]
+}

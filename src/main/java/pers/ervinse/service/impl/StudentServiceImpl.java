@@ -81,6 +81,25 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectById(studentId);
     }
 
+    /**
+     * 根据账号名获取学生
+     * @param student 含有账号名的学生对象
+     * @return 查询到的学生对象
+     */
+    @Override
+    public Student selectStudentByAccountName(Student student) {
+        log.info("StudentService - selectStudentByAccountName :student = {}", student);
+
+        //创建条件构造器
+        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+        //添加过滤条件
+        //成立条件:name值不为空时过滤条件成立
+        //过滤条件:实体类对应字段 == 变量
+        wrapper.eq(StringUtils.isNotEmpty(student.getAccountName()), Student::getAccountName, student.getAccountName());
+
+        return studentMapper.selectOne(wrapper);
+    }
+
     @Override
     public Student selectStudentByCondition(Student student) {
         log.info("StudentService - selectStudentByCondition :student = {}", student);

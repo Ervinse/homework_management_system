@@ -9,6 +9,8 @@ public interface StudentService {
 
     Student selectStudentById(Long studentId);
 
+    Student selectStudentByAccountName(Student student);
+
     Student selectStudentByCondition(Student student);
 
     void addStudent(Student student);

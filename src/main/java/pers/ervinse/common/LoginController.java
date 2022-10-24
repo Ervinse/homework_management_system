@@ -45,6 +45,15 @@ public class LoginController {
             Student loginStudent = new Student();
             loginStudent.setAccountName(loginAccountName);
             loginStudent.setAccountPassword(loginAccountPassword);
+
+            Student studentBySearch = studentService.selectStudentByAccountName(loginStudent);
+            log.info("studentBySearch = {}", studentBySearch);
+
+            if (studentBySearch == null) {
+                return R.getErrorInstance("账户未注册!");
+            } else {
+                passwordBySearch = studentBySearch.getAccountPassword();
+            }
         } else {
             throw new CustomException("未知错误");
         }

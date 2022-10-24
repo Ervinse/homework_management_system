@@ -1,13 +1,13 @@
 //表格数据函数
 // 查询学生列表接口
-const getStudentPageAxios = (currentPage,pageSize,studentName) => {
+const getStudentPageAxios = (currentPage,pageSize,searchValue) => {
     return $axios({
         url: '/student/page',
         method: 'get',
         params:{
             currentPage: currentPage,
             pageSize: pageSize,
-            studentName: studentName
+            searchValue: searchValue
         }
     })
 }

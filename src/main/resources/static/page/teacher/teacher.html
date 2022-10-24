@@ -200,7 +200,7 @@
                                             layout="total , prev, pager, next , jumper"
                                             :total="total"
                                             :page-size="pageSize"
-                                            :current-page="current">
+                                            :current-page="currentPage">
                                     </el-pagination>
                                 </div>
                             </template>
@@ -352,7 +352,7 @@
                     //分页教师列表数据
                     total: 0,
                     pageSize: 10,
-                    current: 0,
+                    currentPage: 1,
                     pages: 0,
 
                     //显示表格数据
@@ -475,27 +475,27 @@
                     },
                     // 表单数据格式转换
                     teacherGenderFormatter: function (row) {
-                        if (row.teacherGender === 1) {
+                        if (row.teacherGender === "1") {
                             return "男";
-                        } else if (row.teacherGender === 2) {
+                        } else if (row.teacherGender === "2") {
                             return "女";
                         } else {
                             return "未知";
                         }
                     },
                     accountTypeFormatter: function (row) {
-                        if (row.accountType === 1) {
+                        if (row.accountType === "1") {
                             return "管理员";
-                        } else if (row.accountType === 2) {
+                        } else if (row.accountType === "2") {
                             return "用户";
                         } else {
                             return "未知";
                         }
                     },
                     accountStatusFormatter: function (row) {
-                        if (row.accountStatus === 1) {
+                        if (row.accountStatus === "1") {
                             return "启用";
-                        } else if (row.accountStatus === 0) {
+                        } else if (row.accountStatus === "0") {
                             return "禁用";
                         } else {
                             return "未知";
@@ -520,12 +520,12 @@
                     //表格数据函数
                     getTeacherPage: function () {
                         var returnObj = this;//当运行axios中的回调函数时，this对象已经改变，要把this暂存到一个变量中，等之后输出
-                        getTeacherPageAxios().then(
+                        getTeacherPageAxios(this.currentPage,this.pageSize,null).then(
                             function (response) {
                                 returnObj.tableData = response.data.data.records;
                                 returnObj.total = response.data.data.total;
                                 returnObj.pageSize = response.data.data.size;
-                                returnObj.current = response.data.data.current;
+                                returnObj.currentPage = response.data.data.current;
                                 returnObj.pages = response.data.data.pages;
                             })
                     },
@@ -558,14 +558,14 @@
                     //搜索按钮
                     handleSearch: function () {
                         var vueObj = this;
-                        getTeacherPageSearchAxios(this.teacher_search).then(
+                        getTeacherPageAxios(this.currentPage,this.pageSize,this.teacher_search).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     this.$message.success('搜索成功！共搜索到' + response.data.data.total + '条记录');
                                     vueObj.tableData = response.data.data.records;
                                     vueObj.total = response.data.data.total;
                                     vueObj.pageSize = response.data.data.size;
-                                    vueObj.current = response.data.data.current;
+                                    vueObj.currentPage = response.data.data.current;
                                     vueObj.pages = response.data.data.pages;
                                 } else {
                                     this.$message.error(response.data.msg)

@@ -1,9 +1,14 @@
 //表格数据函数
 // 查询教师列表接口
-const getTeacherPageAxios = () => {
+const getTeacherPageAxios = (currentPage,pageSize,searchValue) => {
     return $axios({
-        url: '../../json/teacher/teacher_page_success.json',
+        url: '/teacher/page',
         method: 'get',
+        params:{
+            currentPage: currentPage,
+            pageSize: pageSize,
+            searchValue: searchValue
+        }
     })
 }
 

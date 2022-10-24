@@ -69,8 +69,11 @@ public class GlobalExceptionHandler {
         log.error("GlobalExceptionHandler - SQLException : {}", exceptionMessage);
 
         if (exceptionMessage.contains("Access denied")) {    //判断唯一约束相关异常
-            log.error("数据库拒绝访问");
-            return R.getErrorInstance("数据库拒绝访问");
+            log.error("服务器错误:数据库拒绝访问");
+            return R.getErrorInstance("服务器错误:数据库拒绝访问");
+        } else if (exceptionMessage.contains("Communications link failure")) {
+            log.error("服务器错误:数据库连接失败");
+            return R.getErrorInstance("服务器错误:数据库连接失败");
         } else {
             return R.getErrorInstance("未知错误");
         }
@@ -102,7 +105,7 @@ public class GlobalExceptionHandler {
         String exceptionMessage = exception.getMessage();
         log.error("GlobalExceptionHandler - ClientException : {}", exceptionMessage);
 
-        return R.getErrorInstance("短信服务异常");
+        return R.getErrorInstance("服务器错误:短信服务异常");
     }
 
 

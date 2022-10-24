@@ -48,7 +48,7 @@ public class TeacherServiceImpl implements TeacherService {
             searchValueGender = "2";
             searchValueGenderFlag = true;
 
-        //当用户输入"管理员"或"用户"时,则需要将输入值转换为对应的"1"或"0"进行搜索账户类型字段
+            //当用户输入"管理员"或"用户"时,则需要将输入值转换为对应的"1"或"0"进行搜索账户类型字段
         } else if ("管理员".equals(searchValue)) {
             searchValueAccountType = "1";
             searchValueAccountTypeFlag = true;
@@ -56,8 +56,8 @@ public class TeacherServiceImpl implements TeacherService {
             searchValueAccountType = "0";
             searchValueAccountTypeFlag = true;
 
-        //当用户输入"启用"或"禁用"时,则需要将输入值转换为对应的"1"或"0"进行搜索账户状态字段
-        }else if ("启用".equals(searchValue)) {
+            //当用户输入"启用"或"禁用"时,则需要将输入值转换为对应的"1"或"0"进行搜索账户状态字段
+        } else if ("启用".equals(searchValue)) {
             searchValueAccountStatus = "1";
             searchValueAccountStatusFlag = true;
         } else if ("禁用".equals(searchValue)) {
@@ -96,6 +96,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     /**
      * 根据教师id获取学生数据详情
+     *
      * @param teacherId 教师id
      * @return 教师数据详情
      */
@@ -147,6 +148,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     /**
      * 根据id删除教师
+     *
      * @param teacherId 要删除的学教师id
      */
     @Override
@@ -161,4 +163,48 @@ public class TeacherServiceImpl implements TeacherService {
             throw new CustomException("服务器错误,删除失败!");
         }
     }
+
+    /**
+     * 根据教师id启用账户
+     *
+     * @param teacherId 教师id
+     */
+    @Override
+    public void enableAccountById(Long teacherId) {
+        log.info("TeacherService - enableAccountById :teacherId = {}", teacherId);
+
+        Teacher teacher = teacherMapper.selectById(teacherId);
+        teacher.setAccountStatus("1");
+
+        int affectRows = teacherMapper.updateById(teacher);
+        if (affectRows > 0) {
+            log.info("修改教师成功,影响了" + affectRows + "条数据");
+        } else {
+            log.error("修改教师失败,影响了" + affectRows + "条数据");
+            throw new CustomException("服务器错误,修改失败!");
+        }
+    }
+
+    /**
+     * 根据教师id禁用账户
+     *
+     * @param teacherId 教师id
+     */
+    @Override
+    public void disableAccountById(Long teacherId) {
+        log.info("TeacherService - disableAccountById :teacherId = {}", teacherId);
+
+        Teacher teacher = teacherMapper.selectById(teacherId);
+        teacher.setAccountStatus("0");
+
+        int affectRows = teacherMapper.updateById(teacher);
+        if (affectRows > 0) {
+            log.info("修改教师成功,影响了" + affectRows + "条数据");
+        } else {
+            log.error("修改教师失败,影响了" + affectRows + "条数据");
+            throw new CustomException("服务器错误,修改失败!");
+        }
+    }
+
+
 }

@@ -14,4 +14,8 @@ public interface TeacherService {
     void updateStudentById(Teacher teacher);
 
     void deleteTeacherById(Long teacherId);
+
+    void enableAccountById(Long teacherId);
+
+    void disableAccountById(Long teacherId);
 }

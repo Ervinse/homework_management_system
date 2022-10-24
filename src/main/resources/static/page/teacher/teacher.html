@@ -173,12 +173,12 @@
                             <el-table-column label="操作">
                                 <template slot-scope="scope">
                                     <el-button
-                                            v-if="scope.row.accountStatus !== 1"
+                                            v-if="scope.row.accountStatus !== '1'"
                                             size="mini"
                                             @click="handleEnable(scope.$index, scope.row)">启用
                                     </el-button>
                                     <el-button
-                                            v-if="scope.row.accountStatus === 1"
+                                            v-if="scope.row.accountStatus === '1'"
                                             size="mini"
                                             @click="handleDisable(scope.$index, scope.row)">禁用
                                     </el-button>

@@ -57,7 +57,7 @@ public class TeacherController {
      */
     @PostMapping
     public R<String> addTeacher(@RequestBody Teacher teacher) {
-        log.info("TeacherController - addTeacher :Student = {}", teacher);
+        log.info("TeacherController - addTeacher :teacher = {}", teacher);
 
         teacherService.addTeacher(teacher);
         return R.getSuccessInstance(null);
@@ -71,7 +71,7 @@ public class TeacherController {
      */
     @PutMapping
     public R<String> updateTeacher(@RequestBody Teacher teacher) {
-        log.info("TeacherController - updateTeacher :Student = {}", teacher);
+        log.info("TeacherController - updateTeacher :teacher = {}", teacher);
 
         teacherService.updateStudentById(teacher);
         return R.getSuccessInstance(null);
@@ -85,9 +85,37 @@ public class TeacherController {
      */
     @DeleteMapping
     public R<String> deleteTeacher(Long teacherId) {
-        log.info("TeacherController - deleteTeacher :studentId = {}", teacherId);
+        log.info("TeacherController - deleteTeacher :teacherId = {}", teacherId);
 
         teacherService.deleteTeacherById(teacherId);
+        return R.getSuccessInstance(null);
+    }
+
+    /**
+     * 根据教师id启用账户
+     *
+     * @param teacherId 教师id
+     * @return 启用结果
+     */
+    @PutMapping("/enableAccount")
+    public R<String> enableAccount(Long teacherId) {
+        log.info("TeacherController - enableAccount :teacherId = {}", teacherId);
+
+        teacherService.enableAccountById(teacherId);
+        return R.getSuccessInstance(null);
+    }
+
+    /**
+     * 根据教师id禁用账户
+     *
+     * @param teacherId 教师id
+     * @return 禁用结果
+     */
+    @PutMapping("/disableAccount")
+    public R<String> disableAccount(Long teacherId) {
+        log.info("TeacherController - disableAccount :teacherId = {}", teacherId);
+
+        teacherService.disableAccountById(teacherId);
         return R.getSuccessInstance(null);
     }
 

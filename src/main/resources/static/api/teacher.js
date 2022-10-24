@@ -66,8 +66,8 @@ const deleteTeacherAxios = (teacherId) => {
 //账户启用按钮
 const enableAccountAxios = (teacherId) => {
     return $axios({
-        url: '../../json/common/success.json',
-        method: 'get',
+        url: '/teacher/enableAccount',
+        method: 'put',
         params: {
             teacherId: teacherId
         }
@@ -77,8 +77,8 @@ const enableAccountAxios = (teacherId) => {
 //账户禁用按钮
 const disableAccountAxios = (teacherId) => {
     return $axios({
-        url: '../../json/common/success.json',
-        method: 'get',
+        url: '/teacher/disableAccount',
+        method: 'put',
         params: {
             teacherId: teacherId
         }

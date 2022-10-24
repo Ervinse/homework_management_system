@@ -117,7 +117,7 @@
                     <!--输入框开始-->
                     <el-input id="list-search_input"
                               placeholder="请输入查询内容"
-                              v-model="teacher_search"
+                              v-model="searchValue"
                               clearable>
                     </el-input>
                     <!--输入框结束-->
@@ -200,7 +200,8 @@
                                     layout="total , prev, pager, next , jumper"
                                     :total="total"
                                     :page-size="pageSize"
-                                    :current-page="currentPage">
+                                    :current-page="currentPage"
+                                    @current-change="handleCurrentChange">
                             </el-pagination>
                         </div>
                     </template>
@@ -328,7 +329,9 @@
             //当前登录的用户
             loginUser: {},
             //搜索输入框内容
-            teacher_search: "",
+            searchValue: "",
+            //搜索状态标志位
+            searchFlag: false,
 
             // 选项数据
             claseList: [],
@@ -518,6 +521,7 @@
             },
             //表格数据函数
             getTeacherPage: function () {
+
                 var returnObj = this;//当运行axios中的回调函数时，this对象已经改变，要把this暂存到一个变量中，等之后输出
                 getTeacherPageAxios(this.currentPage, this.pageSize, null).then(
                     (response) => {
@@ -560,8 +564,11 @@
             // 按钮函数
             //搜索按钮
             handleSearch: function () {
+
+                //进入搜索状态
+                this.searchFlag = true;
                 var vueObj = this;
-                getTeacherPageAxios(this.currentPage, this.pageSize, this.teacher_search).then(
+                getTeacherPageAxios(this.currentPage, this.pageSize, this.searchValue).then(
                     (response) => {
                         if (response.data.code === 1) {
                             this.$message.success('搜索成功！共搜索到' + response.data.data.total + '条记录');
@@ -690,6 +697,15 @@
                         message: '已取消禁用'
                     });
                 });
+            },
+
+            handleCurrentChange: function (currentPage) {
+                this.currentPage = currentPage;
+                if (this.searchValue !== "") {
+                    this.handleSearch();
+                }else {
+                    this.getTeacherPage();
+                }
             },
 
             // 表单提交函数

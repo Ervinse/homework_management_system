@@ -46,8 +46,8 @@ const addTeacherAxios = (params) => {
 //修改接口
 const editTeacherAxios = (params) => {
     return $axios({
-        url: '../../json/common/success.json',
-        method: 'post',
+        url: '/teacher',
+        method: 'put',
         data: {...params}
     })
 }

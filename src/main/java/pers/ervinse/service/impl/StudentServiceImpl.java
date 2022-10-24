@@ -115,7 +115,7 @@ public class StudentServiceImpl implements StudentService {
      */
     @Override
     public void updateStudentById(Student student) {
-        log.info("StudentService - updateStudent :student = {}", student);
+        log.info("StudentService - updateStudentById :student = {}", student);
 
         int affectRows = studentMapper.updateById(student);
         if (affectRows > 0) {

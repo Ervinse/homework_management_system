@@ -41,8 +41,8 @@ public class TeacherController {
      * @return 教师数据详情
      */
     @GetMapping
-    public R<Teacher> getStudentById(Long teacherId) {
-        log.info("StudentController - getStudentById :teacherId = {}", teacherId);
+    public R<Teacher> getTeacherById(Long teacherId) {
+        log.info("TeacherController - getTeacherById :teacherId = {}", teacherId);
 
         Teacher teacher = teacherService.selectTeacherById(teacherId);
 
@@ -57,9 +57,23 @@ public class TeacherController {
      */
     @PostMapping
     public R<String> addTeacher(@RequestBody Teacher teacher) {
-        log.info("StudentController - updateStudent :Student = {}", teacher);
+        log.info("TeacherController - addTeacher :Student = {}", teacher);
 
         teacherService.addTeacher(teacher);
+        return R.getSuccessInstance(null);
+    }
+
+    /**
+     * 修改教师
+     *
+     * @param teacher 含有学生修改信息的对象
+     * @return 修改结果
+     */
+    @PutMapping
+    public R<String> updateTeacher(@RequestBody Teacher teacher) {
+        log.info("TeacherController - updateTeacher :Student = {}", teacher);
+
+        teacherService.updateStudentById(teacher);
         return R.getSuccessInstance(null);
     }
 

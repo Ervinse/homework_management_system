@@ -109,7 +109,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     /**
      * 添加教师
-     * 当教师信息中的学号和账户名重名时,抛出sql异常
+     * 当教师信息中的账户名重名时,抛出sql异常
      *
      * @param teacher 含有教师信息的对象
      */
@@ -123,6 +123,25 @@ public class TeacherServiceImpl implements TeacherService {
         } else {
             log.error("添加教师失败,影响了" + affectRows + "条数据");
             throw new CustomException("服务器错误,添加失败!");
+        }
+    }
+
+    /**
+     * 根据id修改学生信息
+     * 当教师信息中的账户名重名时,抛出sql异常
+     *
+     * @param teacher 含有教师修改信息的对象
+     */
+    @Override
+    public void updateStudentById(Teacher teacher) {
+        log.info("TeacherService - updateStudentById :teacher = {}", teacher);
+
+        int affectRows = teacherMapper.updateById(teacher);
+        if (affectRows > 0) {
+            log.info("修改教师成功,影响了" + affectRows + "条数据");
+        } else {
+            log.error("修改教师失败,影响了" + affectRows + "条数据");
+            throw new CustomException("服务器错误,修改失败!");
         }
     }
 }

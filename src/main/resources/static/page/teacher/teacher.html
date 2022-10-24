@@ -392,7 +392,7 @@
                     {required: true, message: '请勾选入账号类型', trigger: 'blur'},
                 ],
                 claseList: [
-                    {required: true, message: '请勾选班级', trigger: 'blur'},
+                    {required: false, message: '请勾选班级', trigger: 'blur'},
                 ],
             },
             editRules: {
@@ -419,7 +419,7 @@
                     {required: true, message: '勾选入账号类型', trigger: 'blur'},
                 ],
                 claseList: [
-                    {required: true, message: '勾选班级', trigger: 'blur'},
+                    {required: false, message: '勾选班级', trigger: 'blur'},
                 ],
             }
 
@@ -613,7 +613,7 @@
                 this.form.accountType = this.tableDetailData.accountType;
                 this.form.accountStatus = this.tableDetailData.accountStatus;
                 this.form.phoneNumber = this.tableDetailData.phoneNumber;
-                this.form.claseList = this.tableDetailData.claseList;
+                // this.form.claseList = this.tableDetailData.claseList;
             },
             //删除按钮处理函数
             handleDelete: function (index, row) {

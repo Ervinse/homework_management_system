@@ -55,8 +55,8 @@ const editTeacherAxios = (params) => {
 //删除函数
 const deleteTeacherAxios = (teacherId) => {
     return $axios({
-        url: '../../json/common/success.json',
-        method: 'get',
+        url: '/teacher',
+        method: 'delete',
         params: {
             teacherId: teacherId
         }

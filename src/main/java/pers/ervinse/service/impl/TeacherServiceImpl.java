@@ -144,4 +144,21 @@ public class TeacherServiceImpl implements TeacherService {
             throw new CustomException("服务器错误,修改失败!");
         }
     }
+
+    /**
+     * 根据id删除教师
+     * @param teacherId 要删除的学教师id
+     */
+    @Override
+    public void deleteTeacherById(Long teacherId) {
+        log.info("TeacherService - deleteTeacherById :teacherId = {}", teacherId);
+
+        int delete = teacherMapper.deleteById(teacherId);
+        if (delete > 0) {
+            log.info("删除教师成功,影响了" + delete + "条数据");
+        } else {
+            log.error("删除教师失败,影响了" + delete + "条数据");
+            throw new CustomException("服务器错误,删除失败!");
+        }
+    }
 }

@@ -134,7 +134,7 @@ public class StudentServiceImpl implements StudentService {
      */
     @Override
     public void deleteStudentById(Long studentId) {
-        log.info("StudentService - deleteStudent :studentId = {}", studentId);
+        log.info("StudentService - deleteStudentById :studentId = {}", studentId);
 
         int delete = studentMapper.deleteById(studentId);
         if (delete > 0) {

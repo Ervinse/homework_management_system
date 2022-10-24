@@ -77,4 +77,18 @@ public class TeacherController {
         return R.getSuccessInstance(null);
     }
 
+    /**
+     * 根据id删除教师
+     *
+     * @param teacherId 要删除的教师id
+     * @return 删除结果
+     */
+    @DeleteMapping
+    public R<String> deleteTeacher(Long teacherId) {
+        log.info("TeacherController - deleteTeacher :studentId = {}", teacherId);
+
+        teacherService.deleteTeacherById(teacherId);
+        return R.getSuccessInstance(null);
+    }
+
 }

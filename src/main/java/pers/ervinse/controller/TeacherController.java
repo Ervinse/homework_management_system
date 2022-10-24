@@ -19,12 +19,12 @@ public class TeacherController {
     TeacherService teacherService;
 
     /**
-     * 根据条件获取学生分页
+     * 根据条件获取教师分页
      *
      * @param currentPage 当前页
      * @param pageSize    每页条数
      * @param searchValue 搜索值
-     * @return 学生分页
+     * @return 教师分页
      */
     @GetMapping("/page")
     public R<Page<Teacher>> getTeacherPage(Integer currentPage, Integer pageSize, String searchValue) {
@@ -33,6 +33,22 @@ public class TeacherController {
         Page<Teacher> studentPage = teacherService.selectTeacherPage(currentPage, pageSize, searchValue);
 
         return R.getSuccessInstance(studentPage);
+    }
+
+
+    /**
+     * 根据学生id获取教师数据详情
+     *
+     * @param teacherId 教师id
+     * @return 教师数据详情
+     */
+    @GetMapping
+    public R<Teacher> getStudentById(Long teacherId) {
+        log.info("StudentController - getStudentById :teacherId = {}", teacherId);
+
+        Teacher teacher = teacherService.selectTeacherById(teacherId);
+
+        return R.getSuccessInstance(teacher);
     }
 
 }

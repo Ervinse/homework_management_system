@@ -12,10 +12,10 @@ const getTeacherPageAxios = (currentPage,pageSize,searchValue) => {
     })
 }
 
-// 查询班教师详情接口
+// 查询教师详情接口
 const getTeacherDetailAxios = (teacherId) => {
     return $axios({
-        url: '../../json/teacher/teacher_select_success.json',
+        url: '/teacher',
         method: 'get',
         params: {
             teacherId: teacherId

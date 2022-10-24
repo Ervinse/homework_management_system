@@ -17,6 +17,14 @@ public class TeacherServiceImpl implements TeacherService {
     @Autowired
     private TeacherMapper teacherMapper;
 
+    /**
+     * 根据条件获取教师分页
+     *
+     * @param currentPage 当前页
+     * @param pageSize    每页条数
+     * @param searchValue 搜索值
+     * @return 教师分页
+     */
     @Override
     public Page<Teacher> selectTeacherPage(int currentPage, int pageSize, String searchValue) {
         log.info("TeacherService - selectTeacherPage :currentPage = {},pageSize = {},searchValue = {}", currentPage, pageSize, searchValue);
@@ -83,5 +91,17 @@ public class TeacherServiceImpl implements TeacherService {
 
         return page;
 
+    }
+
+    /**
+     * 根据教师id获取学生数据详情
+     * @param teacherId 教师id
+     * @return 教师数据详情
+     */
+    @Override
+    public Teacher selectTeacherById(Long teacherId) {
+        log.info("TeacherService - selectTeacherById :teacherId = {}", teacherId);
+
+        return teacherMapper.selectById(teacherId);
     }
 }

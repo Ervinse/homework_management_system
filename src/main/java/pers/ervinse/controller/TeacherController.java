@@ -3,9 +3,7 @@ package pers.ervinse.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pers.ervinse.common.R;
 import pers.ervinse.domain.Teacher;
 import pers.ervinse.service.TeacherService;
@@ -37,7 +35,7 @@ public class TeacherController {
 
 
     /**
-     * 根据学生id获取教师数据详情
+     * 根据教师id获取教师数据详情
      *
      * @param teacherId 教师id
      * @return 教师数据详情
@@ -49,6 +47,20 @@ public class TeacherController {
         Teacher teacher = teacherService.selectTeacherById(teacherId);
 
         return R.getSuccessInstance(teacher);
+    }
+
+    /**
+     * 添加教师
+     *
+     * @param teacher 含有教师信息的对象
+     * @return 添加结果
+     */
+    @PostMapping
+    public R<String> addTeacher(@RequestBody Teacher teacher) {
+        log.info("StudentController - updateStudent :Student = {}", teacher);
+
+        teacherService.addTeacher(teacher);
+        return R.getSuccessInstance(null);
     }
 
 }

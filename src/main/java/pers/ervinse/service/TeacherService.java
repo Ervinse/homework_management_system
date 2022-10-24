@@ -8,4 +8,6 @@ public interface TeacherService {
     Page<Teacher> selectTeacherPage(int currentPage, int pageSize, String searchValue);
 
     Teacher selectTeacherById(Long teacherId);
+
+    void addTeacher(Teacher teacher);
 }

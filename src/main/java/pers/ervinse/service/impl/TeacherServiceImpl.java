@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Teacher;
 import pers.ervinse.mapper.TeacherMapper;
 import pers.ervinse.service.TeacherService;
@@ -103,5 +104,25 @@ public class TeacherServiceImpl implements TeacherService {
         log.info("TeacherService - selectTeacherById :teacherId = {}", teacherId);
 
         return teacherMapper.selectById(teacherId);
+    }
+
+
+    /**
+     * 添加教师
+     * 当教师信息中的学号和账户名重名时,抛出sql异常
+     *
+     * @param teacher 含有教师信息的对象
+     */
+    @Override
+    public void addTeacher(Teacher teacher) {
+        log.info("TeacherService - addTeacher :student = {}", teacher);
+
+        int affectRows = teacherMapper.insert(teacher);
+        if (affectRows > 0) {
+            log.info("添加教师成功,影响了" + affectRows + "条数据");
+        } else {
+            log.error("添加教师失败,影响了" + affectRows + "条数据");
+            throw new CustomException("服务器错误,添加失败!");
+        }
     }
 }

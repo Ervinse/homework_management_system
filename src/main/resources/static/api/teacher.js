@@ -37,7 +37,7 @@ const getTeacherPageSearchAxios = (params) => {
 //添加接口
 const addTeacherAxios = (params) => {
     return $axios({
-        url: '../../json/common/success.json',
+        url: '/teacher',
         method: 'post',
         data: {...params}
     })

@@ -2,7 +2,6 @@ package pers.ervinse.common;
 
 import com.aliyuncs.exceptions.ClientException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -50,7 +49,7 @@ public class GlobalExceptionHandler {
 
         if ("'student.student_number'".equals(exceptionMessageList[5])) {
             return "添加失败,学号不能相同!";
-        } else if ("'student.account_name'".equals(exceptionMessageList[5])) {
+        } else if ("'student.account_name'".equals(exceptionMessageList[5]) || "'teacher.account_name'".equals(exceptionMessageList[5])) {
             return "添加失败,登录账号名不能相同!";
         } else {
             return "未知错误";
@@ -67,10 +66,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SQLException.class)   //处理的异常类
     public R<String> exceptionHandler(SQLException exception) {
         String exceptionMessage = exception.getMessage();
-        log.error("GlobalExceptionHandler: {}", exceptionMessage);
+        log.error("GlobalExceptionHandler - SQLException : {}", exceptionMessage);
 
         if (exceptionMessage.contains("Access denied")) {    //判断唯一约束相关异常
-
             log.error("数据库拒绝访问");
             return R.getErrorInstance("数据库拒绝访问");
         } else {

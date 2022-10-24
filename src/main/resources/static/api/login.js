@@ -19,7 +19,7 @@ const resetPasswordAxios = (params) => {
 //登录
 const loginAxios = (params) => {
     return $axios({
-        url: '../../json/common/success.json',
+        url: '/login',
         method: 'post',
         data: {...params}
     })

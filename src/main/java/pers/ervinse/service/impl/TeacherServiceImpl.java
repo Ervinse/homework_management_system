@@ -107,6 +107,25 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherMapper.selectById(teacherId);
     }
 
+    /**
+     * 根据账号名获取教师
+     * @param teacher 含有账号名的教师对象
+     * @return 查询到的教师对象
+     */
+    @Override
+    public Teacher selectTeacherByAccountName(Teacher teacher) {
+        log.info("TeacherService - selectTeacherByAccountName :teacher = {}", teacher);
+
+        //创建条件构造器
+        LambdaQueryWrapper<Teacher> wrapper = new LambdaQueryWrapper<>();
+        //添加过滤条件
+        //成立条件:name值不为空时过滤条件成立
+        //过滤条件:实体类对应字段 == 变量
+        wrapper.eq(StringUtils.isNotEmpty(teacher.getAccountName()), Teacher::getAccountName, teacher.getAccountName());
+
+        return teacherMapper.selectOne(wrapper);
+    }
+
 
     /**
      * 添加教师

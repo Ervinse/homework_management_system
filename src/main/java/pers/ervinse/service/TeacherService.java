@@ -9,6 +9,8 @@ public interface TeacherService {
 
     Teacher selectTeacherById(Long teacherId);
 
+    Teacher selectTeacherByAccountName(Teacher teacher);
+
     void addTeacher(Teacher teacher);
 
     void updateStudentById(Teacher teacher);

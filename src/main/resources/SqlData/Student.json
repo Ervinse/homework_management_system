@@ -7,8 +7,8 @@
       "fieldName": "id",
       "comment": "用户名",
       "fieldType": "bigint",
-      "mockType": "随机",
-      "mockParams": "整数",
+      "mockType": "规则",
+      "mockParams": "([0-9]{18})",
       "notNull": true,
       "primaryKey": true,
       "autoIncrement": false
@@ -17,8 +17,8 @@
       "fieldName": "student_number",
       "comment": "用户名",
       "fieldType": "varchar(256)",
-      "mockType": "随机",
-      "mockParams": "整数",
+      "mockType": "规则",
+      "mockParams": "([0-9]{8})",
       "notNull": true,
       "primaryKey": true,
       "autoIncrement": false

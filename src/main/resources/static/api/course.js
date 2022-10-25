@@ -1,9 +1,14 @@
 //表格数据函数
 // 查询课程列表接口
-const getCoursePageAxios = () => {
+const getCoursePageAxios = (currentPage,pageSize,searchValue) => {
     return $axios({
-        url: '../../json/course/course_page_success.json',
+        url: '/course/page',
         method: 'get',
+        params:{
+            currentPage: currentPage,
+            pageSize: pageSize,
+            searchValue: searchValue
+        }
     })
 }
 

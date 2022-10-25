@@ -246,11 +246,11 @@
                                     if (response.data.code === 1) {
                                         this.$message.success('登录成功');
                                         localStorage.setItem('loginUser', JSON.stringify(response.data.data));
-                                        // if (vueObj.form.loginType === "1") {
-                                        //     window.location.href = "../teacher/student.html";
-                                        // } else if (vueObj.form.loginType === "2") {
-                                        //     window.location.href = "../student/homework.html";
-                                        // }
+                                        if (vueObj.form.loginType === "1") {
+                                            window.location.href = "../teacher/student.html";
+                                        } else if (vueObj.form.loginType === "2") {
+                                            window.location.href = "../student/homework.html";
+                                        }
                                         this.goBack();
                                     } else {
                                         this.$message.error(response.data.msg)

@@ -293,13 +293,17 @@
                     //从session中获取当前登录用户
                     getUser: function () {
                         //登录用户
-                        this.loginUser = {
-                            userId: 1,
-                            userName: "张三",
-                            userPortrait: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-                            accountType: 1
-                        };
+                        var loginUser = window.localStorage.getItem('loginUser');
 
+                        if (loginUser) {
+                            loginUser = JSON.parse(loginUser);
+                        }
+                        if (loginUser.accountPortrait == null){
+                            loginUser.accountPortrait = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
+                        }
+                        console.log(loginUser);
+
+                        this.loginUser = loginUser;
                     },
                     //点击用户信息跳转函数
                     skipUser: function () {
@@ -491,8 +495,11 @@
                         return flag;
                     },
                 },
-                mounted() {
+                created() {
                     this.getUser();
+                },
+                mounted() {
+                    this.$message.success('登录成功');
                     this.getUserDetail();
                 }
             })

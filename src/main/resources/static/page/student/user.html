@@ -36,7 +36,7 @@
                         <div id="aside-user" @click="skipUser">
                             <!--用户头像开始-->
                             <el-avatar id="aside-userPortrait" :size="80"
-                                       :src="loginUser.userPortrait"></el-avatar>
+                                       :src="loginUser.accountPortrait"></el-avatar>
                             <!--用户头像结束-->
                             <div id="aside-user-name-box">
                                 <span class="name">{{loginUser.userName}}</span>
@@ -240,14 +240,19 @@
                     //从session中获取当前登录用户
                     getUser: function () {
                         //登录用户
-                        this.loginUser = {
-                            userId: 1,
-                            userName: "张三",
-                            userPortrait: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-                            accountType: 1
-                        };
+                        var loginUser = window.localStorage.getItem('loginUser');
 
+                        if (loginUser) {
+                            loginUser = JSON.parse(loginUser);
+                        }
+                        if (loginUser.accountPortrait == null){
+                            loginUser.accountPortrait = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
+                        }
+                        console.log(loginUser);
+
+                        this.loginUser = loginUser;
                     },
+
                     //点击用户信息跳转函数
                     skipUser: function () {
                         window.location.href = "user.html";
@@ -401,8 +406,11 @@
                         return isJPG && isLt2M;
                     }
                 },
-                mounted() {
+                created() {
                     this.getUser();
+                },
+                mounted() {
+                    this.$message.success('登录成功');
                     this.getUserDetail();
                 }
             })

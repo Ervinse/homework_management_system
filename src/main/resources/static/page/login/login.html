@@ -245,6 +245,7 @@
                                 (response) => {
                                     if (response.data.code === 1) {
                                         this.$message.success('登录成功');
+                                        localStorage.setItem('loginUser', JSON.stringify(response.data.data));
                                         // if (vueObj.form.loginType === "1") {
                                         //     window.location.href = "../teacher/student.html";
                                         // } else if (vueObj.form.loginType === "2") {

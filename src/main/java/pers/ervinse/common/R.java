@@ -21,6 +21,13 @@ public class R<T> {
         return r;
     }
 
+    public static  R<String> getSuccessOperationInstance() {
+        R<String> r = new R<>();
+        r.data = "success";
+        r.code = 1;
+        return r;
+    }
+
     public static <T> R<T> getErrorInstance(String msg) {
         R<T> r = new R<>();
         r.msg = msg;

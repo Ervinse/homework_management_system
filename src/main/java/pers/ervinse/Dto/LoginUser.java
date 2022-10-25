@@ -9,6 +9,17 @@ public class LoginUser {
     private String accountName;
     //账号密码
     private String accountPassword;
-    //账号类型("1"为教师,"2"为学生)
+    //登录类型("1"为教师,"2"为学生)
     private String loginType;
+
+    //用户id
+    private Long id;
+    //姓名
+    private String userName;
+    //用户头像
+    private String accountPortrait;
+    //账户类型("1"为管理员,"2"为用户,"3"为学生)
+    private String accountType;
+
+
 }

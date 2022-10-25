@@ -544,9 +544,14 @@
             },
         },
         mounted() {
+            this.$message.success('登录成功');
             this.getUser();
             this.getStudentPage();
             // this.getClaseList();
+
+            const loginUser = window.localStorage.getItem('loginUser');
+            console.log(1);
+            console.log(loginUser);
         }
     })
 </script>

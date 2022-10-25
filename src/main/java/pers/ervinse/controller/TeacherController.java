@@ -3,10 +3,13 @@ package pers.ervinse.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import pers.ervinse.common.R;
 import pers.ervinse.domain.Teacher;
 import pers.ervinse.service.TeacherService;
+
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @RestController
@@ -59,6 +62,10 @@ public class TeacherController {
     public R<String> addTeacher(@RequestBody Teacher teacher) {
         log.info("TeacherController - addTeacher :teacher = {}", teacher);
 
+        //对密码进行md5加密
+        String password = DigestUtils.md5DigestAsHex(teacher.getAccountPassword().getBytes(StandardCharsets.UTF_8));
+        teacher.setAccountPassword(password);
+
         teacherService.addTeacher(teacher);
         return R.getSuccessInstance(null);
     }
@@ -72,6 +79,10 @@ public class TeacherController {
     @PutMapping
     public R<String> updateTeacher(@RequestBody Teacher teacher) {
         log.info("TeacherController - updateTeacher :teacher = {}", teacher);
+
+        //对密码进行md5加密
+        String password = DigestUtils.md5DigestAsHex(teacher.getAccountPassword().getBytes(StandardCharsets.UTF_8));
+        teacher.setAccountPassword(password);
 
         teacherService.updateStudentById(teacher);
         return R.getSuccessInstance(null);

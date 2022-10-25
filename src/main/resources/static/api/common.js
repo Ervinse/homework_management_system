@@ -58,3 +58,10 @@ const removeFileAxios = (fileName) => {
         }
     })
 }
+
+const logoutAxios = () => {
+    return $axios({
+        url: '/login/logout',
+        method: 'post',
+    })
+}

@@ -122,4 +122,15 @@ public class LoginController {
         return R.getSuccessOperationInstance();
     }
 
+    /**
+     * 登出
+     * @param request 请求
+     * @return 登出请求响应
+     */
+    @PostMapping("/logout")
+    public R<String> logout(HttpServletRequest request){
+        request.getSession().removeAttribute("user");
+        return R.getSuccessOperationInstance();
+    }
+
 }

@@ -568,6 +568,8 @@
                             case "6":
                                 window.location.href = "user.html";
                                 break;
+                            case "7":
+                                this.logout();
                         }
 
                     },
@@ -1023,6 +1025,28 @@
                             this.$message.error('上传图片大小不能超过 10MB!');
                         }
                         return isJPG && isLt10M;
+                    },
+                    logout: function () {
+
+                        console.log('logout');
+                        this.$confirm('即将退出系统, 是否继续?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            logoutAxios().then(
+                                res => {
+                                    if (res.data.code === 1) {
+                                        window.localStorage.removeItem('loginUser');
+                                        window.location.href = "../login/login.html"
+                                    } else {
+                                        this.$message.error(res.data.msg)
+                                    }
+                                }
+                            ).catch((err) => {
+                                this.$message.error('请求出错了：' + err);
+                            })
+                        })
                     }
 
 

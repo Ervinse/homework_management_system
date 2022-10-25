@@ -55,11 +55,11 @@
                                  background-color="#353741"
                                  text-color="#fff"
                                  active-text-color="#62A1A4">
-                            <el-menu-item class="item" index="1">
+                            <el-menu-item class="item" index="1" :disabled="isAdmin">
                                 <i class="el-icon-service"></i>
                                 <span class="text" slot="title">教师管理</span>
                             </el-menu-item>
-                            <el-menu-item class="item" index="2">
+                            <el-menu-item class="item" index="2" :disabled="isAdmin">
                                 <i class="el-icon-user"></i>
                                 <span class="text" slot="title">学生管理</span>
                             </el-menu-item>
@@ -382,6 +382,8 @@
 
                     //当前登录的用户
                     loginUser: {},
+                    //是否是管理员
+                    isAdmin: "",
                     //搜索输入框内容
                     clase_search: "",
 
@@ -820,6 +822,7 @@
                     this.getStudentList();
                     this.getCourseList();
 
+                    this.isAdmin = this.loginUser.accountType !== "1";
                 }
             });
         </script>

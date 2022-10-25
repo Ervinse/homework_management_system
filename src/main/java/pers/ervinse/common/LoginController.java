@@ -66,4 +66,18 @@ public class LoginController {
 
     }
 
+    /**
+     * 添加学生
+     *
+     * @param student 含有学生信息的对象
+     * @return 添加结果
+     */
+    @PostMapping("/register")
+    public R<String> registerStudent(@RequestBody Student student) {
+        log.info("LoginController - registerStudent :Student = {}", student);
+
+        studentService.addStudent(student);
+        return R.getSuccessInstance(null);
+    }
+
 }

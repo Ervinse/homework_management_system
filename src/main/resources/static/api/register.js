@@ -1,6 +1,6 @@
 const registerAxios = (params) => {
     return $axios({
-        url: '/student/',
+        url: '/login/register',
         method: 'post',
         data: {...params}
     })

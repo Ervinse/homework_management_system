@@ -59,6 +59,7 @@ public class StudentController {
      * @param student 含有学生信息的对象
      * @return 添加结果
      */
+    @Deprecated
     @PostMapping
     public R<String> addStudent(@RequestBody Student student) {
         log.info("StudentController - updateStudent :Student = {}", student);

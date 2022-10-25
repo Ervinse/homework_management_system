@@ -57,7 +57,6 @@ public class LoginController {
             } else {
                 if (loginAccountPassword.equals(teacherBySearch.getAccountPassword())) {
                     log.info("登录成功");
-                    request.getSession().setAttribute("user", teacherBySearch);
 
                     //处理返回数值,抹去密码
                     loginUser.setAccountPassword("");
@@ -65,6 +64,9 @@ public class LoginController {
                     loginUser.setUserName(teacherBySearch.getTeacherName());
                     loginUser.setAccountPortrait(teacherBySearch.getAccountPortrait());
                     loginUser.setAccountType(teacherBySearch.getAccountType());
+
+                    //存入session
+                    request.getSession().setAttribute("user", loginUser);
                     return R.getSuccessInstance(loginUser);
                 } else {
                     return R.getErrorInstance("账号或密码错误!");
@@ -85,7 +87,6 @@ public class LoginController {
             } else {
                 if (loginAccountPassword.equals(studentBySearch.getAccountPassword())) {
                     log.info("登录成功");
-                    request.getSession().setAttribute("user", studentBySearch);
 
                     //处理返回数值,抹去密码
                     loginUser.setAccountPassword("");
@@ -93,6 +94,9 @@ public class LoginController {
                     loginUser.setUserName(studentBySearch.getStudentName());
                     loginUser.setAccountPortrait(studentBySearch.getAccountPortrait());
                     loginUser.setAccountType("3");
+
+                    //存入session
+                    request.getSession().setAttribute("user", loginUser);
                     return R.getSuccessInstance(loginUser);
                 } else {
                     return R.getErrorInstance("账号或密码错误!");

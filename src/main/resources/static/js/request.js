@@ -45,7 +45,7 @@
     // 响应拦截器
     service.interceptors.response.use(res => {
             if (res.data.code === 0 && res.data.msg === 'NOTLOGIN') {// 返回登录页面
-                localStorage.removeItem('userInfo')
+                localStorage.removeItem('loginUser')
                 window.top.location.href = '/page/login/login.html'
             } else {
                 return res;

@@ -10,6 +10,7 @@ import pers.ervinse.domain.Teacher;
 import pers.ervinse.service.TeacherService;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -34,6 +35,15 @@ public class TeacherController {
         Page<Teacher> studentPage = teacherService.selectTeacherPage(currentPage, pageSize, searchValue);
 
         return R.getSuccessInstance(studentPage);
+    }
+
+    @GetMapping("/list")
+    public R<List<Teacher>> getTeacherList(){
+        log.info("TeacherController - getTeacherList");
+
+        List<Teacher> teacherList = teacherService.selectTeacherList();
+
+        return R.getSuccessInstance(teacherList);
     }
 
 

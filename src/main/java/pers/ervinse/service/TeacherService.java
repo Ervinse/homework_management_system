@@ -3,9 +3,13 @@ package pers.ervinse.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import pers.ervinse.domain.Teacher;
 
+import java.util.List;
+
 public interface TeacherService {
 
     Page<Teacher> selectTeacherPage(int currentPage, int pageSize, String searchValue);
+
+    List<Teacher> selectTeacherList();
 
     Teacher selectTeacherById(Long teacherId);
 
@@ -20,4 +24,5 @@ public interface TeacherService {
     void enableAccountById(Long teacherId);
 
     void disableAccountById(Long teacherId);
+
 }

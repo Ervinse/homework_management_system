@@ -11,6 +11,8 @@ import pers.ervinse.domain.Teacher;
 import pers.ervinse.mapper.TeacherMapper;
 import pers.ervinse.service.TeacherService;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class TeacherServiceImpl implements TeacherService {
@@ -92,6 +94,17 @@ public class TeacherServiceImpl implements TeacherService {
 
         return page;
 
+    }
+
+    /**
+     * 查询教师列表
+     * @return 教师列表
+     */
+    @Override
+    public List<Teacher> selectTeacherList() {
+        log.info("TeacherService - selectTeacherList");
+
+        return teacherMapper.selectList(null);
     }
 
     /**

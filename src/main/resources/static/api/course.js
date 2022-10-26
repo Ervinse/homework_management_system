@@ -34,7 +34,7 @@ const getCourseDetailAxios = (params) => {
 //添加接口
 const addCourseAxios = (params) => {
     return $axios({
-        url: '../../json/common/success.json',
+        url: '/course',
         method: 'post',
         data: { ...params }
     })

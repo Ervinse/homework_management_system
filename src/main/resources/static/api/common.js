@@ -2,7 +2,7 @@
 // 查询老师集合接口
 const getTeacherListAxios = () => {
     return $axios({
-        url: '../../json/teacher/teacher_list_success.json',
+        url: '/teacher/list',
         method: 'get',
     })
 }

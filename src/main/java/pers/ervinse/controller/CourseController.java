@@ -4,9 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.*;
 import pers.ervinse.Dto.CourseDto;
 import pers.ervinse.common.R;
 import pers.ervinse.domain.Course;
@@ -14,6 +13,7 @@ import pers.ervinse.domain.Teacher;
 import pers.ervinse.service.CourseService;
 import pers.ervinse.service.TeacherService;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,5 +66,21 @@ public class CourseController {
         courseDtoPage.setRecords(courseDtoPageRecords);
 
         return R.getSuccessInstance(courseDtoPage);
+    }
+
+
+    /**
+     * 添加课程
+     *
+     * @param course 含有课程信息和教师信息的课程传输对象
+     * @return 添加结果
+     */
+    @PostMapping
+    public R<String> addCourse(@RequestBody Course course) {
+        log.info("CourseController - addCourse :course = {}", course);
+
+
+
+        return R.getSuccessOperationInstance();
     }
 }

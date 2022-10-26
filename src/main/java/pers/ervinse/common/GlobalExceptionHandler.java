@@ -51,6 +51,8 @@ public class GlobalExceptionHandler {
             return "添加失败,学号不能相同!";
         } else if ("'student.account_name'".equals(exceptionMessageList[5]) || "'teacher.account_name'".equals(exceptionMessageList[5])) {
             return "添加失败,登录账号名不能相同!";
+        } else if ("'course.course_name'".equals(exceptionMessageList[5])) {
+            return "添加失败,课程名不能相同!";
         } else {
             return "未知错误";
         }

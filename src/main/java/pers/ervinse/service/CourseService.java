@@ -5,4 +5,6 @@ import pers.ervinse.domain.Course;
 
 public interface CourseService {
     Page<Course> selectCoursePage(int currentPage, int pageSize, String searchValue);
+
+    void addCourse(Course course);
 }

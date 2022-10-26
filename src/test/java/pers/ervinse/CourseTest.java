@@ -20,4 +20,13 @@ public class CourseTest {
         Course course = courseMapper.selectById(443096630275642515L);
         System.out.println(course);
     }
+
+    @Test
+    void addCourse(){
+        Course course = new Course();
+        course.setCourseName("课程1001");
+        course.setCourseAddress("123");
+        course.setCourseDescription("123");
+        courseMapper.insert(course);
+    }
 }

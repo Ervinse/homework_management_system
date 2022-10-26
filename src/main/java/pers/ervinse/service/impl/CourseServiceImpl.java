@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Course;
 import pers.ervinse.mapper.CourseMapper;
 import pers.ervinse.service.CourseService;
@@ -49,5 +51,22 @@ public class CourseServiceImpl implements CourseService {
         log.info("page信息:current = {},pages = {},size = {},total = {},records = {}", page.getCurrent(), page.getPages(), page.getSize(), page.getTotal(), page.getRecords());
 
         return page;
+    }
+
+    /**
+     * 添加课程
+     * @param course 含有课程信息的对象
+     */
+    @Override
+    public void addCourse(Course course) {
+        log.info("CourseService - addCourse :course = {}", course);
+
+        int affectRows = courseMapper.insert(course);
+        if (affectRows > 0) {
+            log.info("添加课程成功,影响了" + affectRows + "条数据");
+        } else {
+            log.error("添加课程失败,影响了" + affectRows + "条数据");
+            throw new CustomException("服务器错误,添加失败!");
+        }
     }
 }

@@ -79,7 +79,7 @@ public class CourseController {
     public R<String> addCourse(@RequestBody Course course) {
         log.info("CourseController - addCourse :course = {}", course);
 
-
+        courseService.addCourse(course);
 
         return R.getSuccessOperationInstance();
     }

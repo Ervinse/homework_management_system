@@ -1,9 +1,14 @@
 //表格数据函数
 // 查询班级列表接口
-const getClasePageAxios = () => {
+const getClasePageAxios = (currentPage,pageSize,searchValue) => {
     return $axios({
-        url: '../../json/clase/clase_page_success.json',
+        url: '/clase/page',
         method: 'get',
+        params:{
+            currentPage: currentPage,
+            pageSize: pageSize,
+            searchValue: searchValue
+        }
     })
 }
 

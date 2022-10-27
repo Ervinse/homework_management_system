@@ -119,7 +119,7 @@
                             <!--输入框开始-->
                             <el-input id="list-search_input"
                                       placeholder="请输入查询内容"
-                                      v-model="clase_search"
+                                      v-model="searchValue"
                                       clearable>
                             </el-input>
                             <!--输入框结束-->
@@ -184,7 +184,7 @@
                                             layout="total , prev, pager, next , jumper"
                                             :total="total"
                                             :page-size="pageSize"
-                                            :current-page="current">
+                                            :current-page="currentPage">
                                     </el-pagination>
                                 </div>
                             </template>
@@ -359,7 +359,7 @@
                                         layout="total , prev, pager, next , jumper"
                                         :total="total"
                                         :page-size="pageSize"
-                                        :current-page="current">
+                                        :current-page="currentPage">
                                 </el-pagination>
                             </div>
                         </el-card>
@@ -385,7 +385,7 @@
                     //是否是管理员
                     isAdmin: "",
                     //搜索输入框内容
-                    clase_search: "",
+                    searchValue: "",
 
                     // 选项数据
                     teacherList: [],
@@ -415,7 +415,7 @@
                     //分页列表数据
                     total: 0,
                     pageSize: 10,
-                    current: 0,
+                    currentPage: 0,
                     pages: 0,
                     //表格数据
                     tableData: [],
@@ -575,13 +575,13 @@
                     //表格数据函数
                     getClasePage: function () {
                         var vueObj = this;
-                        getClasePageAxios().then(
+                        getClasePageAxios(this.currentPage, this.pageSize, null).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     vueObj.tableData = response.data.data.records;
                                     vueObj.total = response.data.data.total;
                                     vueObj.pageSize = response.data.data.size;
-                                    vueObj.current = response.data.data.current;
+                                    vueObj.currentPage = response.data.data.current;
                                     vueObj.pages = response.data.data.pages;
                                 } else {
                                     this.$message.error(response.data.msg)
@@ -654,14 +654,14 @@
                     //搜索按钮
                     handleSearch: function () {
                         var vueObj = this;
-                        getClasePageSearchAxios(this.clase_search).then(
+                        getClasePageAxios(this.currentPage, this.pageSize, this.searchValue).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     this.$message.success('搜索成功！共搜索到' + response.data.data.total + '条记录');
                                     vueObj.tableData = response.data.data.records;
                                     vueObj.total = response.data.data.total;
                                     vueObj.pageSize = response.data.data.size;
-                                    vueObj.current = response.data.data.current;
+                                    vueObj.currentPage = response.data.data.current;
                                     vueObj.pages = response.data.data.pages;
                                 } else {
                                     this.$message.error(response.data.msg)

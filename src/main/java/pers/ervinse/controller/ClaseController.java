@@ -35,19 +35,30 @@ public class ClaseController {
     @Autowired
     private StudentService studentService;
 
+    /**
+     * 根据条件获取班级分页
+     *
+     * @param currentPage 当前页
+     * @param pageSize    每页条数
+     * @param searchValue 搜索值
+     * @return 班级分页
+     */
     @GetMapping("/page")
     public R<Page<ClaseDto>> getClasePage(Integer currentPage, Integer pageSize, String searchValue) {
         log.info("ClaseController - getClasePage :currentPage = {},pageSize = {},searchValue = {}", currentPage, pageSize, searchValue);
 
         String searchValueFormatter = null;
+        //输入值处理标志位
+        boolean searchFlag = false;
 
         //当输入不为空时,处理输入值
-        if (searchValue != null) {
+        if (searchValue != null && !"".equals(searchValue)) {
             //将输入的学生名转化为学生id
             Student studentToSearch = new Student();
             studentToSearch.setStudentName(searchValue);
             List<Student> studentList = studentService.selectStudentByConditionInOr(studentToSearch);
             if (studentList.size() > 0) {
+                searchFlag = true;
                 Student student = studentList.get(0);
                 searchValueFormatter = String.valueOf(student.getStudentId());
             }
@@ -55,13 +66,17 @@ public class ClaseController {
             Teacher teacherToSearch = new Teacher();
             teacherToSearch.setTeacherName(searchValue);
             List<Teacher> teacherList = teacherService.selectTeacherByConditionInOr(teacherToSearch);
-            if (teacherList.size() > 0){
+            if (teacherList.size() > 0) {
+                searchFlag = true;
                 Teacher teacher = teacherList.get(0);
                 searchValueFormatter = String.valueOf(teacher.getTeacherId());
             }
         }
 
-        searchValue = searchValueFormatter;
+        //当输入值经过处理后,需要替换处理过的搜索值
+        if (searchFlag) {
+            searchValue = searchValueFormatter;
+        }
         //获取班级列表分页
         Page<Clase> clasePage = claseService.selectClasePage(currentPage, pageSize, searchValue);
 

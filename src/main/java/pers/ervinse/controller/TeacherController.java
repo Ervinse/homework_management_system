@@ -37,6 +37,10 @@ public class TeacherController {
         return R.getSuccessInstance(studentPage);
     }
 
+    /**
+     * 获取教师列表
+     * @return 教师列表
+     */
     @GetMapping("/list")
     public R<List<Teacher>> getTeacherList(){
         log.info("TeacherController - getTeacherList");

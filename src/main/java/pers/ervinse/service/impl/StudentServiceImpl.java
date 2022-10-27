@@ -84,6 +84,17 @@ public class StudentServiceImpl implements StudentService {
     }
 
     /**
+     * 获取学生列表
+     * @return 学生列表
+     */
+    @Override
+    public List<Student> selectStudentList() {
+        log.info("StudentService - selectStudentList ");
+
+        return studentMapper.selectList(null);
+    }
+
+    /**
      * 根据账号名获取学生
      * @param student 含有账号名的学生对象
      * @return 查询到的学生对象

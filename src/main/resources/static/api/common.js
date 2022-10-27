@@ -10,7 +10,7 @@ const getTeacherListAxios = () => {
 // 查询班级集合接口
 const getClaseListAxios = () => {
     return $axios({
-        url: '../../json/clase/clase_list_success.json',
+        url: '/clase/list',
         method: 'get',
     })
 }
@@ -18,7 +18,7 @@ const getClaseListAxios = () => {
 // 查询学生集合接口
 const getStudentListAxios = () => {
     return $axios({
-        url: '../../json/student/student_list_success.json',
+        url: '/student/list',
         method: 'get',
     })
 }

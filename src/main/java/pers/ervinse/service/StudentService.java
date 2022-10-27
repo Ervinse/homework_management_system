@@ -11,6 +11,8 @@ public interface StudentService {
 
     Student selectStudentById(Long studentId);
 
+    List<Student> selectStudentList();
+
     Student selectStudentByAccountName(Student student);
 
     List<Student> selectStudentByConditionInOr(Student student);
@@ -20,4 +22,5 @@ public interface StudentService {
     void updateStudentById(Student student);
 
     void deleteStudentById(Long studentId);
+
 }

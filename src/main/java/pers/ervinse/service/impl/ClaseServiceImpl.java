@@ -10,6 +10,8 @@ import pers.ervinse.domain.Clase;
 import pers.ervinse.mapper.ClaseMapper;
 import pers.ervinse.service.ClaseService;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class ClaseServiceImpl implements ClaseService {
@@ -43,5 +45,16 @@ public class ClaseServiceImpl implements ClaseService {
         log.info("page信息:current = {},pages = {},size = {},total = {},records = {}", page.getCurrent(), page.getPages(), page.getSize(), page.getTotal(), page.getRecords());
 
         return page;
+    }
+
+    /**
+     * 获取班级列表
+     * @return 班级列表
+     */
+    @Override
+    public List<Clase> selectClaseList() {
+        log.info("ClaseService - selectClaseList");
+
+        return claseMapper.selectList(null);
     }
 }

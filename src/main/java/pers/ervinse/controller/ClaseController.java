@@ -109,4 +109,17 @@ public class ClaseController {
 
         return R.getSuccessInstance(claseDtoPage);
     }
+
+    /**
+     * 获取班级列表
+     * @return 班级列表
+     */
+    @GetMapping("/list")
+    public R<List<Clase>> getCLaseList(){
+        log.info("ClaseController - getCLaseList");
+
+        List<Clase> claseList = claseService.selectClaseList();
+
+        return R.getSuccessInstance(claseList);
+    }
 }

@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import pers.ervinse.common.R;
+import pers.ervinse.domain.Clase;
 import pers.ervinse.domain.Student;
 import pers.ervinse.service.StudentService;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -55,6 +57,19 @@ public class StudentController {
         return R.getSuccessInstance(student);
     }
 
+    /**
+     * 获取学生列表
+     *
+     * @return 学生列表
+     */
+    @GetMapping("/list")
+    public R<List<Student>> getStudentList() {
+        log.info("StudentController - getStudentList");
+
+        List<Student> studentList = studentService.selectStudentList();
+
+        return R.getSuccessInstance(studentList);
+    }
 
     /**
      * 添加学生

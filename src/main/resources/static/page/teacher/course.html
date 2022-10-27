@@ -176,7 +176,8 @@
                                     layout="total , prev, pager, next , jumper"
                                     :total="total"
                                     :page-size="pageSize"
-                                    :current-page="currentPage">
+                                    :current-page="currentPage"
+                                    @current-change="handleCurrentChange">
                             </el-pagination>
                         </div>
                     </template>
@@ -327,7 +328,7 @@
                 ],
                 courseDescription: [
                     {required: true, message: '请输入课程描述', trigger: 'blur'},
-                    {min: 1, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur'}
+                    {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
                 ]
             },
             editRules: {
@@ -344,7 +345,7 @@
                 ],
                 courseDescription: [
                     {required: true, message: '请输入课程描述', trigger: 'blur'},
-                    {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
+                    {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
                 ]
             },
         },
@@ -562,6 +563,14 @@
                             message: '已取消提交'
                         });
                     });
+                }
+            },
+            handleCurrentChange: function (currentPage) {
+                this.currentPage = currentPage;
+                if (this.searchValue !== "") {
+                    this.handleSearch();
+                }else {
+                    this.getCoursePage();
                 }
             },
             // 修改表单提交

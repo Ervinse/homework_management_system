@@ -12,6 +12,8 @@ import pers.ervinse.domain.Course;
 import pers.ervinse.mapper.CourseMapper;
 import pers.ervinse.service.CourseService;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -64,6 +66,18 @@ public class CourseServiceImpl implements CourseService {
         log.info("CourseService - selectCourseById :courseId = {}", courseId);
 
         return courseMapper.selectById(courseId);
+    }
+
+    /**
+     * 获取课程列表
+     *
+     * @return 课程列表
+     */
+    @Override
+    public List<Course> selectCourseList() {
+        log.info("CourseService - selectCourseList ");
+
+        return courseMapper.selectList(null);
     }
 
     /**

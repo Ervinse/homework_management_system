@@ -26,7 +26,7 @@ const getStudentListAxios = () => {
 // 查询课程集合接口
 const getCourseListAxios = () => {
     return $axios({
-        url: '../../json/course/course_list_success.json',
+        url: '/course/list',
         method: 'get',
     })
 }

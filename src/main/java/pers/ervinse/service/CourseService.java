@@ -3,10 +3,14 @@ package pers.ervinse.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import pers.ervinse.domain.Course;
 
+import java.util.List;
+
 public interface CourseService {
     Page<Course> selectCoursePage(int currentPage, int pageSize, String searchValue);
 
     Course selectCourseById(String courseId);
+
+    List<Course> selectCourseList();
 
     void addCourse(Course course);
 

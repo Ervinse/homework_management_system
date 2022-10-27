@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pers.ervinse.Dto.CourseDto;
 import pers.ervinse.common.R;
 import pers.ervinse.domain.Course;
+import pers.ervinse.domain.Student;
 import pers.ervinse.domain.Teacher;
 import pers.ervinse.service.CourseService;
 import pers.ervinse.service.TeacherService;
@@ -79,6 +80,20 @@ public class CourseController {
 
         Course course = courseService.selectCourseById(courseId);
         return R.getSuccessInstance(course);
+    }
+
+    /**
+     * 获取课程列表
+     *
+     * @return 课程列表
+     */
+    @GetMapping("/list")
+    public R<List<Course>> getStudentList() {
+        log.info("StudentController - getStudentList");
+
+        List<Course> courseList = courseService.selectCourseList();
+
+        return R.getSuccessInstance(courseList);
     }
 
     /**

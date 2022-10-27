@@ -45,8 +45,8 @@ const addCourseAxios = (params) => {
 //需改接口
 const updateCourseAxios = (params) => {
     return $axios({
-        url: '../../json/common/success.json',
-        method: 'post',
+        url: '/course',
+        method: 'put',
         data: { ...params }
     })
 }
@@ -54,8 +54,8 @@ const updateCourseAxios = (params) => {
 //删除函数
 const deleteCourseAxios = (courseId) => {
     return $axios({
-        url: '../../json/common/success.json',
-        method: 'get',
+        url: '/course',
+        method: 'delete',
         params: {
             courseId: courseId
         }

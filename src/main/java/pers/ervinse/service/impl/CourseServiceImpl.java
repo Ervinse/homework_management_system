@@ -55,6 +55,7 @@ public class CourseServiceImpl implements CourseService {
 
     /**
      * 根据id获取课程
+     *
      * @param courseId 课程id
      * @return 课程详情
      */
@@ -79,6 +80,43 @@ public class CourseServiceImpl implements CourseService {
             log.info("添加课程成功,影响了" + affectRows + "条数据");
         } else {
             log.error("添加课程失败,影响了" + affectRows + "条数据");
+            throw new CustomException("服务器错误,添加失败!");
+        }
+    }
+
+    /**
+     * 修改课程
+     *
+     * @param course 含有课程信息的对象
+     */
+    @Override
+    public void updateCourse(Course course) {
+        log.info("CourseService - updateCourse :course = {}", course);
+
+
+        int affectRows = courseMapper.updateById(course);
+        if (affectRows > 0) {
+            log.info("修改课程成功,影响了" + affectRows + "条数据");
+        } else {
+            log.error("修改课程失败,影响了" + affectRows + "条数据");
+            throw new CustomException("服务器错误,添加失败!");
+        }
+    }
+
+    /**
+     * 删除课程
+     *
+     * @param courseId 课程id
+     */
+    @Override
+    public void deleteCourse(Long courseId) {
+        log.info("CourseService - deleteCourse :courseId = {}", courseId);
+
+        int affectRows = courseMapper.deleteById(courseId);
+        if (affectRows > 0) {
+            log.info("删除课程成功,影响了" + affectRows + "条数据");
+        } else {
+            log.error("删除课程失败,影响了" + affectRows + "条数据");
             throw new CustomException("服务器错误,添加失败!");
         }
     }

@@ -71,6 +71,7 @@ public class CourseController {
 
     /**
      * 根据id获取课程
+     *
      * @param courseId 课程id
      * @return 课程详情
      */
@@ -93,6 +94,35 @@ public class CourseController {
         log.info("CourseController - addCourse :course = {}", course);
 
         courseService.addCourse(course);
+
+        return R.getSuccessOperationInstance();
+    }
+
+    /**
+     * 修改课程
+     *
+     * @param course 含有课程信息和教师信息的课程传输对象
+     * @return 修改结果
+     */
+    @PutMapping
+    public R<String> updateCourse(@RequestBody Course course) {
+        log.info("CourseController - updateCourse :course = {}", course);
+
+        courseService.updateCourse(course);
+
+        return R.getSuccessOperationInstance();
+    }
+
+    /**
+     * 删除课程
+     *
+     * @param courseId 课程id
+     */
+    @DeleteMapping
+    public R<String> deleteCourse(Long courseId) {
+        log.info("CourseController - deleteCourse :courseId = {}", courseId);
+
+        courseService.deleteCourse(courseId);
 
         return R.getSuccessOperationInstance();
     }

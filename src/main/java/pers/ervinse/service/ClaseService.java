@@ -10,4 +10,6 @@ public interface ClaseService {
     Page<Clase> selectClasePage(int currentPage, int pageSize, String searchValue);
 
     List<Clase> selectClaseList();
+
+    void addClase(Clase clase);
 }

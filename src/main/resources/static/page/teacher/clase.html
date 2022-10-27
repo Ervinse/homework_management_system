@@ -207,10 +207,10 @@
                                     <el-form-item label="班级名" prop="claseName">
                                         <el-input class="input" v-model="form.claseName"></el-input>
                                     </el-form-item>
-                                    <el-form-item label="入学年份" prop="timeOfEnrollment">
+                                    <el-form-item label="入学年份" prop="time">
 
                                         <el-date-picker
-                                                v-model="form.timeOfEnrollment"
+                                                v-model="form.time"
                                                 align="right"
                                                 type="year"
                                                 placeholder="选择入学年份">
@@ -259,10 +259,10 @@
                                     <el-form-item label="班级名" prop="claseName">
                                         <el-input class="input" v-model="form.claseName"></el-input>
                                     </el-form-item>
-                                    <el-form-item label="入学年份" prop="timeOfEnrollment">
+                                    <el-form-item label="入学年份" prop="time">
 
                                         <el-date-picker
-                                                v-model="form.timeOfEnrollment"
+                                                v-model="form.time"
                                                 align="right"
                                                 type="year"
                                                 placeholder="选择入学年份">
@@ -421,9 +421,10 @@
                     tableData: [],
                     //添加/编辑课程表单数据
                     form: {
-                        claseId: 0,
+                        claseId: "",
                         claseName: "",
-                        timeOfEnrollment: new Date(),
+                        time: "",
+                        timeOfEnrollment: "",
                         claseTeacherId: "",
                         claseTeacherName: "",
                         claseLeaderId: "",
@@ -437,7 +438,7 @@
                             {required: true, message: '请输入班级名称', trigger: 'blur'},
                             {min: 1, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur'}
                         ],
-                        timeOfEnrollment: [
+                        time: [
                             {required: true, message: '请勾选入学年份', trigger: 'blur'},
                         ],
                         claseTeacherId: [
@@ -502,7 +503,7 @@
                         this.form = {
                             claseId: 0,
                             claseName: "",
-                            timeOfEnrollment: new Date(),
+                            timeOfEnrollment: "",
                             claseTeacherId: "",
                             claseTeacherName: "",
                             claseLeaderId: "",
@@ -751,7 +752,8 @@
                                 cancelButtonText: '取消',
                                 type: 'warning'
                             }).then(() => {
-                                console.log(this.form);
+                                this.form.timeOfEnrollment = this.form.time.getFullYear();
+                                console.log(this.form.timeOfEnrollment);
                                 addClaseAxios(this.form).then(
                                     res => {
                                         if (res.data.code === 1) {

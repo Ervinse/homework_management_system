@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pers.ervinse.Dto.ClaseDto;
 import pers.ervinse.Dto.CourseDto;
 import pers.ervinse.common.R;
@@ -112,14 +110,23 @@ public class ClaseController {
 
     /**
      * 获取班级列表
+     *
      * @return 班级列表
      */
     @GetMapping("/list")
-    public R<List<Clase>> getCLaseList(){
+    public R<List<Clase>> getCLaseList() {
         log.info("ClaseController - getCLaseList");
 
         List<Clase> claseList = claseService.selectClaseList();
 
         return R.getSuccessInstance(claseList);
+    }
+
+    @PostMapping
+    public R<String> addClase(@RequestBody Clase clase){
+        log.info("ClaseController - addClase :claseDto = {}", clase);
+
+        claseService.addClase(clase);
+        return R.getSuccessOperationInstance();
     }
 }

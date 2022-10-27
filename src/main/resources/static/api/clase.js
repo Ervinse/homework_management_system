@@ -23,21 +23,11 @@ const getClaseDetailAxios = (claseId) => {
     })
 }
 
-// 查询班级搜索列表接口
-const getClasePageSearchAxios = (params) => {
-    return $axios({
-        url: '../../json/clase/clase_page_search_success.json',
-        method: 'get',
-        params: {params}
-    })
-}
-
-
 //操作接口
 //添加班级接口
 const addClaseAxios = (params) => {
     return $axios({
-        url: '../../json/common/success.json',
+        url: '/clase',
         method: 'post',
         data: {...params}
     })

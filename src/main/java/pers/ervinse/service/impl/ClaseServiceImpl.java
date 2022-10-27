@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Clase;
 import pers.ervinse.mapper.ClaseMapper;
 import pers.ervinse.service.ClaseService;
@@ -49,6 +50,7 @@ public class ClaseServiceImpl implements ClaseService {
 
     /**
      * 获取班级列表
+     *
      * @return 班级列表
      */
     @Override
@@ -56,5 +58,24 @@ public class ClaseServiceImpl implements ClaseService {
         log.info("ClaseService - selectClaseList");
 
         return claseMapper.selectList(null);
+    }
+
+    /**
+     * 添加班级
+     *
+     * @param clase 含有添加信息的班级对象
+     */
+    @Override
+    public void addClase(Clase clase) {
+        log.info("ClaseService - addClase : clase = {}", clase);
+
+        int affectRows = claseMapper.insert(clase);
+        if (affectRows > 0) {
+            log.info("添加班级成功,影响了" + affectRows + "条数据");
+        } else {
+            log.error("添加班级失败,影响了" + affectRows + "条数据");
+            throw new CustomException("服务器错误,添加失败!");
+        }
+
     }
 }

@@ -54,7 +54,20 @@ public class CourseServiceImpl implements CourseService {
     }
 
     /**
+     * 根据id获取课程
+     * @param courseId 课程id
+     * @return 课程详情
+     */
+    @Override
+    public Course selectCourseById(String courseId) {
+        log.info("CourseService - selectCourseById :courseId = {}", courseId);
+
+        return courseMapper.selectById(courseId);
+    }
+
+    /**
      * 添加课程
+     *
      * @param course 含有课程信息的对象
      */
     @Override

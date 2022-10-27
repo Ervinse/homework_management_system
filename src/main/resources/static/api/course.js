@@ -22,11 +22,13 @@ const getCoursePageSearchAxios = (params) => {
 }
 
 // 查询课程详情接口
-const getCourseDetailAxios = (params) => {
+const getCourseDetailAxios = (courseId) => {
     return $axios({
-        url: '../../json/course/course_select_success.json',
+        url: '/course',
         method: 'get',
-        params: {params}
+        params: {
+            courseId: courseId
+        }
     })
 }
 

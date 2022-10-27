@@ -70,6 +70,19 @@ public class CourseController {
 
 
     /**
+     * 根据id获取课程
+     * @param courseId 课程id
+     * @return 课程详情
+     */
+    @GetMapping
+    public R<Course> getCourseById(String courseId) {
+        log.info("CourseController - getCourseById :courseId = {}", courseId);
+
+        Course course = courseService.selectCourseById(courseId);
+        return R.getSuccessInstance(course);
+    }
+
+    /**
      * 添加课程
      *
      * @param course 含有课程信息和教师信息的课程传输对象

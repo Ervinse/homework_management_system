@@ -4,10 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pers.ervinse.Dto.ClaseDto;
 import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Clase;
+import pers.ervinse.domain.ClaseCourse;
+import pers.ervinse.domain.Course;
+import pers.ervinse.mapper.ClaseCourseMapper;
 import pers.ervinse.mapper.ClaseMapper;
 import pers.ervinse.service.ClaseService;
 
@@ -19,6 +25,9 @@ public class ClaseServiceImpl implements ClaseService {
 
     @Autowired
     private ClaseMapper claseMapper;
+
+    @Autowired
+    private ClaseCourseMapper claseCourseMapper;
 
     @Override
     public Page<Clase> selectClasePage(int currentPage, int pageSize, String searchValue) {
@@ -61,19 +70,34 @@ public class ClaseServiceImpl implements ClaseService {
     }
 
     /**
-     * 添加班级
+     * 添加班级和对应的课程
      *
-     * @param clase 含有添加信息的班级对象
+     * @param claseDto 含有班级添加信息和课程信息的班级传输对象
      */
     @Override
-    public void addClase(Clase clase) {
-        log.info("ClaseService - addClase : clase = {}", clase);
+    @Transactional
+    public void addClase(ClaseDto claseDto) {
+        log.info("ClaseService - addClase : claseDto = {}", claseDto);
 
-        int affectRows = claseMapper.insert(clase);
-        if (affectRows > 0) {
-            log.info("添加班级成功,影响了" + affectRows + "条数据");
+        //添加班级
+        int affectClaseRows = claseMapper.insert(claseDto);
+        int affectCourseRows = 0;
+
+        //获取班级传输对象中的课程集合
+        List<Long> courseList = claseDto.getCourseList();
+        //为每一个课程创建ClaseCourse,并加上当前班级id
+        for (Long courseId: courseList) {
+            ClaseCourse claseCourse = new ClaseCourse();
+            claseCourse.setClaseId(claseDto.getClaseId());
+            claseCourse.setCourseId(courseId);
+            //插入ClaseCourse
+            affectCourseRows = claseCourseMapper.insert(claseCourse);
+        }
+
+        if (affectClaseRows > 0 && affectCourseRows > 0) {
+            log.info("添加班级成功,影响了" + affectClaseRows + "条数据");
         } else {
-            log.error("添加班级失败,影响了" + affectRows + "条数据");
+            log.error("添加班级失败,影响了" + affectClaseRows + "条数据");
             throw new CustomException("服务器错误,添加失败!");
         }
 

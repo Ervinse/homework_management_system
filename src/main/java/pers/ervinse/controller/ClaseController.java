@@ -122,11 +122,16 @@ public class ClaseController {
         return R.getSuccessInstance(claseList);
     }
 
+    /**
+     * 添加班级和对应的课程
+     *
+     * @param claseDto 含有班级添加信息和课程信息的班级传输对象
+     */
     @PostMapping
-    public R<String> addClase(@RequestBody Clase clase){
-        log.info("ClaseController - addClase :claseDto = {}", clase);
+    public R<String> addClase(@RequestBody ClaseDto claseDto){
+        log.info("ClaseController - addClase :claseDto = {}", claseDto);
 
-        claseService.addClase(clase);
+        claseService.addClase(claseDto);
         return R.getSuccessOperationInstance();
     }
 }

@@ -30,7 +30,11 @@ public class ClaseServiceImpl implements ClaseService {
         //过滤条件:实体类对应字段 == 变量
         wrapper.like(StringUtils.isNotEmpty(searchValue), Clase::getClaseName, searchValue)
                 .or()
-                .like(StringUtils.isNotEmpty(searchValue), Clase::getTimeOfEnrollment, searchValue);
+                .like(StringUtils.isNotEmpty(searchValue), Clase::getTimeOfEnrollment, searchValue)
+                .or()
+                .like(StringUtils.isNotEmpty(searchValue), Clase::getClaseLeaderId, searchValue)
+                .or()
+                .like(StringUtils.isNotEmpty(searchValue), Clase::getClaseTeacherId, searchValue);
         //添加排序条件
         wrapper.orderByAsc(Clase::getClaseId);
 

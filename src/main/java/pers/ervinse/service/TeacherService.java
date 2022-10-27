@@ -15,6 +15,8 @@ public interface TeacherService {
 
     Teacher selectTeacherByAccountName(Teacher teacher);
 
+    List<Teacher> selectTeacherByConditionInOr(Teacher teacher);
+
     void addTeacher(Teacher teacher);
 
     void updateStudentById(Teacher teacher);

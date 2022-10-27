@@ -39,6 +39,30 @@ public class ClaseController {
     public R<Page<ClaseDto>> getClasePage(Integer currentPage, Integer pageSize, String searchValue) {
         log.info("ClaseController - getClasePage :currentPage = {},pageSize = {},searchValue = {}", currentPage, pageSize, searchValue);
 
+        String searchValueFormatter = null;
+
+        //当输入不为空时,处理输入值
+        if (searchValue != null) {
+            //将输入的学生名转化为学生id
+            Student studentToSearch = new Student();
+            studentToSearch.setStudentName(searchValue);
+            List<Student> studentList = studentService.selectStudentByConditionInOr(studentToSearch);
+            if (studentList.size() > 0) {
+                Student student = studentList.get(0);
+                searchValueFormatter = String.valueOf(student.getStudentId());
+            }
+            //将输入的教师名转化为教师id
+            Teacher teacherToSearch = new Teacher();
+            teacherToSearch.setTeacherName(searchValue);
+            List<Teacher> teacherList = teacherService.selectTeacherByConditionInOr(teacherToSearch);
+            if (teacherList.size() > 0){
+                Teacher teacher = teacherList.get(0);
+                searchValueFormatter = String.valueOf(teacher.getTeacherId());
+            }
+        }
+
+        searchValue = searchValueFormatter;
+        //获取班级列表分页
         Page<Clase> clasePage = claseService.selectClasePage(currentPage, pageSize, searchValue);
 
         //创建班级传输分页,获取班级分页中的分页数据

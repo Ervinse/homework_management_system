@@ -11,6 +11,8 @@ import pers.ervinse.domain.Student;
 import pers.ervinse.mapper.StudentMapper;
 import pers.ervinse.service.StudentService;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -101,10 +103,29 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student selectStudentByCondition(Student student) {
-        log.info("StudentService - selectStudentByCondition :student = {}", student);
+    public List<Student> selectStudentByConditionInOr(Student student) {
+        log.info("StudentService - selectStudentByConditionInAnd :student = {}", student);
 
-        return null;
+        //创建条件构造器
+        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+        //添加过滤条件
+        //成立条件:name值不为空时过滤条件成立
+        //过滤条件:实体类对应字段 == 变量
+        wrapper.eq(student.getStudentId() != null, Student::getStudentId, student.getStudentId())
+                .or()
+                .eq(StringUtils.isNotEmpty(student.getStudentNumber()), Student::getStudentNumber, student.getStudentNumber())
+                .or()
+                .like(StringUtils.isNotEmpty(student.getStudentName()), Student::getStudentName, student.getStudentName())
+                .or()
+                .like(StringUtils.isNotEmpty(student.getAccountName()), Student::getAccountName, student.getAccountName())
+                .or()
+                .eq(StringUtils.isNotEmpty(student.getAccountPassword()), Student::getAccountPassword, student.getAccountPassword())
+                .or()
+                .eq(StringUtils.isNotEmpty(student.getStudentGender()), Student::getStudentGender, student.getStudentGender())
+                .or()
+                .eq(StringUtils.isNotEmpty(student.getStudentNumber()), Student::getStudentNumber, student.getStudentNumber());
+
+        return studentMapper.selectList(wrapper);
     }
 
     /**

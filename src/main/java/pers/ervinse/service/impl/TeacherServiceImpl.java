@@ -98,6 +98,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     /**
      * 查询教师列表
+     *
      * @return 教师列表
      */
     @Override
@@ -122,6 +123,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     /**
      * 根据账号名获取教师
+     *
      * @param teacher 含有账号名的教师对象
      * @return 查询到的教师对象
      */
@@ -137,6 +139,31 @@ public class TeacherServiceImpl implements TeacherService {
         wrapper.eq(StringUtils.isNotEmpty(teacher.getAccountName()), Teacher::getAccountName, teacher.getAccountName());
 
         return teacherMapper.selectOne(wrapper);
+    }
+
+    @Override
+    public List<Teacher> selectTeacherByConditionInOr(Teacher teacher) {
+        log.info("TeacherService - selectTeacherByConditionInOr :teacher = {}", teacher);
+
+        //创建条件构造器
+        LambdaQueryWrapper<Teacher> wrapper = new LambdaQueryWrapper<>();
+        //添加过滤条件
+        //成立条件:name值不为空时过滤条件成立
+        //过滤条件:实体类对应字段 == 变量
+        wrapper.eq(teacher.getTeacherId() != null, Teacher::getTeacherId, teacher.getTeacherId())
+                .or()
+                .eq(teacher.getAccountType() != null, Teacher::getAccountType, teacher.getAccountType())
+                .or()
+                .like(StringUtils.isNotEmpty(teacher.getTeacherName()), Teacher::getTeacherName, teacher.getTeacherName())
+                .or()
+                .like(StringUtils.isNotEmpty(teacher.getAccountName()), Teacher::getAccountName, teacher.getAccountName())
+                .or()
+                .eq(StringUtils.isNotEmpty(teacher.getAccountPassword()), Teacher::getAccountPassword, teacher.getAccountPassword())
+                .or()
+                .eq(StringUtils.isNotEmpty(teacher.getTeacherGender()), Teacher::getTeacherGender, teacher.getTeacherGender());
+
+        return teacherMapper.selectList(wrapper);
+
     }
 
 

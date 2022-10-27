@@ -46,7 +46,6 @@ public class LoginController {
         if ("1".equals(loginType)) {
             Teacher loginTeacher = new Teacher();
             loginTeacher.setAccountName(loginAccountName);
-            loginTeacher.setAccountPassword(loginAccountPassword);
 
             //从数据库中获取密码
             Teacher teacherBySearch = teacherService.selectTeacherByAccountName(loginTeacher);
@@ -77,7 +76,6 @@ public class LoginController {
         } else if ("2".equals(loginType)) {
             Student loginStudent = new Student();
             loginStudent.setAccountName(loginAccountName);
-            loginStudent.setAccountPassword(loginAccountPassword);
 
             Student studentBySearch = studentService.selectStudentByAccountName(loginStudent);
             log.info("studentBySearch = {}", studentBySearch);

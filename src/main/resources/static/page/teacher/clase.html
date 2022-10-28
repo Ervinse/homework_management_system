@@ -229,8 +229,8 @@
                                             <el-option label="未定" value="0"></el-option>
                                         </el-select>
                                     </el-form-item>
-                                    <el-form-item label="包含课程" prop="courseList">
-                                        <el-checkbox-group v-model="form.courseList">
+                                    <el-form-item label="包含课程" prop="courseIdList">
+                                        <el-checkbox-group v-model="form.courseIdList">
                                             <el-checkbox v-for="course in courseList" :label="course.courseId"
                                                          name="type">{{course.courseName}}
                                             </el-checkbox>
@@ -281,8 +281,8 @@
                                             <el-option label="未定" value="0"></el-option>
                                         </el-select>
                                     </el-form-item>
-                                    <el-form-item label="包含课程" prop="courseList">
-                                        <el-checkbox-group v-model="form.courseList">
+                                    <el-form-item label="包含课程" prop="courseIdList">
+                                        <el-checkbox-group v-model="form.courseIdList">
                                             <el-checkbox v-for="course in courseList" :label="course.courseId"
                                                          name="type">{{course.courseName}}
                                             </el-checkbox>
@@ -429,6 +429,7 @@
                         claseTeacherName: "",
                         claseLeaderId: "",
                         claseLeaderName: "",
+                        courseIdList: [],
                         courseList: []
                     },
                     //班级详情数据
@@ -447,7 +448,7 @@
                         claseLeaderId: [
                             {required: true, message: '请勾选班长', trigger: 'blur'},
                         ],
-                        courseList: [
+                        courseIdList: [
                             {required: true, message: '请勾选包含课程', trigger: 'blur'},
                         ],
                     },
@@ -508,6 +509,7 @@
                             claseTeacherName: "",
                             claseLeaderId: "",
                             claseLeaderName: "",
+                            courseIdList: [],
                             courseList: []
                         }
                     },

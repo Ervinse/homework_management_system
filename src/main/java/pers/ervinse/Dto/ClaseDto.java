@@ -13,28 +13,9 @@ public class ClaseDto extends Clase {
 
     private String claseLeaderName;
 
-    private List<Long> courseList;
+    private List<Long> courseIdList;
 
-    @Override
-    public String toString() {
-        return "ClaseDto{" +
-                "claseTeacherName='" + claseTeacherName + '\'' +
-                ", claseLeaderName='" + claseLeaderName + '\'' +
-                ", courseList=" + courseList +
-                "} " + super.toString();
-    }
+    private List<String> courseList;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        ClaseDto claseDto = (ClaseDto) o;
-        return Objects.equals(claseTeacherName, claseDto.claseTeacherName) && Objects.equals(claseLeaderName, claseDto.claseLeaderName);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), claseTeacherName, claseLeaderName);
-    }
 }

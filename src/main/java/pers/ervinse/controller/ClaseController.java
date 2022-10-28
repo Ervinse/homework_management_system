@@ -122,6 +122,11 @@ public class ClaseController {
         return R.getSuccessInstance(claseList);
     }
 
+//    @GetMapping
+//    public R<ClaseDto>
+
+
+
     /**
      * 添加班级和对应的课程
      *

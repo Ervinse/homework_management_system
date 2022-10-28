@@ -84,9 +84,9 @@ public class ClaseServiceImpl implements ClaseService {
         int affectCourseRows = 0;
 
         //获取班级传输对象中的课程集合
-        List<Long> courseList = claseDto.getCourseList();
+        List<Long> courseIdList = claseDto.getCourseIdList();
         //为每一个课程创建ClaseCourse,并加上当前班级id
-        for (Long courseId: courseList) {
+        for (Long courseId: courseIdList) {
             ClaseCourse claseCourse = new ClaseCourse();
             claseCourse.setClaseId(claseDto.getClaseId());
             claseCourse.setCourseId(courseId);

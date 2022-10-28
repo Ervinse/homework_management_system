@@ -16,4 +16,5 @@ public interface ClaseService {
 
     void addClase(ClaseDto claseDto);
 
+    void updateClase(ClaseDto claseDto);
 }

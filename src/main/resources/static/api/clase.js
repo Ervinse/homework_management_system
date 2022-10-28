@@ -36,8 +36,8 @@ const addClaseAxios = (params) => {
 //编辑班级接口
 const editClaseAxios = (params) => {
     return $axios({
-        url: '../../json/common/success.json',
-        method: 'post',
+        url: '/clase',
+        method: 'put',
         data: {...params}
     })
 }

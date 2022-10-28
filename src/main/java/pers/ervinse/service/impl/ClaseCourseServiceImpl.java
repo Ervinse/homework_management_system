@@ -2,11 +2,9 @@ package pers.ervinse.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pers.ervinse.domain.ClaseCourse;
-import pers.ervinse.domain.Student;
 import pers.ervinse.mapper.ClaseCourseMapper;
 import pers.ervinse.service.ClaseCourseService;
 
@@ -35,9 +33,7 @@ public class ClaseCourseServiceImpl implements ClaseCourseService {
         //成立条件:name值不为空时过滤条件成立
         //过滤条件:实体类对应字段 == 变量
         wrapper.eq(claseCourse.getClaseCourseId() != null, ClaseCourse::getClaseCourseId, claseCourse.getClaseCourseId())
-                .or()
                 .eq(claseCourse.getClaseId() != null, ClaseCourse::getClaseId, claseCourse.getClaseId())
-                .or()
                 .eq(claseCourse.getCourseId() != null, ClaseCourse::getCourseId, claseCourse.getCourseId());
 
         return claseCourseMapper.selectList(wrapper);

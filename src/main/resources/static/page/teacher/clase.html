@@ -696,7 +696,7 @@
                         this.showEditPage();
 
                         var vueObj = this;
-                        await getClaseDetailAxios().then(
+                        await getClaseDetailAxios(row.claseId).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     vueObj.tableDetailData = response.data.data;

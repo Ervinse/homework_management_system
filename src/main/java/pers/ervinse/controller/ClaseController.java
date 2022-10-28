@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pers.ervinse.Dto.ClaseDto;
 import pers.ervinse.Dto.CourseDto;
-import pers.ervinse.common.CustomException;
 import pers.ervinse.common.R;
 import pers.ervinse.domain.*;
 import pers.ervinse.service.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -125,6 +123,11 @@ public class ClaseController {
         return R.getSuccessInstance(claseList);
     }
 
+    /**
+     * 获取班级详情
+     * @param claseId 班级id
+     * @return 班级详情数据
+     */
     @GetMapping
     public R<ClaseDto> getClaseDetail(Long claseId) {
         log.info("ClaseController - getClaseDetail : claseId = {}", claseId);
@@ -168,12 +171,26 @@ public class ClaseController {
      * 添加班级和对应的课程
      *
      * @param claseDto 含有班级添加信息和课程信息的班级传输对象
+     * @return 添加结果
      */
     @PostMapping
     public R<String> addClase(@RequestBody ClaseDto claseDto) {
         log.info("ClaseController - addClase :claseDto = {}", claseDto);
 
         claseService.addClase(claseDto);
+        return R.getSuccessOperationInstance();
+    }
+
+    /**
+     * 修改班级和对应的课程
+     * @param claseDto 含有班级修改信息和课程信息的班级传输对象
+     * @return 修改结果
+     */
+    @PutMapping
+    public R<String> updateClase(@RequestBody ClaseDto claseDto) {
+        log.info("ClaseController - updateClase :claseDto = {}", claseDto);
+
+        claseService.updateClase(claseDto);
         return R.getSuccessOperationInstance();
     }
 }

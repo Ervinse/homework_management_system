@@ -15,7 +15,7 @@ const getClasePageAxios = (currentPage,pageSize,searchValue) => {
 // 查询班级详情接口
 const getClaseDetailAxios = (claseId) => {
     return $axios({
-        url: '../../json/clase/clase_select_success.json',
+        url: '/clase',
         method: 'get',
         params: {
             claseId: claseId

@@ -7,15 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pers.ervinse.Dto.ClaseDto;
 import pers.ervinse.Dto.CourseDto;
+import pers.ervinse.common.CustomException;
 import pers.ervinse.common.R;
-import pers.ervinse.domain.Clase;
-import pers.ervinse.domain.Course;
-import pers.ervinse.domain.Student;
-import pers.ervinse.domain.Teacher;
-import pers.ervinse.service.ClaseService;
-import pers.ervinse.service.StudentService;
-import pers.ervinse.service.TeacherService;
+import pers.ervinse.domain.*;
+import pers.ervinse.service.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +29,12 @@ public class ClaseController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private CourseService courseService;
+
+    @Autowired
+    private ClaseCourseService claseCourseService;
 
     /**
      * 根据条件获取班级分页
@@ -54,7 +57,7 @@ public class ClaseController {
             //将输入的学生名转化为学生id
             Student studentToSearch = new Student();
             studentToSearch.setStudentName(searchValue);
-            List<Student> studentList = studentService.selectStudentByConditionInOr(studentToSearch);
+            List<Student> studentList = studentService.selectStudentListByConditionInOr(studentToSearch);
             if (studentList.size() > 0) {
                 searchFlag = true;
                 Student student = studentList.get(0);
@@ -122,9 +125,39 @@ public class ClaseController {
         return R.getSuccessInstance(claseList);
     }
 
-//    @GetMapping
-//    public R<ClaseDto>
+    @GetMapping
+    public R<ClaseDto> getClaseDetail(Long claseId) {
+        log.info("ClaseController - getClaseDetail : claseId = {}", claseId);
 
+        //根据id获取班级
+        Clase clase = claseService.selectClaseById(claseId);
+        //根据学生id和教师id获取班主任和班长名字
+        Teacher teacher = teacherService.selectTeacherById(clase.getClaseTeacherId());
+        Student student = studentService.selectStudentById(clase.getClaseLeaderId());
+        //对传输对象设置班主任和班长名字,拷贝班级对象其他属性
+        ClaseDto claseDto = new ClaseDto();
+        claseDto.setClaseLeaderName(student.getStudentName());
+        claseDto.setClaseTeacherName(teacher.getTeacherName());
+        BeanUtils.copyProperties(clase, claseDto);
+
+        //从claseCourse表中根据班级id查询对班级课程集合
+        ClaseCourse claseCourse = new ClaseCourse();
+        claseCourse.setClaseId(claseId);
+        List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourse);
+        //对每一个班级课程在课程表中查询课程集合
+        List<Course> courseListBySearch = claseCourseList.stream().map(claseCourseItem -> {
+            Course course = courseService.selectCourseById(claseCourseItem.getCourseId());
+            if (course == null) {
+                throw new CustomException("课程信息错误!");
+            } else {
+                return course;
+            }
+        }).collect(Collectors.toList());
+
+        claseDto.setCourseList(courseListBySearch);
+
+        return R.getSuccessInstance(claseDto);
+    }
 
 
     /**
@@ -133,7 +166,7 @@ public class ClaseController {
      * @param claseDto 含有班级添加信息和课程信息的班级传输对象
      */
     @PostMapping
-    public R<String> addClase(@RequestBody ClaseDto claseDto){
+    public R<String> addClase(@RequestBody ClaseDto claseDto) {
         log.info("ClaseController - addClase :claseDto = {}", claseDto);
 
         claseService.addClase(claseDto);

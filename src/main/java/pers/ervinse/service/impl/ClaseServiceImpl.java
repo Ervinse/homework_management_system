@@ -70,6 +70,19 @@ public class ClaseServiceImpl implements ClaseService {
     }
 
     /**
+     * 根据id获取班级
+     * @param claseId 班级id
+     * @return 班级
+     */
+    @Override
+    public Clase selectClaseById(Long claseId) {
+        log.info("ClaseService - selectClaseById");
+
+        return claseMapper.selectById(claseId);
+
+    }
+
+    /**
      * 添加班级和对应的课程
      *
      * @param claseDto 含有班级添加信息和课程信息的班级传输对象

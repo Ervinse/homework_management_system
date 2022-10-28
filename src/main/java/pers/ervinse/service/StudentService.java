@@ -15,7 +15,7 @@ public interface StudentService {
 
     Student selectStudentByAccountName(Student student);
 
-    List<Student> selectStudentByConditionInOr(Student student);
+    List<Student> selectStudentListByConditionInOr(Student student);
 
     void addStudent(Student student);
 

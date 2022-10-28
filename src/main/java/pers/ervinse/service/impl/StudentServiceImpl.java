@@ -113,8 +113,13 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectOne(wrapper);
     }
 
+    /**
+     * 根据条件查询学生列表
+     * @param student 查询的学生条件
+     * @return 查询到的学生列表
+     */
     @Override
-    public List<Student> selectStudentByConditionInOr(Student student) {
+    public List<Student> selectStudentListByConditionInOr(Student student) {
         log.info("StudentService - selectStudentByConditionInAnd :student = {}", student);
 
         //创建条件构造器

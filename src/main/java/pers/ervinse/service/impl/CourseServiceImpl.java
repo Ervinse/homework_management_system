@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pers.ervinse.common.CustomException;
+import pers.ervinse.domain.Clase;
 import pers.ervinse.domain.Course;
 import pers.ervinse.mapper.CourseMapper;
 import pers.ervinse.service.CourseService;
@@ -62,7 +63,7 @@ public class CourseServiceImpl implements CourseService {
      * @return 课程详情
      */
     @Override
-    public Course selectCourseById(String courseId) {
+    public Course selectCourseById(Long courseId) {
         log.info("CourseService - selectCourseById :courseId = {}", courseId);
 
         return courseMapper.selectById(courseId);
@@ -78,6 +79,11 @@ public class CourseServiceImpl implements CourseService {
         log.info("CourseService - selectCourseList ");
 
         return courseMapper.selectList(null);
+    }
+
+    @Override
+    public List<Clase> selectCourseByConditionInOR() {
+        return null;
     }
 
     /**

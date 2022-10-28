@@ -75,7 +75,7 @@ public class CourseController {
      * @return 课程详情
      */
     @GetMapping
-    public R<Course> getCourseById(String courseId) {
+    public R<Course> getCourseById(Long courseId) {
         log.info("CourseController - getCourseById :courseId = {}", courseId);
 
         Course course = courseService.selectCourseById(courseId);

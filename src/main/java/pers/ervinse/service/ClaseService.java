@@ -12,5 +12,8 @@ public interface ClaseService {
 
     List<Clase> selectClaseList();
 
+    Clase selectClaseById(Long claseId);
+
     void addClase(ClaseDto claseDto);
+
 }

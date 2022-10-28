@@ -2,7 +2,6 @@ package pers.ervinse.Dto;
 
 import lombok.Data;
 import pers.ervinse.domain.Clase;
-import pers.ervinse.domain.Course;
 
 import java.util.List;
 import java.util.Objects;
@@ -16,7 +15,7 @@ public class ClaseDto extends Clase {
 
     private List<Long> courseIdList;
 
-    private List<Course> courseList;
+    private List<CourseDto> courseList;
 
     @Override
     public boolean equals(Object o) {

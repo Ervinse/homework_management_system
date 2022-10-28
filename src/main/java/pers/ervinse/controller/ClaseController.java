@@ -144,16 +144,20 @@ public class ClaseController {
         ClaseCourse claseCourse = new ClaseCourse();
         claseCourse.setClaseId(claseId);
         List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourse);
-        //对每一个班级课程在课程表中查询课程集合
-        List<Course> courseListBySearch = claseCourseList.stream().map(claseCourseItem -> {
+        //对每一个班级课程对象在课程表中查询课程,收集为课程传输对象集合
+        List<CourseDto> courseListBySearch = claseCourseList.stream().map(claseCourseItem -> {
+            //获取对应的课程对象
             Course course = courseService.selectCourseById(claseCourseItem.getCourseId());
-            if (course == null) {
-                throw new CustomException("课程信息错误!");
-            } else {
-                return course;
-            }
+            //获取课程对应的任课老师姓名
+            Teacher teacherBySelect = teacherService.selectTeacherById(course.getCourseTeacherId());
+            //将课程属性和任课老师姓名拷贝到课程传输对象中
+            CourseDto courseDto = new CourseDto();
+            BeanUtils.copyProperties(course,courseDto);
+            courseDto.setCourseTeacherName(teacherBySelect.getTeacherName());
+            return courseDto;
         }).collect(Collectors.toList());
 
+        //将课程传输对象添加到要查询的班级对象中
         claseDto.setCourseList(courseListBySearch);
 
         return R.getSuccessInstance(claseDto);

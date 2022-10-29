@@ -2,16 +2,20 @@ package pers.ervinse.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
+import pers.ervinse.Dto.StudentDto;
 import pers.ervinse.common.R;
 import pers.ervinse.domain.Clase;
 import pers.ervinse.domain.Student;
+import pers.ervinse.service.ClaseService;
 import pers.ervinse.service.StudentService;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -20,6 +24,9 @@ public class StudentController {
 
     @Autowired
     StudentService studentService;
+
+    @Autowired
+    ClaseService claseService;
 
     /**
      * 根据条件获取学生分页
@@ -30,12 +37,41 @@ public class StudentController {
      * @return 学生分页
      */
     @GetMapping("/page")
-    public R<Page<Student>> getStudentPage(Integer currentPage, Integer pageSize, String searchValue) {
+    public R<Page<StudentDto>> getStudentPage(Integer currentPage, Integer pageSize, String searchValue) {
         log.info("StudentController - getStudentPage :currentPage = {},pageSize = {},searchValue = {}", currentPage, pageSize, searchValue);
 
+        //获取学生分页数据
         Page<Student> studentPage = studentService.selectStudentPage(currentPage, pageSize, searchValue);
 
-        return R.getSuccessInstance(studentPage);
+
+        //创建学生传输分页,获取班级分页中的分页数据
+        Page<StudentDto> studentDtoPage = new Page<>();
+        BeanUtils.copyProperties(studentPage, studentDtoPage, "records");
+
+        //获取班级列表
+        List<Student> studentPageRecords = studentPage.getRecords();
+        //遍历课程列表中的每一个课程对象,获取其对应的课程传输对象,收集为list
+        List<StudentDto> studentDtoPageRecords = studentPageRecords.stream().map(student -> {
+            //对每一个班级,创建班级传输对象,并将每个班级数据复制到对应的传输对象中
+            StudentDto studentDto = new StudentDto();
+            BeanUtils.copyProperties(student, studentDto);
+
+            //对每一个班级,根据教师id获取教师对象,并将教师名字添加到传输对象中
+            Clase clase = claseService.selectClaseById(student.getClaseId());
+            if (clase == null) {
+                studentDto.setClaseName("未定");
+            } else {
+                studentDto.setClaseName(clase.getClaseName());
+            }
+
+            //返回传输对象
+            return studentDto;
+        }).collect(Collectors.toList());
+
+        //为课程传输分页添加课程传输对象集合
+        studentDtoPage.setRecords(studentDtoPageRecords);
+
+        return R.getSuccessInstance(studentDtoPage);
     }
 
 

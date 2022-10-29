@@ -1,33 +1,33 @@
 package pers.ervinse.Dto;
 
 import lombok.Data;
-import pers.ervinse.domain.Course;
+import pers.ervinse.domain.Student;
 
 import java.util.Objects;
 
 @Data
-public class CourseDto extends Course {
+public class StudentDto extends Student {
 
-    private String courseTeacherName;
+    private String claseName;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        CourseDto courseDto = (CourseDto) o;
-        return Objects.equals(courseTeacherName, courseDto.courseTeacherName);
+        StudentDto that = (StudentDto) o;
+        return Objects.equals(claseName, that.claseName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), courseTeacherName);
+        return Objects.hash(super.hashCode(), claseName);
     }
 
     @Override
     public String toString() {
-        return "CourseDto{" +
-                "courseTeacherName='" + courseTeacherName + '\'' +
+        return "StudentDto{" +
+                "claseName='" + claseName + '\'' +
                 "} " + super.toString();
     }
 }

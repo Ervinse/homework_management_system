@@ -161,7 +161,7 @@
                                     width="180">
                             </el-table-column>
                             <el-table-column
-                                    prop="className"
+                                    prop="claseName"
                                     label="所属班级"
                                     width="120">
                             </el-table-column>
@@ -294,7 +294,7 @@
                 accountName: "",
                 phoneNumber: "",
                 classId: "",
-                className: ""
+                claseName: ""
             },
             tableDetailData: {},
             editRules: {
@@ -463,7 +463,7 @@
                     accountName: "",
                     phoneNumber: "",
                     classId: "",
-                    className: ""
+                    claseName: ""
                 }
             },
             // 编辑按钮处理函数
@@ -588,6 +588,7 @@
         mounted() {
             this.$message.success('登录成功');
             this.getStudentPage();
+            this.getClaseList();
 
             this.isAdmin = this.loginUser.accountType !== "1";
         }

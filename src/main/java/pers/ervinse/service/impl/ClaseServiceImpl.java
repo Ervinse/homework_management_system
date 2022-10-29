@@ -11,13 +11,9 @@ import pers.ervinse.Dto.ClaseDto;
 import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Clase;
 import pers.ervinse.domain.ClaseCourse;
-import pers.ervinse.domain.Student;
-import pers.ervinse.domain.Teacher;
 import pers.ervinse.mapper.ClaseCourseMapper;
 import pers.ervinse.mapper.ClaseMapper;
 import pers.ervinse.service.ClaseService;
-import pers.ervinse.service.StudentService;
-import pers.ervinse.service.TeacherService;
 
 import java.util.List;
 
@@ -27,12 +23,6 @@ public class ClaseServiceImpl implements ClaseService {
 
     @Autowired
     private ClaseMapper claseMapper;
-
-    @Autowired
-    private StudentService studentService;
-
-    @Autowired
-    private TeacherService teacherService;
 
     @Autowired
     private ClaseCourseMapper claseCourseMapper;

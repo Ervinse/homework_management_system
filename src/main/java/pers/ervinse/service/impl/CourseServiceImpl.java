@@ -6,9 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import pers.ervinse.common.CustomException;
-import pers.ervinse.domain.Clase;
 import pers.ervinse.domain.ClaseCourse;
 import pers.ervinse.domain.Course;
 import pers.ervinse.mapper.CourseMapper;
@@ -89,8 +87,23 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Clase> selectCourseByConditionInOR() {
-        return null;
+    public List<Course> selectCourseByConditionInOR(Course course) {
+        log.info("CourseService - selectCourseByConditionInOR : course = {}", course);
+
+        //创建条件构造器
+        LambdaQueryWrapper<Course> wrapper = new LambdaQueryWrapper<>();
+        //添加过滤条件
+        //成立条件:name值不为空时过滤条件成立
+        //过滤条件:实体类对应字段 == 变量
+        wrapper.eq(course.getCourseId() != null, Course::getCourseId, course.getCourseId())
+                .or()
+                .like(StringUtils.isNotEmpty(course.getCourseName()), Course::getCourseName, course.getCourseName())
+                .or()
+                .like(StringUtils.isNotEmpty(course.getCourseAddress()), Course::getCourseAddress, course.getCourseAddress())
+                .or()
+                .like(StringUtils.isNotEmpty(course.getCourseDescription()), Course::getCourseDescription, course.getCourseDescription());
+
+        return courseMapper.selectList(wrapper);
     }
 
     /**

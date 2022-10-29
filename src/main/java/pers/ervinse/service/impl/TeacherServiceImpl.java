@@ -7,8 +7,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pers.ervinse.common.CustomException;
+import pers.ervinse.domain.Clase;
+import pers.ervinse.domain.Course;
 import pers.ervinse.domain.Teacher;
 import pers.ervinse.mapper.TeacherMapper;
+import pers.ervinse.service.ClaseService;
+import pers.ervinse.service.CourseService;
 import pers.ervinse.service.TeacherService;
 
 import java.util.List;
@@ -19,6 +23,12 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     private TeacherMapper teacherMapper;
+
+    @Autowired
+    private ClaseService claseService;
+
+    @Autowired
+    private CourseService courseService;
 
     /**
      * 根据条件获取教师分页
@@ -213,6 +223,20 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public void deleteTeacherById(Long teacherId) {
         log.info("TeacherService - deleteTeacherById :teacherId = {}", teacherId);
+
+        Clase clase = new Clase();
+        clase.setClaseTeacherId(teacherId);
+        List<Clase> claseList = claseService.selectClaseListByConditionInOr(clase);
+        if (claseList.size() > 0){
+            throw new CustomException("此教师是相关班级的管理教师,无法删除!");
+        }
+
+        Course course = new Course();
+        course.setCourseTeacherId(teacherId);
+        List<Course> courseList = courseService.selectCourseByConditionInOR(course);
+        if (courseList.size() > 0){
+            throw new CustomException("此教师是相关课程的任课教师,无法删除!");
+        }
 
         int delete = teacherMapper.deleteById(teacherId);
         if (delete > 0) {

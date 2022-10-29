@@ -13,7 +13,7 @@ public interface CourseService {
 
     List<Course> selectCourseList();
 
-    List<Clase> selectCourseByConditionInOR();
+    List<Course> selectCourseByConditionInOR(Course course);
 
     void addCourse(Course course);
 

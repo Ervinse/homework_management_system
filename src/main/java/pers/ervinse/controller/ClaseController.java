@@ -193,4 +193,15 @@ public class ClaseController {
         claseService.updateClase(claseDto);
         return R.getSuccessOperationInstance();
     }
+
+
+
+    @DeleteMapping
+    public R<String> deleteClase(Long claseId){
+        log.info("ClaseController - deleteClase :claseId = {}", claseId);
+
+        claseService.deleteClaseById(claseId);
+        return R.getSuccessOperationInstance();
+
+    }
 }

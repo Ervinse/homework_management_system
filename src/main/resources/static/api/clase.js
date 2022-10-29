@@ -45,8 +45,8 @@ const editClaseAxios = (params) => {
 //删除班级接口
 const deleteClaseAxios = (claseId) => {
     return $axios({
-        url: '../../json/common/success.json',
-        method: 'get',
+        url: '/clase',
+        method: 'delete',
         params: {
             claseId: claseId
         }

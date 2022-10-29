@@ -26,9 +26,6 @@ public class ClaseServiceImpl implements ClaseService {
     private ClaseMapper claseMapper;
 
     @Autowired
-    private ClaseCourseService claseCourseService;
-
-    @Autowired
     private ClaseCourseMapper claseCourseMapper;
 
     @Override
@@ -96,7 +93,7 @@ public class ClaseServiceImpl implements ClaseService {
 
         //添加班级
         int affectClaseRows = claseMapper.insert(claseDto);
-        int affectCourseRows = 0;
+        int affectClaseCourseRows = 0;
 
         //获取班级传输对象中的课程集合
         List<Long> courseIdList = claseDto.getCourseIdList();
@@ -106,13 +103,13 @@ public class ClaseServiceImpl implements ClaseService {
             claseCourse.setClaseId(claseDto.getClaseId());
             claseCourse.setCourseId(courseId);
             //插入ClaseCourse
-            affectCourseRows = claseCourseMapper.insert(claseCourse);
+            affectClaseCourseRows = claseCourseMapper.insert(claseCourse);
         }
 
-        if (affectClaseRows > 0 && affectCourseRows > 0) {
-            log.info("添加班级成功,影响了" + affectClaseRows + "条数据");
+        if (affectClaseRows > 0 && affectClaseCourseRows > 0) {
+            log.info("添加班级成功,影响了" + affectClaseRows + "条Clase数据,影响了" + affectClaseCourseRows + "条claseCourse数据");
         } else {
-            log.error("添加班级失败,影响了" + affectClaseRows + "条数据");
+            log.error("添加班级失败,影响了" + affectClaseRows + "条Clase数据,影响了" + affectClaseCourseRows + "条claseCourse数据");
             throw new CustomException("服务器错误,添加失败!");
         }
 
@@ -127,9 +124,9 @@ public class ClaseServiceImpl implements ClaseService {
     public void updateClase(ClaseDto claseDto) {
         log.info("ClaseService - updateClase : claseDto = {}", claseDto);
 
-        //添加班级
+        //修改班级
         int affectClaseRows = claseMapper.updateById(claseDto);
-        int affectCourseRows = 0;
+        int affectClaseCourseRows = 0;
 
         //添加课程
         //删除班级课程表中和当前班级相关记录
@@ -144,14 +141,37 @@ public class ClaseServiceImpl implements ClaseService {
             claseCourse.setClaseId(claseDto.getClaseId());
             claseCourse.setCourseId(courseId);
             //插入ClaseCourse
-            affectCourseRows = claseCourseMapper.insert(claseCourse);
+            affectClaseCourseRows = claseCourseMapper.insert(claseCourse);
         }
 
-        if (affectClaseRows > 0 && affectCourseRows > 0) {
-            log.info("添加班级成功,影响了" + affectClaseRows + "条数据");
+        if (affectClaseRows > 0 && affectClaseCourseRows > 0) {
+            log.info("修改班级成功,影响了" + affectClaseRows + "条Clase数据,影响了" + affectClaseCourseRows + "条claseCourse数据");
         } else {
-            log.error("添加班级失败,影响了" + affectClaseRows + "条数据");
-            throw new CustomException("服务器错误,添加失败!");
+            log.error("修改班级失败,影响了" + affectClaseRows + "条Clase数据,影响了" + affectClaseCourseRows + "条claseCourse数据");
+            throw new CustomException("服务器错误,编辑失败!");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteClaseById(Long claseId) {
+        log.info("ClaseService - deleteClaseById : claseId = {}", claseId);
+
+        //删除班级
+        int affectClaseRows = claseMapper.deleteById(claseId);
+
+        //添加课程
+        //删除班级课程表中和当前班级相关记录
+        LambdaQueryWrapper<ClaseCourse> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(ClaseCourse::getClaseId, claseId);
+        int affectClaseCourseRows = claseCourseMapper.delete(wrapper);
+
+
+        if (affectClaseRows > 0 && affectClaseCourseRows > 0) {
+            log.info("删除班级成功,影响了" + affectClaseRows + "条Clase数据,影响了" + affectClaseCourseRows + "条claseCourse数据");
+        } else {
+            log.error("删除班级失败,影响了" + affectClaseRows + "条Clase数据,影响了" + affectClaseCourseRows + "条claseCourse数据");
+            throw new CustomException("服务器错误,删除失败!");
         }
     }
 }

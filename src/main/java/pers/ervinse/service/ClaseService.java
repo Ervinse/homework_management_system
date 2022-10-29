@@ -14,6 +14,8 @@ public interface ClaseService {
 
     Clase selectClaseById(Long claseId);
 
+    List<Clase> selectClaseListByConditionInOr(Clase clase);
+
     void addClase(ClaseDto claseDto);
 
     void updateClase(ClaseDto claseDto);

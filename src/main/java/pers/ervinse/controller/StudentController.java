@@ -40,6 +40,30 @@ public class StudentController {
     public R<Page<StudentDto>> getStudentPage(Integer currentPage, Integer pageSize, String searchValue) {
         log.info("StudentController - getStudentPage :currentPage = {},pageSize = {},searchValue = {}", currentPage, pageSize, searchValue);
 
+        String searchValueFormatter = null;
+        //输入值处理标志位
+        boolean searchFlag = false;
+
+        //当输入不为空时,处理输入值
+        if (searchValue != null && !"".equals(searchValue)) {
+            //将输入的班级名转化为班级id
+            Clase claseToSearch = new Clase();
+            claseToSearch.setClaseName(searchValue);
+            List<Clase> claseList = claseService.selectClaseListByConditionInOr(claseToSearch);
+            if (claseList.size() > 0){
+                searchFlag = true;
+                Clase clase = claseList.get(0);
+                System.out.println(clase);
+                searchValueFormatter = String.valueOf(clase.getClaseId());
+            }
+        }
+        //当输入值经过处理后,需要替换处理过的搜索值
+        if (searchFlag) {
+            searchValue = searchValueFormatter;
+        }
+
+
+
         //获取学生分页数据
         Page<Student> studentPage = studentService.selectStudentPage(currentPage, pageSize, searchValue);
 

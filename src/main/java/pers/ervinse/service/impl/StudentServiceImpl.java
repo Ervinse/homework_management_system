@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Student;
 import pers.ervinse.mapper.StudentMapper;
+import pers.ervinse.service.ClaseService;
 import pers.ervinse.service.StudentService;
 
 import java.util.List;
@@ -18,7 +19,8 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService {
 
     @Autowired
-    StudentMapper studentMapper;
+    private StudentMapper studentMapper;
+
 
     /**
      * 根据条件获取学生分页
@@ -58,7 +60,10 @@ public class StudentServiceImpl implements StudentService {
                 .or()
                 .like(StringUtils.isNotEmpty(searchValue), Student::getPhoneNumber, searchValue)
                 .or()
-                .like(searchValueGenderFlag, Student::getStudentGender, searchValueGender);
+                .like(searchValueGenderFlag, Student::getStudentGender, searchValueGender)
+                .or()
+                .like(StringUtils.isNotEmpty(searchValue), Student::getClaseId, searchValue);
+
         //添加排序条件
         wrapper.orderByAsc(Student::getStudentId);
 

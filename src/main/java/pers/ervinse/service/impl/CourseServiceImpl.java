@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Clase;
+import pers.ervinse.domain.ClaseCourse;
 import pers.ervinse.domain.Course;
 import pers.ervinse.mapper.CourseMapper;
+import pers.ervinse.service.ClaseCourseService;
 import pers.ervinse.service.CourseService;
 
 import java.util.List;
@@ -21,6 +23,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseMapper courseMapper;
+
+    @Autowired
+    private ClaseCourseService claseCourseService;
 
     /**
      * 根据条件获取课程分页
@@ -133,6 +138,13 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void deleteCourse(Long courseId) {
         log.info("CourseService - deleteCourse :courseId = {}", courseId);
+
+        ClaseCourse claseCourse = new ClaseCourse();
+        claseCourse.setCourseId(courseId);
+        List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourse);
+        if (claseCourseList.size() > 0){
+            throw new CustomException("有相关班级的课程中含有此课程,无法删除!");
+        }
 
         int affectRows = courseMapper.deleteById(courseId);
         if (affectRows > 0) {

@@ -50,13 +50,13 @@ public class StudentController {
 
         //获取班级列表
         List<Student> studentPageRecords = studentPage.getRecords();
-        //遍历课程列表中的每一个课程对象,获取其对应的课程传输对象,收集为list
+        //遍历学生列表中的每一个学生对象,获取其对应的课程传输对象,收集为list
         List<StudentDto> studentDtoPageRecords = studentPageRecords.stream().map(student -> {
-            //对每一个班级,创建班级传输对象,并将每个班级数据复制到对应的传输对象中
+            //对每一个学生,创建学生传输对象,并将每个学生数据复制到对应的传输对象中
             StudentDto studentDto = new StudentDto();
             BeanUtils.copyProperties(student, studentDto);
 
-            //对每一个班级,根据教师id获取教师对象,并将教师名字添加到传输对象中
+            //对每一个学生,根据班级id获取班级对象,并将班级名字添加到传输对象中
             Clase clase = claseService.selectClaseById(student.getClaseId());
             if (clase == null) {
                 studentDto.setClaseName("未定");
@@ -64,6 +64,8 @@ public class StudentController {
                 studentDto.setClaseName(clase.getClaseName());
             }
 
+            //抹去密码
+            studentDto.setAccountPassword("");
             //返回传输对象
             return studentDto;
         }).collect(Collectors.toList());
@@ -89,6 +91,9 @@ public class StudentController {
         if (student.getClaseId() == null) {
             student.setClaseId(0L);
         }
+
+        //抹去密码
+        student.setAccountPassword("");
 
         return R.getSuccessInstance(student);
     }

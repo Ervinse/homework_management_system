@@ -39,6 +39,28 @@ public class CourseController {
     public R<Page<CourseDto>> getCoursePage(Integer currentPage, Integer pageSize, String searchValue) {
         log.info("CourseController - getCoursePage :currentPage = {},pageSize = {},searchValue = {}", currentPage, pageSize, searchValue);
 
+        String searchValueFormatter = null;
+        //输入值处理标志位
+        boolean searchFlag = false;
+
+        //当输入不为空时,处理输入值
+        if (searchValue != null && !"".equals(searchValue)) {
+            //将输入的教师名转化为教师id
+            Teacher teacherToSearch = new Teacher();
+            teacherToSearch.setTeacherName(searchValue);
+            List<Teacher> teacherList = teacherService.selectTeacherByConditionInOr(teacherToSearch);
+            if (teacherList.size() > 0) {
+                searchFlag = true;
+                Teacher teacher = teacherList.get(0);
+                System.out.println(teacher);
+                searchValueFormatter = String.valueOf(teacher.getTeacherId());
+            }
+        }
+        //当输入值经过处理后,需要替换处理过的搜索值
+        if (searchFlag) {
+            searchValue = searchValueFormatter;
+        }
+
         //查询课程分页
         Page<Course> coursePage = courseService.selectCoursePage(currentPage, pageSize, searchValue);
 

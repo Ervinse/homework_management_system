@@ -53,7 +53,6 @@ public class StudentController {
             if (claseList.size() > 0){
                 searchFlag = true;
                 Clase clase = claseList.get(0);
-                System.out.println(clase);
                 searchValueFormatter = String.valueOf(clase.getClaseId());
             }
         }

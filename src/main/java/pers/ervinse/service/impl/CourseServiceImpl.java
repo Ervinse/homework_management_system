@@ -45,7 +45,9 @@ public class CourseServiceImpl implements CourseService {
                 .or()
                 .like(StringUtils.isNotEmpty(searchValue), Course::getCourseAddress, searchValue)
                 .or()
-                .like(StringUtils.isNotEmpty(searchValue), Course::getCourseDescription, searchValue);
+                .like(StringUtils.isNotEmpty(searchValue), Course::getCourseDescription, searchValue)
+                .or()
+                .like(StringUtils.isNotEmpty(searchValue), Course::getCourseTeacherId, searchValue);
         //添加排序条件
         wrapper.orderByAsc(Course::getCourseId);
 

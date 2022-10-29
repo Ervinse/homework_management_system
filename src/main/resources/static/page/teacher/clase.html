@@ -503,6 +503,7 @@
                         this.form = {
                             claseId: 0,
                             claseName: "",
+                            time: "",
                             timeOfEnrollment: "",
                             claseTeacherId: "",
                             claseTeacherName: "",
@@ -707,13 +708,15 @@
 
                         this.form.claseId = this.tableDetailData.claseId;
                         this.form.claseName = this.tableDetailData.claseName;
-                        this.form.timeOfEnrollment = this.tableDetailData.timeOfEnrollment;
+                        let time = new Date();
+                        time.setFullYear(this.tableDetailData.timeOfEnrollment);
+                        this.form.time = time;
                         this.form.claseTeacherId = this.tableDetailData.claseTeacherId;
                         this.form.claseTeacherName = this.tableDetailData.claseTeacherName;
                         this.form.claseLeaderId = this.tableDetailData.claseLeaderId;
                         this.form.claseLeaderName = this.tableDetailData.claseLeaderName;
                         this.tableDetailData.courseList.forEach((course) => {
-                            this.form.courseList.push(course.courseId);
+                            this.form.courseIdList.push(course.courseId);
                         });
                     },
                     //删除按钮处理函数

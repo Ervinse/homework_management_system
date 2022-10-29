@@ -141,18 +141,18 @@
                             <el-table-column
                                     prop="teacherName"
                                     label="教师姓名"
-                                    width="150">
+                                    >
                             </el-table-column>
                             <el-table-column
                                     prop="accountName"
                                     label="登录账号名"
-                                    width="100">
+                                    >
                             </el-table-column>
                             <el-table-column
                                     prop="teacherGender"
                                     label="教师性别"
                                     :formatter="teacherGenderFormatter"
-                                    width="80">
+                                    width="100">
                             </el-table-column>
                             <el-table-column
                                     prop="accountType"
@@ -165,10 +165,6 @@
                                     label="账号状态"
                                     :formatter="accountStatusFormatter"
                                     width="100">
-                            </el-table-column>
-                            <el-table-column
-                                    prop="clase"
-                                    label="管理班级">
                             </el-table-column>
                             <el-table-column label="操作">
                                 <template slot-scope="scope">
@@ -246,12 +242,6 @@
                                     <el-radio label="2">用户</el-radio>
                                 </el-radio-group>
                             </el-form-item>
-                            <el-form-item label="管理班级" prop="claseList">
-                                <el-checkbox-group v-model="form.claseList">
-                                    <el-checkbox v-for="claseItem in claseList" :label="claseItem.claseName"
-                                                 :value="claseItem.claseId" name="type"></el-checkbox>
-                                </el-checkbox-group>
-                            </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="submitAddForm">提交</el-button>
                                 <el-button @click="resetForm('ruleForm2')">重置</el-button>
@@ -297,12 +287,6 @@
                                     <el-radio label="2">用户</el-radio>
                                 </el-radio-group>
                             </el-form-item>
-                            <el-form-item label="管理班级" prop="claseList">
-                                <el-checkbox-group v-model="form.claseList">
-                                    <el-checkbox v-for="claseItem in claseList" :label="claseItem.claseName"
-                                                 :value="claseItem.claseId" name="type"></el-checkbox>
-                                </el-checkbox-group>
-                            </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="submitEditForm">提交</el-button>
                                 <el-button @click="resetForm('ruleForm2')">重置</el-button>
@@ -334,9 +318,6 @@
             searchValue: "",
             //搜索状态标志位
             searchFlag: false,
-
-            // 选项数据
-            claseList: [],
 
             //页面显示
             //列表页面显示
@@ -370,7 +351,6 @@
                 accountType: "",
                 accountStatus: "1",
                 phoneNumber: "",
-                claseList: []
             },
             tableDetailData: {},
             addRules: {
@@ -396,9 +376,6 @@
                 accountType: [
                     {required: true, message: '请勾选入账号类型', trigger: 'blur'},
                 ],
-                claseList: [
-                    {required: false, message: '请勾选班级', trigger: 'blur'},
-                ],
             },
             editRules: {
                 teacherName: [
@@ -422,9 +399,6 @@
                 ],
                 accountType: [
                     {required: true, message: '勾选入账号类型', trigger: 'blur'},
-                ],
-                claseList: [
-                    {required: false, message: '勾选班级', trigger: 'blur'},
                 ],
             }
 
@@ -512,20 +486,6 @@
             },
 
             //数据请求函数
-            //候选数据函数
-            getClaseList: function () {
-                var vueObj = this;
-                getClaseListAxios().then(
-                    (response) => {
-                        if (response.data.code === 1) {
-                            vueObj.claseList = response.data.data;
-                        } else {
-                            this.$message.error(response.data.msg)
-                        }
-                    }).catch((err) => {
-                    this.$message.error('请求出错了：' + err);
-                })
-            },
             //表格数据函数
             getTeacherPage: function () {
 
@@ -601,7 +561,6 @@
                     accountType: "",
                     accountStatus: "1",
                     phoneNumber: "",
-                    claseList: []
                 }
             },
             // 编辑按钮处理函数
@@ -627,7 +586,6 @@
                 this.form.accountType = this.tableDetailData.accountType;
                 this.form.accountStatus = this.tableDetailData.accountStatus;
                 this.form.phoneNumber = this.tableDetailData.phoneNumber;
-                // this.form.claseList = this.tableDetailData.claseList;
             },
             //删除按钮处理函数
             handleDelete: function (index, row) {
@@ -812,7 +770,6 @@
         mounted() {
             this.$message.success('登录成功');
             this.getTeacherPage();
-            this.getClaseList();
 
             this.isAdmin = this.loginUser.accountType !== "1";
         }

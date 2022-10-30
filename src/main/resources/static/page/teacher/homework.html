@@ -122,7 +122,7 @@
                             <!--输入框开始-->
                             <el-input id="list-search_input"
                                       placeholder="请输入查询内容"
-                                      v-model="homework_search"
+                                      v-model="searchValue"
                                       clearable>
                             </el-input>
                             <!--输入框结束-->
@@ -175,7 +175,7 @@
                                             layout="total , prev, pager, next , jumper"
                                             :total="total"
                                             :page-size="pageSize"
-                                            :current-page="current">
+                                            :current-page="currentPage">
                                     </el-pagination>
                                 </div>
                             </template>
@@ -201,7 +201,6 @@
                                     <el-form-item label="作业描述" prop="homeworkDescription">
                                         <el-input type="textarea" class="input"
                                                   v-model="form.homeworkDescription"></el-input>
-                                    </el-form-item>
                                     </el-form-item>
                                     <el-form-item label="所属班级" prop="claseId">
                                         <el-select v-model="form.claseId" placeholder="请选择所属班级">
@@ -345,7 +344,7 @@
                                                             layout="total , prev, pager, next , jumper"
                                                             :total="total"
                                                             :page-size="pageSize"
-                                                            :current-page="current">
+                                                            :current-page="currentPage">
                                                     </el-pagination>
                                                 </div>
                                             </el-table-column>
@@ -463,7 +462,7 @@
                     //是否是管理员
                     isAdmin: "",
                     //搜索输入框内容
-                    homework_search: "",
+                    searchValue: "",
 
                     // 选项数据
                     teacherList: [],
@@ -500,7 +499,7 @@
                     //分页列表数据
                     total: 0,
                     pageSize: 10,
-                    current: 0,
+                    currentPage: 1,
                     pages: 0,
                     //作业表格数据
                     homeworkTableData: [],
@@ -682,13 +681,13 @@
                     //表格数据函数
                     getHomeworkPage: function () {
                         var vueObj = this;
-                        getHomeworkPageAxios().then(
+                        getHomeworkPageAxios(this.currentPage, this.pageSize, null).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     vueObj.homeworkTableData = response.data.data.records;
                                     vueObj.total = response.data.data.total;
                                     vueObj.pageSize = response.data.data.size;
-                                    vueObj.current = response.data.data.current;
+                                    vueObj.currentPage = response.data.data.current;
                                     vueObj.pages = response.data.data.pages;
                                 } else {
                                     this.$message.error(response.data.msg)
@@ -800,14 +799,14 @@
                     //搜索按钮
                     handleSearch: function () {
                         var vueObj = this;
-                        getHomeworkPageSearchAxios(this.homework_search).then(
+                        getHomeworkPageSearchAxios(this.currentPage, this.pageSize,this.searchValue).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     this.$message.success('搜索成功！共搜索到' + response.data.data.total + '条记录');
                                     vueObj.homeworkTableData = response.data.data.records;
                                     vueObj.total = response.data.data.total;
                                     vueObj.pageSize = response.data.data.size;
-                                    vueObj.current = response.data.data.current;
+                                    vueObj.currentPage = response.data.data.current;
                                     vueObj.pages = response.data.data.pages;
                                 } else {
                                     this.$message.error(response.data.msg)

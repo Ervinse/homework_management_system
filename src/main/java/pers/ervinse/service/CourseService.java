@@ -1,7 +1,6 @@
 package pers.ervinse.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import pers.ervinse.domain.Clase;
 import pers.ervinse.domain.Course;
 
 import java.util.List;

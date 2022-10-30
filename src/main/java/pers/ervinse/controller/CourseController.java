@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import pers.ervinse.Dto.CourseDto;
 import pers.ervinse.common.R;
 import pers.ervinse.domain.Course;
-import pers.ervinse.domain.Student;
 import pers.ervinse.domain.Teacher;
 import pers.ervinse.service.CourseService;
 import pers.ervinse.service.TeacherService;

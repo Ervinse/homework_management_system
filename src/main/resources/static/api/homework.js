@@ -1,10 +1,14 @@
 //表格数据函数
 // 查询作业列表接口
-const getHomeworkPageAxios = (params) => {
+const getHomeworkPageAxios = (currentPage,pageSize,searchValue) => {
     return $axios({
-        url: '../../json/homework/homework_page_success.json',
+        url: '/homework/page',
         method: 'get',
-        params: {params}
+        params:{
+            currentPage: currentPage,
+            pageSize: pageSize,
+            searchValue: searchValue
+        }
     })
 }
 

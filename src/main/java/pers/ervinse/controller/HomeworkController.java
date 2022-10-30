@@ -48,6 +48,65 @@ public class HomeworkController {
         log.info("HomeworkController - getHomeworkPage :currentPage = {},pageSize = {},searchValue = {}", currentPage, pageSize, searchValue);
 
 
+        String searchValueFormatter = null;
+        //输入值处理标志位
+        //第一次搜索标志
+        boolean searchFlag1 = false;
+        //第二次搜素标志
+        boolean searchFlag2 = false;
+
+        //当输入不为空时,处理输入值
+        if (searchValue != null && !"".equals(searchValue)) {
+            //假设搜索值为班级名,搜索班级
+            Clase claseToSearch = new Clase();
+            claseToSearch.setClaseName(searchValue);
+            List<Clase> claseList = claseService.selectClaseListByConditionInOr(claseToSearch);
+            //搜索到班级
+            if (claseList.size() > 0) {
+                searchFlag1 = true;
+                Clase clase = claseList.get(0);
+                log.info("search - clase = {}",clase);
+                //以搜索到的班级id为值,继续搜索班级课程表
+                ClaseCourse claseCourseToSearch = new ClaseCourse();
+                claseCourseToSearch.setClaseId(clase.getClaseId());
+                List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourseToSearch);
+                //搜索到班级课程对象,保存班级课程id
+                if (claseCourseList.size() > 0){
+                    searchFlag2 = true;
+                    ClaseCourse claseCourse = claseCourseList.get(0);
+                    log.info("search - claseCourse = {}",claseCourse);
+                    searchValueFormatter = String.valueOf(claseCourse.getClaseCourseId());
+                }
+            }
+
+            //假设搜索值为课程名,搜索课程
+            Course courseToSearch = new Course();
+            courseToSearch.setCourseName(searchValue);
+            List<Course> courseList = courseService.selectCourseByConditionInOR(courseToSearch);
+            //搜素到课程
+            if (courseList.size() > 0){
+                searchFlag1 = true;
+                Course course = courseList.get(0);
+                log.info("search - course = {}",course);
+                //以搜索到的课程id为值,继续搜索班级课程表
+                ClaseCourse claseCourseToSearch = new ClaseCourse();
+                claseCourseToSearch.setCourseId(course.getCourseId());
+                List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourseToSearch);
+                //搜索到班级课程对象,保存班级课程id
+                if (claseCourseList.size() > 0){
+                    searchFlag2 = true;
+                    ClaseCourse claseCourse = claseCourseList.get(0);
+                    log.info("search - claseCourse = {}",claseCourse);
+                    searchValueFormatter = String.valueOf(claseCourse.getClaseCourseId());
+                }
+            }
+        }
+        //当输入值经过处理后,需要替换处理过的搜索值
+        if (searchFlag1 && searchFlag2) {
+            searchValue = searchValueFormatter;
+        }
+
+
         Page<Homework> homeworkPage = homeworkService.selectHomeworkPage(currentPage, pageSize, searchValue);
 
         //创建作业传输分页,获取作业分页中的分页数据

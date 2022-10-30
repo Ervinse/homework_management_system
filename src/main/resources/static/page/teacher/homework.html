@@ -799,7 +799,7 @@
                     //搜索按钮
                     handleSearch: function () {
                         var vueObj = this;
-                        getHomeworkPageSearchAxios(this.currentPage, this.pageSize,this.searchValue).then(
+                        getHomeworkPageAxios(this.currentPage, this.pageSize,this.searchValue).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     this.$message.success('搜索成功！共搜索到' + response.data.data.total + '条记录');

@@ -30,7 +30,9 @@ public class HomeworkServiceImpl implements HomeworkService {
         //过滤条件:实体类对应字段 == 变量
         wrapper.like(StringUtils.isNotEmpty(searchValue), Homework::getHomeworkName, searchValue)
                 .or()
-                .like(StringUtils.isNotEmpty(searchValue), Homework::getHomeworkDescription, searchValue);
+                .like(StringUtils.isNotEmpty(searchValue), Homework::getHomeworkDescription, searchValue)
+                .or()
+                .eq(StringUtils.isNotEmpty(searchValue), Homework::getClaseCourseId, searchValue);
         //添加排序条件
         wrapper.orderByAsc(Homework::getHomeworkId);
 

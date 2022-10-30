@@ -18,5 +18,5 @@ public class Homework implements Serializable {
     //作业描述
     private String homeworkDescription;
     //班级课程id
-    private String classCourseId;
+    private Long claseCourseId;
 }

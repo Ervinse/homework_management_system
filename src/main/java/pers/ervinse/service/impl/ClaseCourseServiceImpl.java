@@ -18,6 +18,18 @@ public class ClaseCourseServiceImpl implements ClaseCourseService {
     private ClaseCourseMapper claseCourseMapper;
 
     /**
+     * 根据id获取班级课程对象
+     * @param claseCourseId 班级课程id
+     * @return 班级课程id
+     */
+    @Override
+    public ClaseCourse selectClaseCourseById(Long claseCourseId){
+        log.info("ClaseCourseService - selectClaseCourseById : claseCourseId = {}", claseCourseId);
+
+        return claseCourseMapper.selectById(claseCourseId);
+    }
+
+    /**
      * 根据条件查询班级课程对象
      *
      * @param claseCourse 含有查询条件的班级课程对象

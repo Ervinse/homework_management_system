@@ -287,8 +287,8 @@
                                         <div class="demo-image__preview">
                                             <el-image
                                                     style="width: 100px; height: 100px"
-                                                    v-for="image in homeworkDetailData.images"
-                                                    :src="'../../imageItem/' + image.url"
+                                                    v-for="image in homeworkDetailData.imageUploadNameList"
+                                                    :src="getImage(image)"
                                                     :preview-src-list="imagePreviewSrcList">
                                             </el-image>
                                         </div>
@@ -716,7 +716,7 @@
                     //图片处理函数
                     //处理图片大图预览
                     handleImagePreviewSrcList: function () {
-                        this.homeworkDetailData.images.forEach((image) => {
+                        this.homeworkDetailData.imageUploadNameList.forEach((image) => {
                             this.imagePreviewSrcList.push('../../imageItem/' + image.url);
                         });
                     },
@@ -973,7 +973,9 @@
                         return flag;
                     },
 
-
+                    getImage (image) {
+                        return `/common/downloadImage?name=${image}`
+                    },
                     //图片上传成功回调函数
                     handleAvatarSuccess: function (response) {
                         if (response.code === 1) {

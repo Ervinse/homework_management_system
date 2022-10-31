@@ -13,12 +13,12 @@ const getHomeworkPageAxios = (currentPage,pageSize,searchValue) => {
 }
 
 // 查询作业详情接口
-const getHomeworkDetailAxios = (claseId) => {
+const getHomeworkDetailAxios = (homeworkId) => {
     return $axios({
-        url: '../../json/homework/homework_select_success.json',
+        url: '/homework',
         method: 'get',
         params: {
-            claseId: claseId
+            homeworkId: homeworkId
         }
     })
 }

@@ -9,7 +9,11 @@ import java.util.List;
 public interface HomeworkService {
     Page<Homework> selectHomeworkPage(int currentPage, int pageSize, String searchValue);
 
+
+    Homework selectHomeworkById(Long homeworkId);
+
     void addHomework(HomeworkDto homeworkDto);
 
     List<Homework> selectHomeworkListByConditionInAnd(Homework homework);
+
 }

@@ -60,6 +60,37 @@ public class HomeworkServiceImpl implements HomeworkService {
         return page;
     }
 
+    @Override
+    public Homework selectHomeworkById(Long homeworkId) {
+        log.info("HomeworkService - selectHomeworkListByConditionInAnd :homeworkId = {}", homeworkId);
+
+        return homeworkMapper.selectById(homeworkId);
+    }
+
+    /**
+     * 根据条件查询作业列表
+     * @param homework 查询的作业条件
+     * @return 查询到的作业列表
+     */
+    @Override
+    public List<Homework> selectHomeworkListByConditionInAnd(Homework homework){
+        log.info("HomeworkService - selectHomeworkListByConditionInAnd :homework = {}", homework);
+
+        //创建条件构造器
+        LambdaQueryWrapper<Homework> wrapper = new LambdaQueryWrapper<>();
+        //添加过滤条件
+        //成立条件:name值不为空时过滤条件成立
+        //过滤条件:实体类对应字段 == 变量
+        wrapper.eq(homework.getHomeworkId() != null, Homework::getHomeworkId, homework.getHomeworkId())
+                .eq(StringUtils.isNotEmpty(homework.getHomeworkName()), Homework::getHomeworkName, homework.getHomeworkName())
+                .eq(StringUtils.isNotEmpty(homework.getHomeworkDescription()), Homework::getHomeworkDescription, homework.getHomeworkDescription());
+
+        return homeworkMapper.selectList(wrapper);
+    }
+
+
+
+
     /**
      * 添加作业
      * @param homeworkDto 含有作业信息和图片信息的作业传输类
@@ -99,24 +130,5 @@ public class HomeworkServiceImpl implements HomeworkService {
         log.info("添加学生成功,影响了" + affectRows + "条数据");
     }
 
-    /**
-     * 根据条件查询作业列表
-     * @param homework 查询的作业条件
-     * @return 查询到的作业列表
-     */
-    @Override
-    public List<Homework> selectHomeworkListByConditionInAnd(Homework homework){
-        log.info("HomeworkService - selectHomeworkListByConditionInAnd :homework = {}", homework);
 
-        //创建条件构造器
-        LambdaQueryWrapper<Homework> wrapper = new LambdaQueryWrapper<>();
-        //添加过滤条件
-        //成立条件:name值不为空时过滤条件成立
-        //过滤条件:实体类对应字段 == 变量
-        wrapper.eq(homework.getHomeworkId() != null, Homework::getHomeworkId, homework.getHomeworkId())
-                .eq(StringUtils.isNotEmpty(homework.getHomeworkName()), Homework::getHomeworkName, homework.getHomeworkName())
-                .eq(StringUtils.isNotEmpty(homework.getHomeworkDescription()), Homework::getHomeworkDescription, homework.getHomeworkDescription());
-
-        return homeworkMapper.selectList(wrapper);
-    }
 }

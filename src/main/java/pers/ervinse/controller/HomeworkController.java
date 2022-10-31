@@ -9,10 +9,7 @@ import pers.ervinse.Dto.HomeworkDto;
 import pers.ervinse.common.CustomException;
 import pers.ervinse.common.R;
 import pers.ervinse.domain.*;
-import pers.ervinse.service.ClaseCourseService;
-import pers.ervinse.service.ClaseService;
-import pers.ervinse.service.CourseService;
-import pers.ervinse.service.HomeworkService;
+import pers.ervinse.service.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +30,9 @@ public class HomeworkController {
 
     @Autowired
     private ClaseCourseService claseCourseService;
+
+    @Autowired
+    private ImageService imageService;
 
     /**
      * 根据条件获取作业分页
@@ -139,8 +139,27 @@ public class HomeworkController {
         return R.getSuccessInstance(homeworkDtoPage);
     }
 
+    @GetMapping
+    public R<HomeworkDto> getHomeworkById(Long homeworkId) {
+        log.info("HomeworkController - getHomeworkById :homeworkId = {}", homeworkId);
+
+        Homework homework = homeworkService.selectHomeworkById(homeworkId);
+        Image imageToSearch = new Image();
+        imageToSearch.setReferenceId(homeworkId);
+        List<Image> imageList = imageService.selectImageListByConditionInOr(imageToSearch);
+        List<String> imageNameList = imageList.stream().map(image -> {
+            String imageName = image.getImageName();
+            return imageName;
+        }).collect(Collectors.toList());
+        HomeworkDto homeworkDto = new HomeworkDto();
+        BeanUtils.copyProperties(homework,homeworkDto);
+        homeworkDto.setImageUploadNameList(imageNameList);
+        return R.getSuccessInstance(homeworkDto);
+    }
+
     /**
      * 添加作业
+     *
      * @param homeworkDto 含有作业信息和图片信息的作业传输类
      * @return 添加结果
      */

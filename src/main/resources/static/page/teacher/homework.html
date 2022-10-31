@@ -717,7 +717,7 @@
                     //处理图片大图预览
                     handleImagePreviewSrcList: function () {
                         this.homeworkDetailData.imageUploadNameList.forEach((image) => {
-                            this.imagePreviewSrcList.push('../../imageItem/' + image.url);
+                            this.imagePreviewSrcList.push('/common/downloadImage?name=' + image);
                         });
                     },
                     //页面跳转函数
@@ -973,6 +973,7 @@
                         return flag;
                     },
 
+                    //获取服务器图片
                     getImage (image) {
                         return `/common/downloadImage?name=${image}`
                     },

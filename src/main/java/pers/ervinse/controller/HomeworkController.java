@@ -139,6 +139,11 @@ public class HomeworkController {
         return R.getSuccessInstance(homeworkDtoPage);
     }
 
+    /**
+     * 添加作业
+     * @param homeworkDto 含有作业信息和图片信息的作业传输类
+     * @return 添加结果
+     */
     @PostMapping
     public R<String> addHomework(@RequestBody HomeworkDto homeworkDto) {
         log.info("HomeworkController - addHomework :homeworkDto = {}", homeworkDto);

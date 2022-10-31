@@ -10,8 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import pers.ervinse.Dto.HomeworkDto;
 import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Homework;
+import pers.ervinse.domain.Image;
 import pers.ervinse.mapper.HomeworkMapper;
+import pers.ervinse.mapper.ImageMapper;
 import pers.ervinse.service.HomeworkService;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -20,6 +24,16 @@ public class HomeworkServiceImpl implements HomeworkService {
     @Autowired
     private HomeworkMapper homeworkMapper;
 
+    @Autowired
+    private ImageMapper imageMapper;
+
+    /**
+     * 获取作业分页列表
+     * @param currentPage 当前页数
+     * @param pageSize 每页条目数
+     * @param searchValue 搜素值
+     * @return 作业传输分页
+     */
     @Override
     public Page<Homework> selectHomeworkPage(int currentPage, int pageSize, String searchValue) {
         log.info("HomeworkService - selectHomeworkPage :currentPage = {},pageSize = {},searchValue = {}", currentPage, pageSize, searchValue);
@@ -46,10 +60,14 @@ public class HomeworkServiceImpl implements HomeworkService {
         return page;
     }
 
+    /**
+     * 添加作业
+     * @param homeworkDto 含有作业信息和图片信息的作业传输类
+     */
     @Override
     @Transactional
     public void addHomework(HomeworkDto homeworkDto) {
-        log.info("HomeworkService - addHomework :homeworkDto = {}",homeworkDto);
+        log.info("HomeworkService - addHomework :homeworkDto = {}", homeworkDto);
 
         //将作业传输对象转换为作业对象,插入数据库
         Homework homeworkToInsert = new Homework();
@@ -57,12 +75,48 @@ public class HomeworkServiceImpl implements HomeworkService {
         homeworkToInsert.setHomeworkDescription(homeworkDto.getHomeworkDescription());
         homeworkToInsert.setClaseCourseId(homeworkDto.getClaseCourseId());
         int affectRows = homeworkMapper.insert(homeworkToInsert);
-
+        //获取刚插入作业的作业id
         if (affectRows > 0) {
-            log.info("添加学生成功,影响了" + affectRows + "条数据");
-        } else {
-            log.error("添加学生失败,影响了" + affectRows + "条数据");
+            List<Homework> homeworkList = selectHomeworkListByConditionInAnd(homeworkToInsert);
+            if (homeworkList.size() > 0){
+                Homework homework = homeworkList.get(0);
+                homeworkDto.setHomeworkId(homework.getHomeworkId());
+            }else {
+                throw new CustomException("服务器错误,添加失败!");
+            }
+        }else {
             throw new CustomException("服务器错误,添加失败!");
         }
+        //将每一个图片插入图片表
+        List<String> imageUploadNameList = homeworkDto.getImageUploadNameList();
+        for (String imageUploadName : imageUploadNameList) {
+            Image image = new Image();
+            image.setReferenceId(homeworkDto.getHomeworkId());
+            image.setImageName(imageUploadName);
+            imageMapper.insert(image);
+        }
+
+        log.info("添加学生成功,影响了" + affectRows + "条数据");
+    }
+
+    /**
+     * 根据条件查询作业列表
+     * @param homework 查询的作业条件
+     * @return 查询到的作业列表
+     */
+    @Override
+    public List<Homework> selectHomeworkListByConditionInAnd(Homework homework){
+        log.info("HomeworkService - selectHomeworkListByConditionInAnd :homework = {}", homework);
+
+        //创建条件构造器
+        LambdaQueryWrapper<Homework> wrapper = new LambdaQueryWrapper<>();
+        //添加过滤条件
+        //成立条件:name值不为空时过滤条件成立
+        //过滤条件:实体类对应字段 == 变量
+        wrapper.eq(homework.getHomeworkId() != null, Homework::getHomeworkId, homework.getHomeworkId())
+                .eq(StringUtils.isNotEmpty(homework.getHomeworkName()), Homework::getHomeworkName, homework.getHomeworkName())
+                .eq(StringUtils.isNotEmpty(homework.getHomeworkDescription()), Homework::getHomeworkDescription, homework.getHomeworkDescription());
+
+        return homeworkMapper.selectList(wrapper);
     }
 }

@@ -4,10 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pers.ervinse.Dto.HomeworkDto;
+import pers.ervinse.common.CustomException;
 import pers.ervinse.common.R;
 import pers.ervinse.domain.*;
 import pers.ervinse.service.ClaseCourseService;
@@ -65,16 +64,16 @@ public class HomeworkController {
             if (claseList.size() > 0) {
                 searchFlag1 = true;
                 Clase clase = claseList.get(0);
-                log.info("search - clase = {}",clase);
+                log.info("search - clase = {}", clase);
                 //以搜索到的班级id为值,继续搜索班级课程表
                 ClaseCourse claseCourseToSearch = new ClaseCourse();
                 claseCourseToSearch.setClaseId(clase.getClaseId());
                 List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourseToSearch);
                 //搜索到班级课程对象,保存班级课程id
-                if (claseCourseList.size() > 0){
+                if (claseCourseList.size() > 0) {
                     searchFlag2 = true;
                     ClaseCourse claseCourse = claseCourseList.get(0);
-                    log.info("search - claseCourse = {}",claseCourse);
+                    log.info("search - claseCourse = {}", claseCourse);
                     searchValueFormatter = String.valueOf(claseCourse.getClaseCourseId());
                 }
             }
@@ -84,19 +83,19 @@ public class HomeworkController {
             courseToSearch.setCourseName(searchValue);
             List<Course> courseList = courseService.selectCourseByConditionInOR(courseToSearch);
             //搜素到课程
-            if (courseList.size() > 0){
+            if (courseList.size() > 0) {
                 searchFlag1 = true;
                 Course course = courseList.get(0);
-                log.info("search - course = {}",course);
+                log.info("search - course = {}", course);
                 //以搜索到的课程id为值,继续搜索班级课程表
                 ClaseCourse claseCourseToSearch = new ClaseCourse();
                 claseCourseToSearch.setCourseId(course.getCourseId());
                 List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourseToSearch);
                 //搜索到班级课程对象,保存班级课程id
-                if (claseCourseList.size() > 0){
+                if (claseCourseList.size() > 0) {
                     searchFlag2 = true;
                     ClaseCourse claseCourse = claseCourseList.get(0);
-                    log.info("search - claseCourse = {}",claseCourse);
+                    log.info("search - claseCourse = {}", claseCourse);
                     searchValueFormatter = String.valueOf(claseCourse.getClaseCourseId());
                 }
             }
@@ -138,6 +137,24 @@ public class HomeworkController {
         homeworkDtoPage.setRecords(homeworkDtoPageRecords);
 
         return R.getSuccessInstance(homeworkDtoPage);
+    }
+
+    @PostMapping
+    public R<String> addHomework(@RequestBody HomeworkDto homeworkDto) {
+        log.info("HomeworkController - addHomework :homeworkDto = {}", homeworkDto);
+
+        ClaseCourse claseCourse = new ClaseCourse();
+        claseCourse.setCourseId(homeworkDto.getCourseId());
+        claseCourse.setClaseId(homeworkDto.getClaseId());
+        List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourse);
+        if (claseCourseList.size() > 0) {
+            homeworkDto.setClaseCourseId(claseCourseList.get(0).getClaseCourseId());
+        } else {
+            throw new CustomException("该班级没有此课程,请重试!");
+        }
+        homeworkService.addHomework(homeworkDto);
+
+        return R.getSuccessOperationInstance();
     }
 
 }

@@ -60,7 +60,7 @@ const getHomeworkPageSearchAxios = (params) => {
 //添加作业接口
 const addHomeworkAxios = (params) => {
     return $axios({
-        url: '../../json/common/success.json',
+        url: '/homework',
         method: 'post',
         data: { ...params }
     })

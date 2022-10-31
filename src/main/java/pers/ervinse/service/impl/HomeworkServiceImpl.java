@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pers.ervinse.Dto.HomeworkDto;
+import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Homework;
 import pers.ervinse.mapper.HomeworkMapper;
 import pers.ervinse.service.HomeworkService;
@@ -41,5 +44,25 @@ public class HomeworkServiceImpl implements HomeworkService {
         log.info("page信息:current = {},pages = {},size = {},total = {},records = {}", page.getCurrent(), page.getPages(), page.getSize(), page.getTotal(), page.getRecords());
 
         return page;
+    }
+
+    @Override
+    @Transactional
+    public void addHomework(HomeworkDto homeworkDto) {
+        log.info("HomeworkService - addHomework :homeworkDto = {}",homeworkDto);
+
+        //将作业传输对象转换为作业对象,插入数据库
+        Homework homeworkToInsert = new Homework();
+        homeworkToInsert.setHomeworkName(homeworkDto.getHomeworkName());
+        homeworkToInsert.setHomeworkDescription(homeworkDto.getHomeworkDescription());
+        homeworkToInsert.setClaseCourseId(homeworkDto.getClaseCourseId());
+        int affectRows = homeworkMapper.insert(homeworkToInsert);
+
+        if (affectRows > 0) {
+            log.info("添加学生成功,影响了" + affectRows + "条数据");
+        } else {
+            log.error("添加学生失败,影响了" + affectRows + "条数据");
+            throw new CustomException("服务器错误,添加失败!");
+        }
     }
 }

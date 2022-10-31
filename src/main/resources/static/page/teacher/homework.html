@@ -977,7 +977,7 @@
                     //图片上传成功回调函数
                     handleAvatarSuccess: function (response) {
                         if (response.code === 1) {
-                            this.form.imageUploadNameList.push(response.data.imageName);
+                            this.form.imageUploadNameList.push(response.data);
                         } else {
                             this.$message.error(response.msg)
                         }

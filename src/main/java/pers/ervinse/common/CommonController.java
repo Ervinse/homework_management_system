@@ -30,7 +30,7 @@ public class CommonController {
      * @param file 上传的图片
      * @return 含有图片新文件名的响应
      */
-    @PostMapping("/upload")
+    @PostMapping("/uploadImage")
     public R<String> uploadImage(MultipartFile file){
         log.info("CommonController - upload : file = {}", file.toString());
 
@@ -68,8 +68,8 @@ public class CommonController {
      * @param name 图片文件名
      * @param response 响应
      */
-    @GetMapping("/download")
-    public void downloadImage(String name, HttpServletResponse response){
+    @GetMapping("/downloadImage")
+    public void downloadImage(String name, HttpServletResponse response) throws RuntimeException {
 
         FileInputStream fileInputStream = null;
         ServletOutputStream servletOutputStream = null;

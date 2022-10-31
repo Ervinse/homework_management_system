@@ -33,7 +33,7 @@ const getCourseListAxios = () => {
 
 //图片相关接口
 //图片上传接口
-const imageUploadUrl = '../../json/common/image_success.json';
+const imageUploadUrl = '/common/uploadImage';
 //文件上传接口
 const fileUploadUrl = '../../json/common/file_success.json';
 

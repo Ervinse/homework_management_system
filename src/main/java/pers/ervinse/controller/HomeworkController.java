@@ -81,8 +81,9 @@ public class HomeworkController {
                 }
             }
 
-            //假设搜索值为课程名,搜索课程
+            //假设搜索值为课程名或课程id(前端根据课程id查询),搜索课程
             Course courseToSearch = new Course();
+            courseToSearch.setCourseId(Long.valueOf(searchValue));
             courseToSearch.setCourseName(searchValue);
             List<Course> courseList = courseService.selectCourseByConditionInOR(courseToSearch);
             //搜素到课程
@@ -102,6 +103,7 @@ public class HomeworkController {
                     searchValueFormatter = String.valueOf(claseCourse.getClaseCourseId());
                 }
             }
+
         }
         //当输入值经过处理后,需要替换处理过的搜索值
         if (searchFlag1 && searchFlag2) {

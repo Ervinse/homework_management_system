@@ -1,5 +1,7 @@
 package pers.ervinse.domain;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
@@ -19,6 +21,7 @@ public class HomeworkAnswer implements Serializable {
 
     private int homeworkRate;
 
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
     private Long homeworkId;

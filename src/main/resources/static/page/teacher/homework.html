@@ -839,11 +839,7 @@
                         await getHomeworkAnswerPageAxios(row.homeworkId).then(
                             (response) => {
                                 if (response.data.code === 1) {
-                                    vueObj.homeworkAnswerTableData = response.data.data.records;
-                                    vueObj.total = response.data.data.total;
-                                    vueObj.pageSize = response.data.data.size;
-                                    vueObj.current = response.data.data.current;
-                                    vueObj.pages = response.data.data.pages;
+                                    vueObj.homeworkAnswerTableData = response.data.data;
                                 } else {
                                     this.$message.error(response.data.msg)
                                 }

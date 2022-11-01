@@ -26,7 +26,7 @@ const getHomeworkDetailAxios = (homeworkId) => {
 // 查询作业答案列表接口
 const getHomeworkAnswerPageAxios = (homeworkId) => {
     return $axios({
-        url: '../../json/homeworkAnswer/homeworkAnswer_page_success.json',
+        url: '/homeworkAnswer/list',
         method: 'get',
         params: {
             homeworkId: homeworkId

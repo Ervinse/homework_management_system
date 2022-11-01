@@ -90,7 +90,6 @@ public class HomeworkServiceImpl implements HomeworkService {
 
 
 
-
     /**
      * 添加作业
      * @param homeworkDto 含有作业信息和图片信息的作业传输类
@@ -130,5 +129,28 @@ public class HomeworkServiceImpl implements HomeworkService {
         log.info("添加学生成功,影响了" + affectRows + "条数据");
     }
 
+    /**
+     * 根据作业id删除作业,对应的图片
+     * @param homeworkId 作业id
+     */
+    @Override
+    @Transactional
+    public List<Image> deleteHomework(Long homeworkId) {
+        log.info("HomeworkService - deleteImage :homeworkId = {}", homeworkId);
 
+        LambdaQueryWrapper<Image> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq( Image::getReferenceId, homeworkId);
+        List<Image> imageList = imageMapper.selectList(wrapper);
+        imageMapper.delete(wrapper);
+        int affectRows = homeworkMapper.deleteById(homeworkId);
+
+        if (affectRows > 0) {
+            log.info("删除作业成功,影响了" + affectRows + "条数据");
+        } else {
+            log.error("删除作业失败,影响了" + affectRows + "条数据");
+            throw new CustomException("服务器错误,删除失败!");
+        }
+
+        return imageList;
+    }
 }

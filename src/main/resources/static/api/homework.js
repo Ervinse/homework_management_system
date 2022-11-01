@@ -69,7 +69,7 @@ const addHomeworkAxios = (params) => {
 //删除作业接口
 const deleteHomeworkAxios = (homeworkId) => {
     return $axios({
-        url: '../../json/common/success.json',
+        url: '/homework',
         method: 'delete',
         params: {
             homeworkId: homeworkId

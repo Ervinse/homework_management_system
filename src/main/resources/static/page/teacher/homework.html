@@ -887,8 +887,24 @@
                             deleteHomeworkAxios(row.homeworkId).then(
                                 res => {
                                     if (res.data.code === 1) {
-                                        this.$message.success('删除成功！')
-                                        this.getHomeworkPage()
+                                        var imageList = [];
+                                        imageList = res.data.data;
+
+                                        let imageDeleteFlage = true;
+                                        imageList.forEach(image => {
+                                            removeImageAxios(image).then(
+                                                res => {
+                                                    if (res.data.code !== 1){
+                                                        imageDeleteFlage = false;
+                                                    }
+                                                }
+                                            )
+                                        })
+
+                                        if (imageDeleteFlage){
+                                            this.$message.success('删除成功！');
+                                        }
+                                        this.getHomeworkPage();
                                     } else {
                                         this.$message.error(res.data.msg)
                                     }

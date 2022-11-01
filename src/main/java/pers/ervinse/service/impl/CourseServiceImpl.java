@@ -164,7 +164,7 @@ public class CourseServiceImpl implements CourseService {
             log.info("删除课程成功,影响了" + affectRows + "条数据");
         } else {
             log.error("删除课程失败,影响了" + affectRows + "条数据");
-            throw new CustomException("服务器错误,添加失败!");
+            throw new CustomException("服务器错误,删除失败!");
         }
     }
 }

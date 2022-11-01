@@ -152,7 +152,7 @@ public class HomeworkController {
             return imageName;
         }).collect(Collectors.toList());
         HomeworkDto homeworkDto = new HomeworkDto();
-        BeanUtils.copyProperties(homework,homeworkDto);
+        BeanUtils.copyProperties(homework, homeworkDto);
         homeworkDto.setImageUploadNameList(imageNameList);
         return R.getSuccessInstance(homeworkDto);
     }
@@ -179,6 +179,22 @@ public class HomeworkController {
         homeworkService.addHomework(homeworkDto);
 
         return R.getSuccessOperationInstance();
+    }
+
+
+    /**
+     * 根据作业id删除作业
+     * @param homeworkId 作业id
+     * @return 删除的作业所对应的图片名结合
+     */
+    @DeleteMapping
+    public R<List<String>> deleteHomework(Long homeworkId) {
+        log.info("HomeworkController - deleteHomework :homeworkId = {}", homeworkId);
+
+        List<Image> imageList = homeworkService.deleteHomework(homeworkId);
+        List<String> imageNameList = imageList.stream().map(Image::getImageName).collect(Collectors.toList());
+
+        return R.getSuccessInstance(imageNameList);
     }
 
 }

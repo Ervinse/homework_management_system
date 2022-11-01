@@ -51,7 +51,7 @@ const removeImageAxios = (imageName) => {
 //移除文件接口
 const removeFileAxios = (fileName) => {
     return $axios({
-        url: '/common/deleteImage',
+        url: '/common/deleteFile',
         method: 'delete',
         params: {
             fileName: fileName

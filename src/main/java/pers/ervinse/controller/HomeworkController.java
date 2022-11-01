@@ -34,6 +34,9 @@ public class HomeworkController {
     @Autowired
     private ImageService imageService;
 
+    @Autowired
+    private TeacherService teacherService;
+
     /**
      * 根据条件获取作业分页
      *
@@ -139,21 +142,47 @@ public class HomeworkController {
         return R.getSuccessInstance(homeworkDtoPage);
     }
 
+    /**
+     * 根据作业id获取作业详情
+     * @param homeworkId 作业id
+     * @return 作业详情传输类
+     */
     @GetMapping
     public R<HomeworkDto> getHomeworkById(Long homeworkId) {
         log.info("HomeworkController - getHomeworkById :homeworkId = {}", homeworkId);
 
+        //获取作业对象
         Homework homework = homeworkService.selectHomeworkById(homeworkId);
+
+        //获取课程作业对象
+        ClaseCourse claseCourse = new ClaseCourse();
+        claseCourse.setClaseCourseId(homework.getClaseCourseId());
+        List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourse);
+        if (claseCourseList.size() > 0){
+            ClaseCourse claseCourseBySearch = claseCourseList.get(0);
+            claseCourse.setCourseId(claseCourseBySearch.getCourseId());
+            claseCourse.setClaseId(claseCourseBySearch.getClaseId());
+        }
+
+        //根据课程作业中的班级id和课程id获取班级对象和课程对象
+        Clase claseBySearch = claseService.selectClaseById(claseCourse.getClaseId());
+        Course courseBySearch = courseService.selectCourseById(claseCourse.getCourseId());
+        //根据查询到的课程对象中的任课教师id查询教师对象
+        Teacher teacherBySearch = teacherService.selectTeacherById(courseBySearch.getCourseTeacherId());
+
+        //查询作业对应的图片名
         Image imageToSearch = new Image();
         imageToSearch.setReferenceId(homeworkId);
         List<Image> imageList = imageService.selectImageListByConditionInOr(imageToSearch);
-        List<String> imageNameList = imageList.stream().map(image -> {
-            String imageName = image.getImageName();
-            return imageName;
-        }).collect(Collectors.toList());
+        List<String> imageNameList = imageList.stream().map(Image::getImageName).collect(Collectors.toList());
+
+        //创建作业传输对象,设置图片名,班级名,课程名,任课教师名
         HomeworkDto homeworkDto = new HomeworkDto();
         BeanUtils.copyProperties(homework, homeworkDto);
         homeworkDto.setImageUploadNameList(imageNameList);
+        homeworkDto.setClaseName(claseBySearch.getClaseName());
+        homeworkDto.setCourseName(courseBySearch.getCourseName());
+        homeworkDto.setClaseTeacherName(teacherBySearch.getTeacherName());
         return R.getSuccessInstance(homeworkDto);
     }
 

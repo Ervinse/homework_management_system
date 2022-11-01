@@ -13,6 +13,8 @@ public class HomeworkDto extends Homework {
     private String claseName;
     private Long courseId;
     private String courseName;
+
+    private String claseTeacherName;
     private List<String> imageUploadNameList;
 
     @Override
@@ -21,12 +23,12 @@ public class HomeworkDto extends Homework {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         HomeworkDto that = (HomeworkDto) o;
-        return Objects.equals(claseId, that.claseId) && Objects.equals(claseName, that.claseName) && Objects.equals(courseId, that.courseId) && Objects.equals(courseName, that.courseName) && Objects.equals(imageUploadNameList, that.imageUploadNameList);
+        return Objects.equals(claseId, that.claseId) && Objects.equals(claseName, that.claseName) && Objects.equals(courseId, that.courseId) && Objects.equals(courseName, that.courseName) && Objects.equals(claseTeacherName, that.claseTeacherName) && Objects.equals(imageUploadNameList, that.imageUploadNameList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), claseId, claseName, courseId, courseName, imageUploadNameList);
+        return Objects.hash(super.hashCode(), claseId, claseName, courseId, courseName, claseTeacherName, imageUploadNameList);
     }
 
     @Override
@@ -36,6 +38,7 @@ public class HomeworkDto extends Homework {
                 ", claseName='" + claseName + '\'' +
                 ", courseId=" + courseId +
                 ", courseName='" + courseName + '\'' +
+                ", claseTeacherName='" + claseTeacherName + '\'' +
                 ", imageUploadNameList=" + imageUploadNameList +
                 "} " + super.toString();
     }

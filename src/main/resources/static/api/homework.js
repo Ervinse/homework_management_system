@@ -46,15 +46,6 @@ const getHomeworkAnswerDetailAxios = (homeworkAnswerId) => {
 }
 
 
-// 查询班级搜索列表接口
-const getHomeworkPageSearchAxios = (params) => {
-    return $axios({
-        url: '../../json/homework/homework_page_search_success.json',
-        method: 'get',
-        params: {params}
-    })
-}
-
 
 //操作接口
 //添加作业接口

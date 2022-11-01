@@ -38,21 +38,21 @@ const imageUploadUrl = '/common/uploadImage';
 const fileUploadUrl = '../../json/common/file_success.json';
 
 //移除图片接口
-const removeImageAxios = (fileName) => {
+const removeImageAxios = (imageName) => {
     return $axios({
-        url: '../../json/common/success.json',
-        method: 'get',
+        url: '/common/deleteImage',
+        method: 'delete',
         params: {
-            fileName: fileName
+            imageName: imageName
         }
     })
 }
 
-//移除图片接口
+//移除文件接口
 const removeFileAxios = (fileName) => {
     return $axios({
-        url: '../../json/common/success.json',
-        method: 'get',
+        url: '/common/deleteImage',
+        method: 'delete',
         params: {
             fileName: fileName
         }

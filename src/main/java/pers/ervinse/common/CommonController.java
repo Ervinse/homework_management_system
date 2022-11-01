@@ -2,10 +2,7 @@ package pers.ervinse.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
@@ -27,11 +24,12 @@ public class CommonController {
 
     /**
      * 接收上传图片,并将图片转存到对应的路径中
+     *
      * @param file 上传的图片
      * @return 含有图片新文件名的响应
      */
     @PostMapping("/uploadImage")
-    public R<String> uploadImage(MultipartFile file){
+    public R<String> uploadImage(MultipartFile file) {
         log.info("CommonController - upload : file = {}", file.toString());
 
         //通过上传图片的原始文件名获取文件后缀
@@ -46,7 +44,7 @@ public class CommonController {
         File imageDirectoryPathFile = new File(imageDirectoryPath);
 
         //根据图片存放目录的路径创建文件夹
-        if (!imageDirectoryPathFile.exists()){
+        if (!imageDirectoryPathFile.exists()) {
             imageDirectoryPathFile.mkdir();
         }
 
@@ -64,29 +62,31 @@ public class CommonController {
 
 
     /**
-     * 根据图片存放目录下载图片
-     * @param name 图片文件名
+     * 根据图片名下载图片
+     *
+     * @param imageName     图片文件名
      * @param response 响应
      */
     @GetMapping("/downloadImage")
-    public void downloadImage(String name, HttpServletResponse response) throws RuntimeException {
+    public void downloadImage(String imageName, HttpServletResponse response) throws RuntimeException {
+        log.info("CommonController - downloadImage : imageName = {}", imageName);
 
         FileInputStream fileInputStream = null;
         ServletOutputStream servletOutputStream = null;
 
         try {
-            fileInputStream = new FileInputStream(imageDirectoryPath + name);
+            fileInputStream = new FileInputStream(imageDirectoryPath + imageName);
 
             servletOutputStream = response.getOutputStream();
 
             //通过图片文件名获取文件后缀
-            String suffix = name.substring(name.lastIndexOf("."));
+            String suffix = imageName.substring(imageName.lastIndexOf("."));
             response.setContentType("image/" + suffix.substring(1));
 
             int len;
             byte[] bytes = new byte[1024];
-            while ((len = fileInputStream.read(bytes)) != -1){
-                servletOutputStream.write(bytes,0,len);
+            while ((len = fileInputStream.read(bytes)) != -1) {
+                servletOutputStream.write(bytes, 0, len);
                 servletOutputStream.flush();
             }
         } catch (IOException e) {
@@ -109,4 +109,27 @@ public class CommonController {
         }
 
     }
+
+
+    /**
+     * 根据图片文件名删除图片
+     * @param imageName 图片文件名
+     * @return 删除图片响应
+     */
+    @DeleteMapping("/deleteImage")
+    public R<String> deleteImage(String imageName) {
+        log.info("CommonController - deleteImage : imageName = {}", imageName);
+
+        if (imageName == null){
+            throw new CustomException("服务器错误,图片删除异常");
+        }
+        File imageFile = new File(imageDirectoryPath + imageName);
+
+        if (imageFile.delete()){
+            return R.getSuccessOperationInstance();
+        }else {
+            throw new CustomException("服务器错误,图片删除异常");
+        }
+    }
+
 }

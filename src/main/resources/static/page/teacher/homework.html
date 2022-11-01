@@ -975,7 +975,7 @@
 
                     //获取服务器图片
                     getImage (image) {
-                        return `/common/downloadImage?name=${image}`
+                        return `/common/downloadImage?imageName=${image}`
                     },
                     //图片上传成功回调函数
                     handleAvatarSuccess: function (response) {
@@ -990,12 +990,13 @@
                     //file为删除的图片，fileList为剩下的图片
                     async handleRemove(file, fileList) {
 
+                        console.log(file)
                         //如果在未上传图片前由于不符合类型导致上传文件被删除，则不需要继续执行
                         if (typeof(file.response) == "undefined"){
                             return;
                         }
                         //通知服务器删除存储的图片
-                        await removeImageAxios(file.response.data.imageName).then(
+                        await removeImageAxios(file.response.data).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     this.$message.success('图片删除成功')

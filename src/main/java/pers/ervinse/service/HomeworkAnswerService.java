@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface HomeworkAnswerService {
     List<HomeworkAnswer> selectHomeworkAnswerList(Long homeworkId);
+
+    HomeworkAnswer selectHomeworkAnswerById(Long homeworkAnswerId);
 }

@@ -49,4 +49,15 @@ public class HomeworkAnswerController {
         return R.getSuccessInstance(homeworkAnswerDtoList);
     }
 
+    @GetMapping
+    public R<HomeworkAnswerDto> getHomeworkAnswerById(Long homeworkAnswerId){
+        log.info("HomeworkAnswerController - getHomeworkAnswerById :homeworkAnswerId = {}", homeworkAnswerId);
+
+        HomeworkAnswer homeworkAnswer = homeworkAnswerService.selectHomeworkAnswerById(homeworkAnswerId);
+        Student student = studentService.selectStudentById(homeworkAnswer.getStudentId());
+        HomeworkAnswerDto homeworkAnswerDto = new HomeworkAnswerDto();
+        homeworkAnswerDto.setStudentName(student.getStudentName());
+        BeanUtils.copyProperties(homeworkAnswer,homeworkAnswerDto);
+        return R.getSuccessInstance(homeworkAnswerDto);
+    }
 }

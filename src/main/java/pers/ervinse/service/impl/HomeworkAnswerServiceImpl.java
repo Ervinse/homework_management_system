@@ -34,4 +34,12 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
 
         return homeworkAnswerList;
     }
+
+    @Override
+    public HomeworkAnswer selectHomeworkAnswerById(Long homeworkAnswerId) {
+        log.info("HomeworkAnswerService - selectHomeworkAnswerById :homeworkAnswerId = {}", homeworkAnswerId);
+
+        return homeworkAnswerMapper.selectById(homeworkAnswerId);
+    }
+
 }

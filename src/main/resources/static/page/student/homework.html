@@ -157,7 +157,7 @@
                                             layout="total , prev, pager, next , jumper"
                                             :total="total"
                                             :page-size="pageSize"
-                                            :current-page="current">
+                                            :current-page="currentPage">
                                     </el-pagination>
                                 </div>
                             </template>
@@ -213,7 +213,7 @@
                                             layout="total , prev, pager, next , jumper"
                                             :total="total"
                                             :page-size="pageSize"
-                                            :current-page="current">
+                                            :current-page="currentPage">
                                     </el-pagination>
                                 </div>
                             </template>
@@ -377,7 +377,7 @@
                     //分页课程列表数据
                     total: 0,
                     pageSize: 10,
-                    current: 0,
+                    currentPage: 0,
                     pages: 0,
                     claseTableData: [],
                     homeworkTableData: [],
@@ -463,12 +463,12 @@
                     //表格数据函数
                     getCoursePage: function () {
                         var returnObj = this;//当运行axios中的回调函数时，this对象已经改变，要把this暂存到一个变量中，等之后输出
-                        getCoursePageAxios().then(
+                        getCoursePageAxios(this.currentPage, this.pageSize, null).then(
                             function (response) {
                                 returnObj.claseTableData = response.data.data.records;
                                 returnObj.total = response.data.data.total;
                                 returnObj.pageSize = response.data.data.size;
-                                returnObj.current = response.data.data.current;
+                                returnObj.currentPage = response.data.data.current;
                                 returnObj.pages = response.data.data.pages;
                             })
                     },
@@ -478,13 +478,13 @@
 
                         this.showHomeworkPage();
                         var vueObj = this;
-                        getHomeworkPageAxios(row.courseId).then(
+                        getHomeworkPageAxios(this.currentPage, this.pageSize,row.courseId).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     vueObj.homeworkTableData = response.data.data.records;
                                     vueObj.total = response.data.data.total;
                                     vueObj.pageSize = response.data.data.size;
-                                    vueObj.current = response.data.data.current;
+                                    vueObj.currentPage = response.data.data.current;
                                     vueObj.pages = response.data.data.pages;
                                 } else {
                                     this.$message.error(response.data.msg)
@@ -543,14 +543,14 @@
                     //搜索按钮
                     handleSearch: function () {
                         var vueObj = this;
-                        getCoursePageSearchAxios(this.course_search).then(
+                        getCoursePageAxios(this.currentPage, this.pageSize, this.course_search).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     this.$message.success('搜索成功！共搜索到' + response.data.data.total + '条记录');
                                     vueObj.claseTableData = response.data.data.records;
                                     vueObj.total = response.data.data.total;
                                     vueObj.pageSize = response.data.data.size;
-                                    vueObj.current = response.data.data.current;
+                                    vueObj.currentPage = response.data.data.current;
                                     vueObj.pages = response.data.data.pages;
                                 } else {
                                     this.$message.error(response.data.msg)

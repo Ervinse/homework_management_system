@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class HomeworkAnswer implements Serializable {
@@ -19,7 +19,7 @@ public class HomeworkAnswer implements Serializable {
 
     private int homeworkRate;
 
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     private Long homeworkId;
 

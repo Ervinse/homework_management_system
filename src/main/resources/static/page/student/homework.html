@@ -494,11 +494,11 @@
                         })
                     },
                     //获取作业详情函数
-                    handleHomeworkDetail: function (row) {
+                    handleHomeworkDetail: function (index,row) {
 
                         this.showHomeworkSubmitPage();
                         var vueObj = this;
-                        getHomeworkDetailAxios().then(
+                        getHomeworkDetailAxios(row.homeworkId).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     vueObj.homeworkDetailData = response.data.data;

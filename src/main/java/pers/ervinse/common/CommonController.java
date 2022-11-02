@@ -122,6 +122,27 @@ public class CommonController {
     }
 
     /**
+     * 根据文件文件名删除文件
+     * @param fileName 文件文件名
+     * @return 删除文件响应
+     */
+    @DeleteMapping("/deleteFile")
+    public R<String> deleteFile(String fileName) {
+        log.info("CommonController - deleteFile : fileName = {}", fileName);
+
+        if (fileName == null){
+            throw new CustomException("服务器错误,文件删除异常");
+        }
+        File imageFile = new File(fileDirectoryPath + fileName);
+
+        if (imageFile.delete()){
+            return R.getSuccessOperationInstance();
+        }else {
+            throw new CustomException("服务器错误,文件删除异常");
+        }
+    }
+
+    /**
      * 将文件转存到指定地址
      * @param file 要转存的文件
      * @param path 文件转存路径

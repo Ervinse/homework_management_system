@@ -677,7 +677,7 @@
                         }
 
                         //通知服务器删除存储的图片
-                        await removeFileAxios(file.response.data.fileName).then(
+                        await removeFileAxios(file.response.data).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     this.$message.success('文件删除成功')
@@ -689,7 +689,7 @@
                         });
                         //删除表单中将要提交到数据库中的文件名列表中的文件名
                         for (var i = this.form.fileUploadNameList.length - 1; i >= 0; i--) {
-                            if (this.form.fileUploadNameList[i] === file.response.data.fileName) {
+                            if (this.form.fileUploadNameList[i] === file.response.data) {
                                 this.form.fileUploadNameList.splice(i, 1);
                             }
                         }

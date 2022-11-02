@@ -32,31 +32,8 @@ public class CommonController {
     public R<String> uploadImage(MultipartFile file) {
         log.info("CommonController - upload : file = {}", file.toString());
 
-        //通过上传图片的原始文件名获取文件后缀
-        String originalFilename = file.getOriginalFilename();
-        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
-
-        //使用UUID重新生成文件名
-        String fileName = UUID.randomUUID() + suffix;
-
-        //根据配置文件获取图片存放目录,并生成对应路径
-        log.info("CommonController - upload : imageDirectoryPath = {}", imageDirectoryPath);
-        File imageDirectoryPathFile = new File(imageDirectoryPath);
-
-        //根据图片存放目录的路径创建文件夹
-        if (!imageDirectoryPathFile.exists()) {
-            imageDirectoryPathFile.mkdir();
-        }
-
-        //根据目录路径和图片文件名,将图片转存到图片存放路径
-        File filePath = new File(imageDirectoryPath + fileName);
-        log.info("CommonController - upload : filePath = {}", filePath);
-        try {
-            file.transferTo(filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        //将图片转存到服务器中
+        String fileName = saveFile(file, imageDirectoryPath);
         return R.getSuccessInstance(fileName);
     }
 
@@ -130,6 +107,42 @@ public class CommonController {
         }else {
             throw new CustomException("服务器错误,图片删除异常");
         }
+    }
+
+    /**
+     * 将文件转存到指定地址
+     * @param file 要转存的文件
+     * @param path 文件转存路径
+     * @return 保存到服务器后的文件名
+     */
+    public String saveFile(MultipartFile file,String path){
+        log.info("CommonController - saveFile : file = {},path = {}", file.toString(),path);
+
+        //通过上传文件的原始文件名获取文件后缀
+        String originalFilename = file.getOriginalFilename();
+        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+
+        //使用UUID重新生成文件名
+        String fileName = UUID.randomUUID() + suffix;
+
+        //根据配置文件获取图片存放目录,并生成对应路径
+        File imageDirectoryPathFile = new File(path);
+
+        //根据传入的存放目录的路径创建文件夹
+        if (!imageDirectoryPathFile.exists()) {
+            imageDirectoryPathFile.mkdir();
+        }
+
+        //根据目录路径和文件名,将文件转存到文件存放路径
+        File filePath = new File(path + fileName);
+        log.info("filePath = {}", filePath);
+        try {
+            file.transferTo(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return fileName;
     }
 
 }

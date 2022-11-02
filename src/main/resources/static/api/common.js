@@ -35,7 +35,7 @@ const getCourseListAxios = () => {
 //图片上传接口
 const imageUploadUrl = '/common/uploadImage';
 //文件上传接口
-const fileUploadUrl = '../../json/common/file_success.json';
+const fileUploadUrl = '/common/uploadFile';
 
 //移除图片接口
 const removeImageAxios = (imageName) => {

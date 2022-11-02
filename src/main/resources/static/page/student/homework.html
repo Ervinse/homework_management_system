@@ -601,7 +601,7 @@
                     //图片上传成功回调函数
                     handleAvatarSuccess: function (response) {
                         if (response.code === 1) {
-                            this.form.imageUploadNameList.push(response.data.imageName);
+                            this.form.imageUploadNameList.push(response.data);
                         } else {
                             this.$message.error(response.msg)
                         }
@@ -616,7 +616,7 @@
                             return;
                         }
                         //通知服务器删除存储的图片
-                        await removeImageAxios(file.response.data.imageName).then(
+                        await removeImageAxios(file.response.data).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     this.$message.success('图片删除成功')
@@ -657,7 +657,7 @@
                         console.log(file);
                         if (response.code === 1) {
                             //将服务器中重命名的文件名传入fileUploadNameList
-                            this.form.fileUploadNameList.push(response.data.fileName);
+                            this.form.fileUploadNameList.push(response.data);
                             //将文件实际名称传入fileUploadUserNameList
                             this.form.fileUploadUserNameList.push(file.name);
                         } else {

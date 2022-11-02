@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pers.ervinse.Dto.HomeworkAnswerDto;
 import pers.ervinse.common.R;
 import pers.ervinse.domain.HomeworkAnswer;
@@ -59,5 +57,13 @@ public class HomeworkAnswerController {
         homeworkAnswerDto.setStudentName(student.getStudentName());
         BeanUtils.copyProperties(homeworkAnswer,homeworkAnswerDto);
         return R.getSuccessInstance(homeworkAnswerDto);
+    }
+
+    @PostMapping
+    public R<String> addHomeworkAnswer(@RequestBody HomeworkAnswer homeworkAnswer){
+        log.info("HomeworkAnswerController - addHomeworkAnswer :homeworkAnswer = {}", homeworkAnswer);
+
+        return null;
+
     }
 }

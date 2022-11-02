@@ -68,7 +68,7 @@ const deleteHomeworkAxios = (homeworkId) => {
     })
 }
 
-//更新作业答案评分评分
+//更新作业答案评分
 const updateRateAxios = (params) => {
     return $axios({
         url: '../../json/common/success.json',
@@ -77,13 +77,11 @@ const updateRateAxios = (params) => {
     })
 }
 
-//删除作业接口
+//提交作业答案接口
 const submitHomeworkAnswerAxios = (params) => {
     return $axios({
-        url: '../../json/common/success.json',
-        method: 'get',
-        params: {
-            data: { ...params }
-        }
+        url: '/homeworkAnswer',
+        method: 'post',
+        data: { ...params }
     })
 }

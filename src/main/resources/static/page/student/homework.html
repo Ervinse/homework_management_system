@@ -569,6 +569,7 @@
 
                     // 表单提交函数
                     submitHomeworkAnswer: function () {
+                        this.form.studentId = this.loginUser.id;
                         this.$confirm('此操作将提交表单内容, 是否继续?', '提示', {
                             confirmButtonText: '确定',
                             cancelButtonText: '取消',
@@ -581,7 +582,7 @@
                                         this.$message.success('提交成功！')
                                         this.getHomeworkPage()
                                     } else {
-                                        this.$message.error(res.data.msg + '，操作失败!')
+                                        this.$message.error(res.data.msg)
                                     }
                                 }
                             )

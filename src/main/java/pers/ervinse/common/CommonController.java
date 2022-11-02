@@ -21,6 +21,9 @@ public class CommonController {
     @Value("${image-path}")
     private String imageDirectoryPath;
 
+    @Value("${file-path}")
+    private String fileDirectoryPath;
+
 
     /**
      * 接收上传图片,并将图片转存到对应的路径中
@@ -30,10 +33,19 @@ public class CommonController {
      */
     @PostMapping("/uploadImage")
     public R<String> uploadImage(MultipartFile file) {
-        log.info("CommonController - upload : file = {}", file.toString());
+        log.info("CommonController - uploadImage : file = {}", file.toString());
 
         //将图片转存到服务器中
         String fileName = saveFile(file, imageDirectoryPath);
+        return R.getSuccessInstance(fileName);
+    }
+
+    @PostMapping("/uploadFile")
+    public R<String> uploadFile(MultipartFile file){
+        log.info("CommonController - uploadFile : file = {}", file.toString());
+
+        //将图片转存到服务器中
+        String fileName = saveFile(file, fileDirectoryPath);
         return R.getSuccessInstance(fileName);
     }
 

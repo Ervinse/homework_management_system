@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pers.ervinse.Dto.HomeworkAnswerDto;
 import pers.ervinse.domain.HomeworkAnswer;
 import pers.ervinse.mapper.HomeworkAnswerMapper;
 import pers.ervinse.service.HomeworkAnswerService;
@@ -40,6 +41,14 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
         log.info("HomeworkAnswerService - selectHomeworkAnswerById :homeworkAnswerId = {}", homeworkAnswerId);
 
         return homeworkAnswerMapper.selectById(homeworkAnswerId);
+    }
+
+    @Override
+    public void addHomeworkAnswer(HomeworkAnswerDto homeworkAnswerDto) {
+        log.info("HomeworkAnswerService - addHomeworkAnswer :homeworkAnswerDto = {}", homeworkAnswerDto);
+
+        homeworkAnswerDto.setHomeworkRate(-1);
+        homeworkAnswerMapper.insert(homeworkAnswerDto);
     }
 
 }

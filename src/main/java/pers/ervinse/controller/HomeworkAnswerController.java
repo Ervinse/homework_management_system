@@ -60,10 +60,12 @@ public class HomeworkAnswerController {
     }
 
     @PostMapping
-    public R<String> addHomeworkAnswer(@RequestBody HomeworkAnswer homeworkAnswer){
-        log.info("HomeworkAnswerController - addHomeworkAnswer :homeworkAnswer = {}", homeworkAnswer);
+    public R<String> addHomeworkAnswer(@RequestBody HomeworkAnswerDto homeworkAnswerDto){
+        log.info("HomeworkAnswerController - addHomeworkAnswer :HomeworkAnswerDto = {}", homeworkAnswerDto);
 
-        return null;
+        homeworkAnswerService.addHomeworkAnswer(homeworkAnswerDto);
+
+        return R.getSuccessOperationInstance();
 
     }
 }

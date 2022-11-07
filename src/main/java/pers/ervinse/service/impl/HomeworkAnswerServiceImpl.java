@@ -2,6 +2,7 @@ package pers.ervinse.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -195,6 +196,28 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
         List<File> fileList = Arrays.asList(fileArray);
         fileList.forEach(file -> fileMapper.insert(file));
 
+    }
+
+    /**
+     * 根据作业答案的作业答案id或作业id删除作业答案
+     * @param homeworkAnswer 含有要删除的作业答案信息的作业答案对象
+     */
+    @Override
+    public void deleteHomeworkAnswer(HomeworkAnswer homeworkAnswer) {
+        log.info("HomeworkAnswerService - deleteHomeworkAnswer :homeworkAnswer = {}", homeworkAnswer);
+
+        LambdaQueryWrapper<HomeworkAnswer> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(homeworkAnswer.getHomeworkAnswerId() != null, HomeworkAnswer::getHomeworkAnswerId, homeworkAnswer.getHomeworkAnswerId())
+                .or()
+                .eq(homeworkAnswer.getHomeworkId() != null, HomeworkAnswer::getHomeworkId, homeworkAnswer.getHomeworkId());
+        int affectRows = homeworkAnswerMapper.delete(wrapper);
+
+        if (affectRows > 0) {
+            log.info("删除作业答案成功,影响了" + affectRows + "条数据");
+        } else {
+            log.error("删除答案失败,影响了" + affectRows + "条数据");
+            throw new CustomException("服务器错误,删除失败!");
+        }
     }
 
     /**

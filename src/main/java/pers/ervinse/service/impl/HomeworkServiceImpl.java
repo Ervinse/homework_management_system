@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import pers.ervinse.Dto.HomeworkDto;
 import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Homework;
+import pers.ervinse.domain.HomeworkAnswer;
 import pers.ervinse.domain.Image;
 import pers.ervinse.mapper.HomeworkMapper;
 import pers.ervinse.mapper.ImageMapper;
+import pers.ervinse.service.HomeworkAnswerService;
 import pers.ervinse.service.HomeworkService;
 
 import java.util.List;
@@ -26,6 +28,9 @@ public class HomeworkServiceImpl implements HomeworkService {
 
     @Autowired
     private ImageMapper imageMapper;
+
+    @Autowired
+    private HomeworkAnswerService homeworkAnswerService;
 
     /**
      * 获取作业分页列表
@@ -130,7 +135,7 @@ public class HomeworkServiceImpl implements HomeworkService {
     }
 
     /**
-     * 根据作业id删除作业,对应的图片
+     * 根据作业id删除作业,对应的图片,对应的作业答案
      * @param homeworkId 作业id
      */
     @Override
@@ -138,10 +143,16 @@ public class HomeworkServiceImpl implements HomeworkService {
     public List<Image> deleteHomework(Long homeworkId) {
         log.info("HomeworkService - deleteImage :homeworkId = {}", homeworkId);
 
+        //删除图片
         LambdaQueryWrapper<Image> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq( Image::getReferenceId, homeworkId);
         List<Image> imageList = imageMapper.selectList(wrapper);
         imageMapper.delete(wrapper);
+
+        HomeworkAnswer homeworkAnswerToDelete = new HomeworkAnswer();
+        homeworkAnswerToDelete.setHomeworkId(homeworkId);
+        homeworkAnswerService.deleteHomeworkAnswer(homeworkAnswerToDelete);
+
         int affectRows = homeworkMapper.deleteById(homeworkId);
 
         if (affectRows > 0) {

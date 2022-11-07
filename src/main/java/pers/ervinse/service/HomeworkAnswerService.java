@@ -14,5 +14,7 @@ public interface HomeworkAnswerService {
 
     void addHomeworkAnswer(HomeworkAnswerDto homeworkAnswerDto);
 
+    void deleteHomeworkAnswer(HomeworkAnswer homeworkAnswer);
+
     void updateRate(HomeworkAnswer homeworkAnswer);
 }

@@ -13,6 +13,7 @@ import pers.ervinse.domain.Image;
 import pers.ervinse.mapper.FileMapper;
 import pers.ervinse.mapper.HomeworkAnswerMapper;
 import pers.ervinse.mapper.ImageMapper;
+import pers.ervinse.service.CommonService;
 import pers.ervinse.service.FileService;
 import pers.ervinse.service.HomeworkAnswerService;
 import pers.ervinse.service.ImageService;
@@ -38,6 +39,9 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private CommonService commonService;
 
 
     /**
@@ -117,7 +121,24 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
             isNewAnswer = false;
             //获取之前回答
             homeworkAnswer = homeworkAnswerListBySearch.get(0);
-            //删除之前答案图片和答案文件
+
+            //获取该答案之前上传的图片列表,根据图片列表中的图片名依次删除服务器上的图片
+            Image imageToSelect = new Image();
+            imageToSelect.setReferenceId(homeworkAnswer.getHomeworkAnswerId());
+            List<Image> imageList = imageService.selectImageListByConditionInOr(imageToSelect);
+            if (imageList.size() > 0){
+                imageList.forEach(image -> commonService.deleteImage(image.getImageName()));
+            }
+
+            //获取该答案之前上传的文件列表,根据文件列表中的文件名依次删除服务器上的文件
+            File fileToSelect = new File();
+            fileToSelect.setReferenceId(homeworkAnswer.getHomeworkAnswerId());
+            List<File> fileList = fileService.selectFileListByConditionInOr(fileToSelect);
+            if (fileList.size() > 0){
+                fileList.forEach(file -> commonService.deleteFile(file.getFileName()));
+            }
+
+            //删除数据库中之前答案图片和答案文件
             imageService.deleteImageByReferenceId(homeworkAnswer.getHomeworkAnswerId());
             fileService.deleteFileByReferenceId(homeworkAnswer.getHomeworkAnswerId());
         }

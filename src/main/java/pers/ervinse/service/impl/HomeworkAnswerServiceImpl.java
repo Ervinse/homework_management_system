@@ -14,6 +14,7 @@ import pers.ervinse.mapper.FileMapper;
 import pers.ervinse.mapper.HomeworkAnswerMapper;
 import pers.ervinse.mapper.ImageMapper;
 import pers.ervinse.service.HomeworkAnswerService;
+import pers.ervinse.service.ImageService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,9 +32,13 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
     @Autowired
     private ImageMapper imageMapper;
 
+    @Autowired
+    private ImageService imageService;
+
 
     /**
      * 根据作业id获取作业答案列表
+     *
      * @param homeworkId 作业答案id
      * @return 作业答案列表
      */
@@ -52,6 +57,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
 
     /**
      * 根据id获取作业答案
+     *
      * @param homeworkAnswerId 作业答案id
      * @return 作业答案
      */
@@ -62,14 +68,47 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
         return homeworkAnswerMapper.selectById(homeworkAnswerId);
     }
 
+
+    /**
+     * 根据条件查询作业答案列表
+     *
+     * @param homeworkAnswer 查询的作业答案条件
+     * @return 查询到的作业答案列表
+     */
+    @Override
+    public List<HomeworkAnswer> selectHomeworkAnswerListByConditionInAnd(HomeworkAnswer homeworkAnswer) {
+        log.info("HomeworkAnswerService - selectHomeworkAnswerListByConditionInAnd :homeworkAnswer = {}", homeworkAnswer);
+
+        //创建条件构造器
+        LambdaQueryWrapper<HomeworkAnswer> wrapper = new LambdaQueryWrapper<>();
+        //添加过滤条件
+        //成立条件:name值不为空时过滤条件成立
+        //过滤条件:实体类对应字段 == 变量
+        wrapper.eq(homeworkAnswer.getHomeworkAnswerId() != null, HomeworkAnswer::getHomeworkAnswerId, homeworkAnswer.getHomeworkAnswerId())
+                .eq(homeworkAnswer.getHomeworkId() != null, HomeworkAnswer::getHomeworkId, homeworkAnswer.getHomeworkId())
+                .eq(homeworkAnswer.getStudentId() != null, HomeworkAnswer::getStudentId, homeworkAnswer.getStudentId())
+                .eq(homeworkAnswer.getHomeworkRate() != 0, HomeworkAnswer::getHomeworkRate, homeworkAnswer.getHomeworkRate());
+        return homeworkAnswerMapper.selectList(wrapper);
+    }
+
+
     /**
      * 添加作业答案
+     *
      * @param homeworkAnswerDto 含有所属作业信息和提交相关信息的作业答案传输对象
      */
     @Override
     @Transactional
     public void addHomeworkAnswer(HomeworkAnswerDto homeworkAnswerDto) {
         log.info("HomeworkAnswerService - addHomeworkAnswer :homeworkAnswerDto = {}", homeworkAnswerDto);
+
+        HomeworkAnswer homeworkAnswer = new HomeworkAnswer();
+        homeworkAnswer.setHomeworkId(homeworkAnswerDto.getHomeworkId());
+        List<HomeworkAnswer> homeworkAnswerListBySearch = selectHomeworkAnswerListByConditionInAnd(homeworkAnswer);
+        if (homeworkAnswerListBySearch.size() > 0) {
+            homeworkAnswer = homeworkAnswerListBySearch.get(0);
+        }
+        imageService.deleteImageByReferenceId(homeworkAnswer.getHomeworkAnswerId());
 
         //新提交作业重置评风为 -1
         homeworkAnswerDto.setHomeworkRate(-1);
@@ -110,5 +149,6 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
         fileList.forEach(file -> fileMapper.insert(file));
 
     }
+
 
 }

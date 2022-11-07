@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Image;
 import pers.ervinse.mapper.ImageMapper;
 import pers.ervinse.service.ImageService;
@@ -39,6 +40,19 @@ public class ImageServiceImpl implements ImageService {
                 .eq(image.getReferenceId() != null, Image::getReferenceId, image.getReferenceId());
 
         return imageMapper.selectList(wrapper);
+    }
+
+    /**
+     * 根据参考id删除图片
+     * @param referenceId 参考id
+     */
+    @Override
+    public void deleteImageByReferenceId(Long referenceId) {
+        log.info("ImageService - deleteImageByReferenceId :referenceId = {}", referenceId);
+
+        LambdaQueryWrapper<Image> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Image::getReferenceId, referenceId);
+        imageMapper.delete(wrapper);
     }
 
 }

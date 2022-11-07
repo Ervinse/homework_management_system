@@ -10,5 +10,7 @@ public interface HomeworkAnswerService {
 
     HomeworkAnswer selectHomeworkAnswerById(Long homeworkAnswerId);
 
+    List<HomeworkAnswer> selectHomeworkAnswerListByConditionInAnd(HomeworkAnswer homeworkAnswer);
+
     void addHomeworkAnswer(HomeworkAnswerDto homeworkAnswerDto);
 }

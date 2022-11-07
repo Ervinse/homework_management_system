@@ -126,7 +126,7 @@ public class HomeworkServiceImpl implements HomeworkService {
             imageMapper.insert(image);
         }
 
-        log.info("添加学生成功,影响了" + affectRows + "条数据");
+        log.info("添加作业成功,影响了" + affectRows + "条数据");
     }
 
     /**

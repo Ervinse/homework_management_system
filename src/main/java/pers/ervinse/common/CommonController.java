@@ -1,9 +1,11 @@
 package pers.ervinse.common;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pers.ervinse.service.CommonService;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -21,9 +23,13 @@ public class CommonController {
     @Value("${image-path}")
     private String imageDirectoryPath;
 
+    //文件存放目录
     @Value("${file-path}")
     private String fileDirectoryPath;
 
+
+    @Autowired
+    private CommonService commonService;
 
     /**
      * 接收上传图片,并将图片转存到对应的路径中
@@ -35,17 +41,21 @@ public class CommonController {
     public R<String> uploadImage(MultipartFile file) {
         log.info("CommonController - uploadImage : file = {}", file.toString());
 
-        //将图片转存到服务器中
-        String fileName = saveFile(file, imageDirectoryPath);
+        String fileName = commonService.uploadImage(file);
         return R.getSuccessInstance(fileName);
     }
 
+    /**
+     * 接收上传文件,并将图片转存到对应的路径中
+     * @param file 上传的文件
+     * @return 含有文件新文件名的响应
+     */
     @PostMapping("/uploadFile")
     public R<String> uploadFile(MultipartFile file){
         log.info("CommonController - uploadFile : file = {}", file.toString());
 
-        //将图片转存到服务器中
-        String fileName = saveFile(file, fileDirectoryPath);
+        //将文件转存到服务器中
+        String fileName = commonService.uploadFile(file);
         return R.getSuccessInstance(fileName);
     }
 
@@ -109,16 +119,8 @@ public class CommonController {
     public R<String> deleteImage(String imageName) {
         log.info("CommonController - deleteImage : imageName = {}", imageName);
 
-        if (imageName == null){
-            throw new CustomException("服务器错误,图片删除异常");
-        }
-        File imageFile = new File(imageDirectoryPath + imageName);
-
-        if (imageFile.delete()){
-            return R.getSuccessOperationInstance();
-        }else {
-            throw new CustomException("服务器错误,图片删除异常");
-        }
+        commonService.deleteImage(imageName);
+        return R.getSuccessOperationInstance();
     }
 
     /**
@@ -130,52 +132,9 @@ public class CommonController {
     public R<String> deleteFile(String fileName) {
         log.info("CommonController - deleteFile : fileName = {}", fileName);
 
-        if (fileName == null){
-            throw new CustomException("服务器错误,文件删除异常");
-        }
-        File imageFile = new File(fileDirectoryPath + fileName);
-
-        if (imageFile.delete()){
-            return R.getSuccessOperationInstance();
-        }else {
-            throw new CustomException("服务器错误,文件删除异常");
-        }
+        commonService.deleteFile(fileName);
+        return R.getSuccessOperationInstance();
     }
 
-    /**
-     * 将文件转存到指定地址
-     * @param file 要转存的文件
-     * @param path 文件转存路径
-     * @return 保存到服务器后的文件名
-     */
-    public String saveFile(MultipartFile file,String path){
-        log.info("CommonController - saveFile : file = {},path = {}", file.toString(),path);
-
-        //通过上传文件的原始文件名获取文件后缀
-        String originalFilename = file.getOriginalFilename();
-        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
-
-        //使用UUID重新生成文件名
-        String fileName = UUID.randomUUID() + suffix;
-
-        //根据配置文件获取图片存放目录,并生成对应路径
-        File imageDirectoryPathFile = new File(path);
-
-        //根据传入的存放目录的路径创建文件夹
-        if (!imageDirectoryPathFile.exists()) {
-            imageDirectoryPathFile.mkdir();
-        }
-
-        //根据目录路径和文件名,将文件转存到文件存放路径
-        File filePath = new File(path + fileName);
-        log.info("filePath = {}", filePath);
-        try {
-            file.transferTo(filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return fileName;
-    }
 
 }

@@ -102,18 +102,35 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
     public void addHomeworkAnswer(HomeworkAnswerDto homeworkAnswerDto) {
         log.info("HomeworkAnswerService - addHomeworkAnswer :homeworkAnswerDto = {}", homeworkAnswerDto);
 
+        //判断是否为新增回答
+        boolean isNewAnswer = true;
+
         HomeworkAnswer homeworkAnswer = new HomeworkAnswer();
         homeworkAnswer.setHomeworkId(homeworkAnswerDto.getHomeworkId());
         List<HomeworkAnswer> homeworkAnswerListBySearch = selectHomeworkAnswerListByConditionInAnd(homeworkAnswer);
         if (homeworkAnswerListBySearch.size() > 0) {
+            //不是新回答
+            isNewAnswer = false;
+            //获取之前回答
             homeworkAnswer = homeworkAnswerListBySearch.get(0);
+            //删除之前答案图片
+            imageService.deleteImageByReferenceId(homeworkAnswer.getHomeworkAnswerId());
         }
-        imageService.deleteImageByReferenceId(homeworkAnswer.getHomeworkAnswerId());
 
-        //新提交作业重置评风为 -1
-        homeworkAnswerDto.setHomeworkRate(-1);
-        //插入作业答案信息
-        homeworkAnswerMapper.insert(homeworkAnswerDto);
+        //是新回答,则插入答案信息,否则更新答案信息
+        if (isNewAnswer){
+            //新提交作业重置评风为 -1
+            homeworkAnswerDto.setHomeworkRate(-1);
+            //插入作业答案信息
+            homeworkAnswerMapper.insert(homeworkAnswerDto);
+        } else {
+            //将要插入的作业答案信息添加之前回答的作业答案id
+            homeworkAnswerDto.setHomeworkAnswerId(homeworkAnswer.getHomeworkAnswerId());
+            //更新作业答案信息
+            homeworkAnswerMapper.updateById(homeworkAnswerDto);
+        }
+
+
 
         //遍历作业答案中包含的图片列表,上传每一个图片
         List<String> imageUploadNameList = homeworkAnswerDto.getImageUploadNameList();

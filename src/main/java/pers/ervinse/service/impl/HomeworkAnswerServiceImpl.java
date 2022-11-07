@@ -122,6 +122,10 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
             //获取之前回答
             homeworkAnswer = homeworkAnswerListBySearch.get(0);
 
+            if (homeworkAnswer.getHomeworkRate() != -1){
+                throw new CustomException("该回答已被教师评分,无法修改!");
+            }
+
             //获取该答案之前上传的图片列表,根据图片列表中的图片名依次删除服务器上的图片
             Image imageToSelect = new Image();
             imageToSelect.setReferenceId(homeworkAnswer.getHomeworkAnswerId());
@@ -153,6 +157,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
             //将要插入的作业答案信息添加之前回答的作业答案id
             homeworkAnswerDto.setHomeworkAnswerId(homeworkAnswer.getHomeworkAnswerId());
             //更新作业答案信息
+            homeworkAnswerDto.setHomeworkRate(-1);
             homeworkAnswerMapper.updateById(homeworkAnswerDto);
         }
 

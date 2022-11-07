@@ -143,9 +143,9 @@ public class HomeworkServiceImpl implements HomeworkService {
     public List<Image> deleteHomework(Long homeworkId) {
         log.info("HomeworkService - deleteImage :homeworkId = {}", homeworkId);
 
-        //删除图片
+        //删除作业图片
         LambdaQueryWrapper<Image> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq( Image::getReferenceId, homeworkId);
+        wrapper.eq(Image::getReferenceId, homeworkId);
         List<Image> imageList = imageMapper.selectList(wrapper);
         imageMapper.delete(wrapper);
 

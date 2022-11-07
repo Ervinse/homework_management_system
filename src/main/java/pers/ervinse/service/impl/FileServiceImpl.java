@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pers.ervinse.domain.File;
 import pers.ervinse.mapper.FileMapper;
+import pers.ervinse.service.CommonService;
 import pers.ervinse.service.FileService;
 
 import java.util.List;
@@ -17,6 +18,9 @@ public class FileServiceImpl implements FileService {
 
     @Autowired
     private FileMapper fileMapper;
+
+    @Autowired
+    private CommonService commonService;
 
     /**
      * 根据条件查询文件列表
@@ -50,6 +54,15 @@ public class FileServiceImpl implements FileService {
     @Override
     public void deleteFileByReferenceId(Long referenceId) {
         log.info("FileService - deleteFileByReferenceId :referenceId = {}", referenceId);
+
+
+        //根据参考id获取文件列表,根据文件列表中的文件名依次删除服务器上的文件
+        File fileToSelect = new File();
+        fileToSelect.setReferenceId(referenceId);
+        List<File> fileList = selectFileListByConditionInOr(fileToSelect);
+        if (fileList.size() > 0) {
+            fileList.forEach(file -> commonService.deleteFile(file.getFileName()));
+        }
 
         LambdaQueryWrapper<File> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(File::getReferenceId, referenceId);

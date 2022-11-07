@@ -15,8 +15,6 @@ import pers.ervinse.mapper.HomeworkAnswerMapper;
 import pers.ervinse.mapper.ImageMapper;
 import pers.ervinse.service.HomeworkAnswerService;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +32,11 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
     private ImageMapper imageMapper;
 
 
+    /**
+     * 根据作业id获取作业答案列表
+     * @param homeworkId 作业答案id
+     * @return 作业答案列表
+     */
     @Override
     public List<HomeworkAnswer> selectHomeworkAnswerList(Long homeworkId) {
         log.info("HomeworkAnswerService - selectHomeworkAnswerList :homeworkId = {}", homeworkId);
@@ -44,11 +47,14 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
         //添加排序条件
         wrapper.orderByAsc(HomeworkAnswer::getHomeworkAnswerId);
 
-        List<HomeworkAnswer> homeworkAnswerList = homeworkAnswerMapper.selectList(wrapper);
-
-        return homeworkAnswerList;
+        return homeworkAnswerMapper.selectList(wrapper);
     }
 
+    /**
+     * 根据id获取作业答案
+     * @param homeworkAnswerId 作业答案id
+     * @return 作业答案
+     */
     @Override
     public HomeworkAnswer selectHomeworkAnswerById(Long homeworkAnswerId) {
         log.info("HomeworkAnswerService - selectHomeworkAnswerById :homeworkAnswerId = {}", homeworkAnswerId);
@@ -56,27 +62,37 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
         return homeworkAnswerMapper.selectById(homeworkAnswerId);
     }
 
+    /**
+     * 添加作业答案
+     * @param homeworkAnswerDto 含有所属作业信息和提交相关信息的作业答案传输对象
+     */
     @Override
     @Transactional
     public void addHomeworkAnswer(HomeworkAnswerDto homeworkAnswerDto) {
         log.info("HomeworkAnswerService - addHomeworkAnswer :homeworkAnswerDto = {}", homeworkAnswerDto);
 
+        //新提交作业重置评风为 -1
         homeworkAnswerDto.setHomeworkRate(-1);
+        //插入作业答案信息
         homeworkAnswerMapper.insert(homeworkAnswerDto);
 
+        //遍历作业答案中包含的图片列表,上传每一个图片
         List<String> imageUploadNameList = homeworkAnswerDto.getImageUploadNameList();
         if (imageUploadNameList.size() > 0) {
-            Image imageToInsert = new Image();
-            imageToInsert.setReferenceId(homeworkAnswerDto.getHomeworkAnswerId());
             imageUploadNameList.forEach(imageName -> {
+                Image imageToInsert = new Image();
+                imageToInsert.setReferenceId(homeworkAnswerDto.getHomeworkAnswerId());
                 imageToInsert.setImageName(imageName);
                 imageMapper.insert(imageToInsert);
             });
         }
 
+        //获取作业答案中包含的文件UUID名列表和用户自定义名
         List<String> fileUploadNameList = homeworkAnswerDto.getFileUploadNameList();
         List<String> fileUploadUserNameList = homeworkAnswerDto.getFileUploadUserNameList();
+        //创建一个用于存储文件UUID名和用户自定义名的文件数组
         File[] fileArray = new File[fileUploadNameList.size()];
+        //依次取出UUID名和用户自定义名,添加的新创建的文件对象中,最后将文件对象插入到文件数组中
         if (fileUploadNameList.size() == fileUploadUserNameList.size()) {
             for (int i = 0; i < fileArray.length; i++) {
                 File file = new File();
@@ -89,11 +105,9 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
             throw new CustomException("服务器错误!");
         }
 
-        System.out.println(Arrays.toString(fileArray));
+        //将文件数组转换为list,依次取出每一个文件对象,插入数据库
         List<File> fileList = Arrays.asList(fileArray);
-        fileList.forEach(file -> {
-            fileMapper.insert(file);
-        });
+        fileList.forEach(file -> fileMapper.insert(file));
 
     }
 

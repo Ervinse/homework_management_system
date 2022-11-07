@@ -13,4 +13,6 @@ public interface HomeworkAnswerService {
     List<HomeworkAnswer> selectHomeworkAnswerListByConditionInAnd(HomeworkAnswer homeworkAnswer);
 
     void addHomeworkAnswer(HomeworkAnswerDto homeworkAnswerDto);
+
+    void updateRate(HomeworkAnswer homeworkAnswer);
 }

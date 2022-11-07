@@ -122,7 +122,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
             //获取之前回答
             homeworkAnswer = homeworkAnswerListBySearch.get(0);
 
-            if (homeworkAnswer.getHomeworkRate() != -1){
+            if (homeworkAnswer.getHomeworkRate() != -1) {
                 throw new CustomException("该回答已被教师评分,无法修改!");
             }
 
@@ -130,7 +130,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
             Image imageToSelect = new Image();
             imageToSelect.setReferenceId(homeworkAnswer.getHomeworkAnswerId());
             List<Image> imageList = imageService.selectImageListByConditionInOr(imageToSelect);
-            if (imageList.size() > 0){
+            if (imageList.size() > 0) {
                 imageList.forEach(image -> commonService.deleteImage(image.getImageName()));
             }
 
@@ -138,7 +138,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
             File fileToSelect = new File();
             fileToSelect.setReferenceId(homeworkAnswer.getHomeworkAnswerId());
             List<File> fileList = fileService.selectFileListByConditionInOr(fileToSelect);
-            if (fileList.size() > 0){
+            if (fileList.size() > 0) {
                 fileList.forEach(file -> commonService.deleteFile(file.getFileName()));
             }
 
@@ -148,7 +148,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
         }
 
         //是新回答,则插入答案信息,否则更新答案信息
-        if (isNewAnswer){
+        if (isNewAnswer) {
             //新提交作业重置评风为 -1
             homeworkAnswerDto.setHomeworkRate(-1);
             //插入作业答案信息
@@ -160,7 +160,6 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
             homeworkAnswerDto.setHomeworkRate(-1);
             homeworkAnswerMapper.updateById(homeworkAnswerDto);
         }
-
 
 
         //遍历作业答案中包含的图片列表,上传每一个图片
@@ -196,6 +195,18 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
         List<File> fileList = Arrays.asList(fileArray);
         fileList.forEach(file -> fileMapper.insert(file));
 
+    }
+
+    /**
+     * 更新作业评分
+     *
+     * @param homeworkAnswer 含有作业评分的作业答案对象
+     */
+    @Override
+    public void updateRate(HomeworkAnswer homeworkAnswer) {
+        log.info("HomeworkAnswerService - updateRate :homeworkAnswer = {}", homeworkAnswer);
+
+        homeworkAnswerMapper.updateById(homeworkAnswer);
     }
 
 

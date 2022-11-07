@@ -947,7 +947,7 @@
                     submitRate: function () {
                         var homeworkAnswerRate = {
                             homeworkAnswerId: this.homeworkAnswerDetailData.homeworkAnswerId,
-                            rate: this.rate
+                            homeworkRate: this.rate
                         }
                         vueObj = this;
                         updateRateAxios(homeworkAnswerRate).then(
@@ -956,7 +956,7 @@
                                     this.$message.success('提交成功！')
 
                                     //获取当前作业详情
-                                    await getHomeworkAnswerDetailAxios().then(
+                                    await getHomeworkAnswerDetailAxios(this.homeworkAnswerDetailData.homeworkAnswerId).then(
                                         (response) => {
                                             if (response.data.code === 1) {
                                                 vueObj.homeworkAnswerDetailData = response.data.data;

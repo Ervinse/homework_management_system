@@ -47,6 +47,11 @@ public class HomeworkAnswerController {
         return R.getSuccessInstance(homeworkAnswerDtoList);
     }
 
+    /**
+     * 根据作业答案id获取作业答案
+     * @param homeworkAnswerId 作业答案id
+     * @return 作业答案对象
+     */
     @GetMapping
     public R<HomeworkAnswerDto> getHomeworkAnswerById(Long homeworkAnswerId){
         log.info("HomeworkAnswerController - getHomeworkAnswerById :homeworkAnswerId = {}", homeworkAnswerId);
@@ -59,13 +64,31 @@ public class HomeworkAnswerController {
         return R.getSuccessInstance(homeworkAnswerDto);
     }
 
+    /**
+     * 添加作业答案
+     * @param homeworkAnswerDto 含有所属作业信息和提交相关信息的作业答案传输对象
+     * @return 添加作业答案响应
+     */
     @PostMapping
     public R<String> addHomeworkAnswer(@RequestBody HomeworkAnswerDto homeworkAnswerDto){
-        log.info("HomeworkAnswerController - addHomeworkAnswer :HomeworkAnswerDto = {}", homeworkAnswerDto);
+        log.info("HomeworkAnswerController - addHomeworkAnswer :homeworkAnswerDto = {}", homeworkAnswerDto);
 
         homeworkAnswerService.addHomeworkAnswer(homeworkAnswerDto);
 
         return R.getSuccessOperationInstance();
 
+    }
+
+    /**
+     * 更新作业评分
+     * @param homeworkAnswer 含有作业评分的作业答案对象
+     * @return 更新作业评分响应
+     */
+    @PutMapping("/updateRate")
+    public R<String> updateRate(@RequestBody HomeworkAnswer homeworkAnswer){
+        log.info("HomeworkAnswerController - updateRate :homeworkAnswer = {}", homeworkAnswer);
+
+        homeworkAnswerService.updateRate(homeworkAnswer);
+        return R.getSuccessOperationInstance();
     }
 }

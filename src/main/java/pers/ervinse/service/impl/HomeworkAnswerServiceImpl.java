@@ -13,6 +13,7 @@ import pers.ervinse.domain.Image;
 import pers.ervinse.mapper.FileMapper;
 import pers.ervinse.mapper.HomeworkAnswerMapper;
 import pers.ervinse.mapper.ImageMapper;
+import pers.ervinse.service.FileService;
 import pers.ervinse.service.HomeworkAnswerService;
 import pers.ervinse.service.ImageService;
 
@@ -34,6 +35,9 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private FileService fileService;
 
 
     /**
@@ -113,8 +117,9 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
             isNewAnswer = false;
             //获取之前回答
             homeworkAnswer = homeworkAnswerListBySearch.get(0);
-            //删除之前答案图片
+            //删除之前答案图片和答案文件
             imageService.deleteImageByReferenceId(homeworkAnswer.getHomeworkAnswerId());
+            fileService.deleteFileByReferenceId(homeworkAnswer.getHomeworkAnswerId());
         }
 
         //是新回答,则插入答案信息,否则更新答案信息

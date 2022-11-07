@@ -197,6 +197,15 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
                 .or()
                 .eq(homeworkAnswer.getHomeworkId() != null, HomeworkAnswer::getHomeworkId, homeworkAnswer.getHomeworkId());
 
+        //搜索要删除的作业答案列表
+        List<HomeworkAnswer> homeworkAnswerListBySearch = homeworkAnswerMapper.selectList(wrapper);
+        if (homeworkAnswerListBySearch.size() > 0){
+            //获取每一个要删除的作业答案的作业答案id,根据作业答案id删除图片和文件
+            homeworkAnswerListBySearch.forEach(homeworkAnswerItem -> {
+                imageService.deleteImageByReferenceId(homeworkAnswerItem.getHomeworkAnswerId());
+                fileService.deleteFileByReferenceId(homeworkAnswerItem.getHomeworkAnswerId());
+            });
+        }
         int affectRows = homeworkAnswerMapper.delete(wrapper);
 
         if (affectRows > 0) {

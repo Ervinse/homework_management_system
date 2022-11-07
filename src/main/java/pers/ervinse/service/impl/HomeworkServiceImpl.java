@@ -149,6 +149,7 @@ public class HomeworkServiceImpl implements HomeworkService {
         List<Image> imageList = imageMapper.selectList(wrapper);
         imageMapper.delete(wrapper);
 
+        //删除与此作业相关的作业答案
         HomeworkAnswer homeworkAnswerToDelete = new HomeworkAnswer();
         homeworkAnswerToDelete.setHomeworkId(homeworkId);
         homeworkAnswerService.deleteHomeworkAnswer(homeworkAnswerToDelete);

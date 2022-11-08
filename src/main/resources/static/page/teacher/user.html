@@ -36,7 +36,7 @@
                         <div id="aside-user" @click="skipUser">
                             <!--用户头像开始-->
                             <el-avatar id="aside-userPortrait" :size="80"
-                                       :src="loginUser.userPortrait"></el-avatar>
+                                       :src="loginUser.accountPortrait"></el-avatar>
                             <!--用户头像结束-->
                             <div id="aside-user-name-box">
                                 <span class="name">{{loginUser.userName}}</span>
@@ -115,7 +115,7 @@
                             <!--                            <div id="info-avatar">-->
                             <!--                                &lt;!&ndash;用户头像开始&ndash;&gt;-->
                             <!--                                <el-avatar id="info-avatar-userPortrait" :size="160"-->
-                            <!--                                           :src="loginUser.userPortrait"></el-avatar>-->
+                            <!--                                           :src="loginUser.accountPortrait"></el-avatar>-->
                             <!--                                &lt;!&ndash;用户头像结束&ndash;&gt;-->
                             <!--                            </div>-->
 
@@ -406,7 +406,7 @@
                         this.showEditPage();
 
                         var vueObj = this;
-                        await getTeacherDetailAxios(this.loginUser.userId).then(
+                        await getTeacherDetailAxios(this.loginUser.id).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     vueObj.userData = response.data.data;
@@ -464,17 +464,20 @@
                     },
                     //图片删除回调函数
                     async handleRemove() {
-                        //通知服务器删除存储的图片
-                        await removeImageAxios(this.form.imageUploadName).then(
-                            (response) => {
-                                if (response.data.code === 1) {
-                                    console.log('图片删除成功')
-                                } else {
-                                    this.$message.error(response.data.msg)
-                                }
-                            }).catch((err) => {
-                            this.$message.error('请求出错了：' + err);
-                        });
+                        console.log(this.form.imageUploadName);
+                        if (this.form.imageUploadName != null){
+                            //通知服务器删除存储的图片
+                            await removeImageAxios(this.form.imageUploadName).then(
+                                (response) => {
+                                    if (response.data.code === 1) {
+                                        console.log('图片删除成功')
+                                    } else {
+                                        this.$message.error(response.data.msg)
+                                    }
+                                }).catch((err) => {
+                                this.$message.error('请求出错了：' + err);
+                            });
+                        }
                     },
                     //上传图片前校验
                     beforeAvatarUpload(file) {

@@ -5,21 +5,29 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Clase;
 import pers.ervinse.domain.Course;
+import pers.ervinse.domain.Student;
 import pers.ervinse.domain.Teacher;
 import pers.ervinse.mapper.TeacherMapper;
 import pers.ervinse.service.ClaseService;
 import pers.ervinse.service.CourseService;
 import pers.ervinse.service.TeacherService;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Slf4j
 @Service
 public class TeacherServiceImpl implements TeacherService {
+
+    //账户重置新密码
+    @Value("${service.resetNewPassword}")
+    private String resetNewPassword;
 
     @Autowired
     private TeacherMapper teacherMapper;
@@ -289,10 +297,25 @@ public class TeacherServiceImpl implements TeacherService {
         }
     }
 
+    /**
+     * 根据账户名和配置文件重置账号密码为初始密码
+     *
+     * @param accountName 要重置账户密码的账户名
+     */
     @Override
     public void resetPassword(String accountName) {
         log.info("TeacherService - resetPassword :accountName = {}", accountName);
 
+        //将配置文件中的明文密码进行加密
+        String newPassword = DigestUtils.md5DigestAsHex(resetNewPassword.getBytes(StandardCharsets.UTF_8));
+
+        Teacher teacher = new Teacher();
+        teacher.setAccountName(accountName);
+        teacher.setAccountPassword(newPassword);
+
+        LambdaQueryWrapper<Teacher> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Teacher::getAccountName, accountName);
+        teacherMapper.update(teacher,wrapper);
     }
 
 

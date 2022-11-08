@@ -5,18 +5,25 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 import pers.ervinse.common.CustomException;
 import pers.ervinse.domain.Student;
 import pers.ervinse.mapper.StudentMapper;
 import pers.ervinse.service.ClaseService;
 import pers.ervinse.service.StudentService;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Slf4j
 @Service
 public class StudentServiceImpl implements StudentService {
+
+    //账户重置新密码
+    @Value("${service.resetNewPassword}")
+    private String resetNewPassword;
 
     @Autowired
     private StudentMapper studentMapper;
@@ -90,6 +97,7 @@ public class StudentServiceImpl implements StudentService {
 
     /**
      * 获取学生列表
+     *
      * @return 学生列表
      */
     @Override
@@ -101,6 +109,7 @@ public class StudentServiceImpl implements StudentService {
 
     /**
      * 根据账号名获取学生
+     *
      * @param student 含有账号名的学生对象
      * @return 查询到的学生对象
      */
@@ -120,6 +129,7 @@ public class StudentServiceImpl implements StudentService {
 
     /**
      * 根据条件查询学生列表
+     *
      * @param student 查询的学生条件
      * @return 查询到的学生列表
      */
@@ -206,10 +216,25 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    /**
+     * 根据账户名和配置文件重置账号密码为初始密码
+     *
+     * @param accountName 要重置账户密码的账户名
+     */
     @Override
     public void resetPassword(String accountName) {
         log.info("StudentService - resetPassword :accountName = {}", accountName);
 
+        //将配置文件中的明文密码进行加密
+        String newPassword = DigestUtils.md5DigestAsHex(resetNewPassword.getBytes(StandardCharsets.UTF_8));
+
+        Student student = new Student();
+        student.setAccountName(accountName);
+        student.setAccountPassword(newPassword);
+
+        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Student::getAccountName, accountName);
+        studentMapper.update(student, wrapper);
     }
 
 }

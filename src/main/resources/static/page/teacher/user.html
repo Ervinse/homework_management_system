@@ -180,7 +180,7 @@
                                                 :show-file-list="false"
                                                 :on-success="handleAvatarSuccess"
                                                 :before-upload="beforeAvatarUpload">
-                                            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                            <img v-if="imageUploadVisible" :src="getImage(this.form.imageUploadName)" class="avatar">
                                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                         </el-upload>
 
@@ -238,7 +238,7 @@
                         accountName: "",
                         accountPassword: "",
                         phoneNumber: "",
-                        imageUploadName: {}
+                        imageUploadName: ""
                     },
                     //图片墙图片显示标志位
                     imageUploadVisible: false,
@@ -366,6 +366,10 @@
                             this.$message.error('请求出错了：' + err);
                         })
                     },
+                    //获取服务器图片
+                    getImage (image) {
+                        return `/common/downloadImage?imageName=${image}`
+                    },
 
                     //页面跳转函数
                     //返回函数
@@ -375,8 +379,8 @@
                         this.addPageShow = false;
                         this.editPageBreadcrumbShow = false;
                         this.editPageShow = false;
-                        this.handleRemove();
                         this.clearFormData();
+                        this.handleRemove();
                     },
                     // 显示新增表单页面函数
                     showEditPage: function () {
@@ -397,8 +401,9 @@
                             accountType: "",
                             accountStatus: "1",
                             phoneNumber: "",
-                            imageUploadName: {}
+                            imageUploadName: ""
                         };
+                        this.imageUploadVisible = false;
                         this.imagePreviewSrcList = [];
                     },
                     // 编辑按钮处理函数
@@ -456,8 +461,9 @@
                     //图片上传成功回调函数
                     handleAvatarSuccess: function (response) {
                         if (response.code === 1) {
-                            this.form.imageUploadName = response.data.imageName;
-                            this.imageUrl = '../../imageItem/' + response.data.imageName;
+                            this.form.imageUploadName = response.data;
+                            // this.imageUrl = '../../imageItem/' + response.data.imageName;
+                            this.imageUploadVisible = true;
                         } else {
                             this.$message.error(response.msg)
                         }
@@ -465,7 +471,7 @@
                     //图片删除回调函数
                     async handleRemove() {
                         console.log(this.form.imageUploadName);
-                        if (this.form.imageUploadName != null){
+                        if (this.form.imageUploadName !== ""){
                             //通知服务器删除存储的图片
                             await removeImageAxios(this.form.imageUploadName).then(
                                 (response) => {

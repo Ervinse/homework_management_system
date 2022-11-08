@@ -111,6 +111,55 @@ public class CommonController {
 
 
     /**
+     * 根据图片名下载图片
+     *
+     * @param fileName     图片文件名
+     * @param response 响应
+     */
+    @GetMapping("/downloadFile")
+    public void downloadFile(String fileName, HttpServletResponse response) throws RuntimeException {
+        log.info("CommonController - downloadFile : fileName = {}", fileName);
+
+        FileInputStream fileInputStream = null;
+        ServletOutputStream servletOutputStream = null;
+
+        try {
+            fileInputStream = new FileInputStream(fileDirectoryPath + fileName);
+
+            servletOutputStream = response.getOutputStream();
+
+            response.setContentType("application/octet-stream");
+
+
+            int len;
+            byte[] bytes = new byte[1024];
+            while ((len = fileInputStream.read(bytes)) != -1) {
+                servletOutputStream.write(bytes, 0, len);
+                servletOutputStream.flush();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (servletOutputStream != null) {
+                try {
+                    servletOutputStream.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+    }
+
+
+    /**
      * 根据图片文件名删除图片
      * @param imageName 图片文件名
      * @return 删除图片响应

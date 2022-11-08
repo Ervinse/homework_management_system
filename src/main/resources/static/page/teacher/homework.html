@@ -398,10 +398,10 @@
                                             </div>
                                         </el-descriptions-item>
                                         <el-descriptions-item label="附件">
-                                            <a v-for="fileItem in homeworkAnswerDetailData.fileUploadUserNameList"
-                                               :href="'../../file/' + fileItem.homeworkAnswerFileName"
-                                               download="">
-                                                <div>{{fileItem.homeworkAnswerFileName}}</div>
+                                            <a v-for="(fileItem,index) in homeworkAnswerDetailData.fileUploadUserNameList"
+                                               :href="getFile(homeworkAnswerDetailData.fileUploadNameList[index])"
+                                               :download="fileItem">
+                                                <div>{{fileItem}}</div>
                                             </a>
                                         </el-descriptions-item>
                                     </el-descriptions>
@@ -988,6 +988,10 @@
                     //获取服务器图片
                     getImage (image) {
                         return `/common/downloadImage?imageName=${image}`
+                    },
+                    //获取服务器文件
+                    getFile (file) {
+                        return `/common/downloadFile?fileName=${file}`
                     },
                     //图片上传成功回调函数
                     handleAvatarSuccess: function (response) {

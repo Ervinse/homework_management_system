@@ -16,6 +16,9 @@ spring:
 #图片存放目录
 image-path: /Users/ervinse/Documents/IdeaProjects/homework_management_system/src/main/resources/upload/
 
+#文件存放目录
+file-path: /Users/ervinse/Documents/IdeaProjects/homework_management_system/src/main/resources/file/
+
 #短信服务配置(示例)
 SMS:
   #是否启用短信服务
@@ -25,6 +28,10 @@ SMS:
   #RAM子账号
   accessKeyId: f80c436f9dec
   secret: a58285f4c03a
+  #模板
+  templateCode: SMS_154950909
+  #签名
+  signName: "阿里云短信测试"
 
 #日志配置
 logging:

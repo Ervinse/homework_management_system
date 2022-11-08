@@ -9,10 +9,8 @@ import pers.ervinse.service.CommonService;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -47,11 +45,12 @@ public class CommonController {
 
     /**
      * 接收上传文件,并将图片转存到对应的路径中
+     *
      * @param file 上传的文件
      * @return 含有文件新文件名的响应
      */
     @PostMapping("/uploadFile")
-    public R<String> uploadFile(MultipartFile file){
+    public R<String> uploadFile(MultipartFile file) {
         log.info("CommonController - uploadFile : file = {}", file.toString());
 
         //将文件转存到服务器中
@@ -63,8 +62,8 @@ public class CommonController {
     /**
      * 根据图片名下载图片
      *
-     * @param imageName     图片文件名
-     * @param response 响应
+     * @param imageName 图片文件名
+     * @param response  响应
      */
     @GetMapping("/downloadImage")
     public void downloadImage(String imageName, HttpServletResponse response) throws RuntimeException {
@@ -161,6 +160,7 @@ public class CommonController {
 
     /**
      * 根据图片文件名删除图片
+     *
      * @param imageName 图片文件名
      * @return 删除图片响应
      */
@@ -174,6 +174,7 @@ public class CommonController {
 
     /**
      * 根据文件文件名删除文件
+     *
      * @param fileName 文件文件名
      * @return 删除文件响应
      */

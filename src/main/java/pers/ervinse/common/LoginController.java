@@ -138,31 +138,42 @@ public class LoginController {
     }
 
 
+    /**
+     * 检查账户和手机号是否匹配
+     * @param loginUser 含有账户名和手机号的登录用户类
+     * @return 检查结果响应
+     */
     @PostMapping("/checkPhoneNumber")
     public R<String> checkPhoneNumber(@RequestBody LoginUser loginUser){
         log.info("LoginController - checkPhoneNumber :loginUser = {}", loginUser);
 
+        //从前端获取账户名和手机号码
         String accountName = loginUser.getAccountName();
         String phoneNumber = loginUser.getPhoneNumber();
 
+        //根据账户名查询教师
         Teacher teacher = new Teacher();
         teacher.setAccountName(accountName);
         List<Teacher> teacherList = teacherService.selectTeacherByConditionInOr(teacher);
+        //查询到有相关账户,且手机号码正确,返回账户确认响应
         if (teacherList.size() > 0){
             if (StringUtils.equals(phoneNumber, teacherList.get(0).getPhoneNumber())){
                 return R.getSuccessOperationInstance();
             }
         }
 
+        //根据账户名查询学生
         Student student = new Student();
         student.setAccountName(accountName);
         List<Student> studentList = studentService.selectStudentListByConditionInOr(student);
+        //查询到有相关账户,且手机号码正确,返回账户确认响应
         if (studentList.size() > 0){
             if (StringUtils.equals(phoneNumber,studentList.get(0).getPhoneNumber())){
                 return R.getSuccessOperationInstance();
             }
         }
 
+        //没有查询到教师或学生相关账户,或查询到后手机号码不匹配
         return R.getErrorInstance("手机号和账户不匹配");
     }
 

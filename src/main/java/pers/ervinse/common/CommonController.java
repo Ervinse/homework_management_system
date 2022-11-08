@@ -111,9 +111,9 @@ public class CommonController {
 
 
     /**
-     * 根据图片名下载图片
+     * 根据文件名下载文件
      *
-     * @param fileName     图片文件名
+     * @param fileName 文件名
      * @param response 响应
      */
     @GetMapping("/downloadFile")
@@ -128,8 +128,8 @@ public class CommonController {
 
             servletOutputStream = response.getOutputStream();
 
+            //设置响应数据流类型为二进制流(即不知道下载文件类型)
             response.setContentType("application/octet-stream");
-
 
             int len;
             byte[] bytes = new byte[1024];

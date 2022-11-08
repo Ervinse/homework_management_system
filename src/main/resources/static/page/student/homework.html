@@ -579,10 +579,13 @@
                             submitHomeworkAnswerAxios(this.form).then(
                                 res => {
                                     if (res.data.code === 1) {
-                                        this.$message.success('提交成功！')
-                                        this.getHomeworkPage()
+                                        this.$message.success('提交成功！');
+                                        this.getHomeworkPage();
+                                        this.form.imageUploadNameList = [];
+                                        this.form.fileUploadNameList = [];
+                                        this.form.fileUploadUserNameList = [];
                                     } else {
-                                        this.$message.error(res.data.msg)
+                                        this.$message.error(res.data.msg);
                                     }
                                 }
                             )

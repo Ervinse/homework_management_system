@@ -289,5 +289,11 @@ public class TeacherServiceImpl implements TeacherService {
         }
     }
 
+    @Override
+    public void resetPassword(String accountName) {
+        log.info("TeacherService - resetPassword :accountName = {}", accountName);
+
+    }
+
 
 }

@@ -204,7 +204,7 @@
                             console.log(2)
                         }
                         if (check === true) {
-                            sendMessageAxios(this.forgetForm.phoneNumber).then(
+                            sendMessageAxios(this.forgetForm.accountName,this.forgetForm.phoneNumber).then(
                                 (response) => {
                                     if (response.data.code === 1) {
                                         this.$message.success('短信已发送');

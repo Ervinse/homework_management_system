@@ -23,6 +23,8 @@ public class LoginUser {
     private String accountPortrait;
     //账户类型("1"为管理员,"2"为用户,"3"为学生)
     private String accountType;
+    //验证码
+    private String code;
 
 
 }

@@ -1,18 +1,19 @@
 // 发送验证码
-const sendMessageAxios = (phoneNumber) => {
+const sendMessageAxios = (accountName,phoneNumber) => {
     return $axios({
         url: '/login/sendMsg',
         method: 'get',
         params: {
-            phoneNumber: phoneNumber
+            phoneNumber: phoneNumber,
+            accountName: accountName
         }
     })
 }
 //重置密码
 const resetPasswordAxios = (params) => {
     return $axios({
-        url: '../../json/common/success.json',
-        method: 'post',
+        url: '/login/resetPassword',
+        method: 'put',
         data: {...params}
     })
 }

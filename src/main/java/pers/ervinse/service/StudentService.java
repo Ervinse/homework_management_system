@@ -23,4 +23,5 @@ public interface StudentService {
 
     void deleteStudentById(Long studentId);
 
+    void resetPassword(String accountName);
 }

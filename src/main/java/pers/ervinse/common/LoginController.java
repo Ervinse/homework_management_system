@@ -140,11 +140,12 @@ public class LoginController {
 
     /**
      * 检查账户和手机号是否匹配
+     *
      * @param loginUser 含有账户名和手机号的登录用户类
      * @return 检查结果响应
      */
     @PostMapping("/checkPhoneNumber")
-    public R<String> checkPhoneNumber(@RequestBody LoginUser loginUser){
+    public R<String> checkPhoneNumber(@RequestBody LoginUser loginUser) {
         log.info("LoginController - checkPhoneNumber :loginUser = {}", loginUser);
 
         //从前端获取账户名和手机号码
@@ -156,8 +157,8 @@ public class LoginController {
         teacher.setAccountName(accountName);
         List<Teacher> teacherList = teacherService.selectTeacherByConditionInOr(teacher);
         //查询到有相关账户,且手机号码正确,返回账户确认响应
-        if (teacherList.size() > 0){
-            if (StringUtils.equals(phoneNumber, teacherList.get(0).getPhoneNumber())){
+        if (teacherList.size() > 0) {
+            if (StringUtils.equals(phoneNumber, teacherList.get(0).getPhoneNumber())) {
                 return R.getSuccessOperationInstance();
             }
         }
@@ -167,8 +168,8 @@ public class LoginController {
         student.setAccountName(accountName);
         List<Student> studentList = studentService.selectStudentListByConditionInOr(student);
         //查询到有相关账户,且手机号码正确,返回账户确认响应
-        if (studentList.size() > 0){
-            if (StringUtils.equals(phoneNumber,studentList.get(0).getPhoneNumber())){
+        if (studentList.size() > 0) {
+            if (StringUtils.equals(phoneNumber, studentList.get(0).getPhoneNumber())) {
                 return R.getSuccessOperationInstance();
             }
         }
@@ -178,44 +179,80 @@ public class LoginController {
     }
 
 
+    @PutMapping("/resetPassword")
+    public R<String> resetPassword(@RequestBody LoginUser loginUser, HttpSession session) {
+        log.info("LoginController - resetPassword :loginUser = {}", loginUser);
+
+        String accountName = loginUser.getAccountName();
+        String loginType = loginUser.getLoginType();
+        String code = loginUser.getCode();
+
+        //从session中获取验证码
+        String codeBySession = (String) session.getAttribute(accountName);
+        log.info("codeBySession = {}", codeBySession);
+        if (codeBySession != null) {
+            //判断验证码是否正确
+            if (codeBySession.equals(code)) {
+                //教师重置
+                if ("1".equals(loginType)) {
+                    teacherService.resetPassword(accountName);
+                    //学生重置
+                } else if ("2".equals(loginType)) {
+                    studentService.resetPassword(accountName);
+                } else {
+                    throw new CustomException("服务器错误!");
+                }
+            } else {
+                return R.getErrorInstance("验证码错误!");
+            }
+        } else {
+            return R.getErrorInstance("验证码超时!");
+        }
+        return R.getSuccessOperationInstance();
+    }
+
+
     /**
      * 发送手机验证码
+     *
+     * @param accountName 需要重置密码的账户名
      * @param phoneNumber 发送短信的手机号码
-     * @param session session
+     * @param session     session
      * @return 手机验证码响应
      */
     @GetMapping("/sendMsg")
-    public R<String> sendMsg(String phoneNumber, HttpSession session) throws ClientException {
+    public R<String> sendMsg(String accountName, String phoneNumber, HttpSession session) throws ClientException {
         log.info("UserController - sendMsg :phoneNumber = {}", phoneNumber);
 
-            //生成四位随机验证码
-            String code = ValidateCodeUtils.generateValidateCode(4).toString();
+        //生成四位随机验证码
+        String code = ValidateCodeUtils.generateValidateCode(4).toString();
 
-            //如果开启短信服务,发送短信验证码
-            if (SMSUtilsEnable){
-                log.info("短信服务已启用");
-                SMSUtils.sendMessage(phoneNumber,code);
-            }
+        //如果开启短信服务,发送短信验证码
+        if (SMSUtilsEnable) {
+            log.info("短信服务已启用");
+            SMSUtils.sendMessage(phoneNumber, code);
+        }
 
-            log.info("短信验证码:{}",code);
+        log.info("短信验证码:{}", code);
 
-//            将手机号和验证码保存到session中
-            session.setAttribute(phoneNumber,code);
+        //将账户名和验证码保存到session中
+        session.setAttribute(accountName, code);
 
 //            //将生成的验证码缓存到redis中,并设置有效期为五分钟
 //            redisTemplate.opsForValue().set(phone,code,5, TimeUnit.MINUTES);
 
-            return R.getSuccessInstance("手机验证码发送成功");
+        return R.getSuccessInstance("手机验证码发送成功");
     }
 
 
     /**
      * 登出
+     *
      * @param request 请求
      * @return 登出请求响应
      */
     @PostMapping("/logout")
-    public R<String> logout(HttpServletRequest request){
+    public R<String> logout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
         return R.getSuccessOperationInstance();
     }

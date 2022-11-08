@@ -27,4 +27,5 @@ public interface TeacherService {
 
     void disableAccountById(Long teacherId);
 
+    void resetPassword(String accountName);
 }

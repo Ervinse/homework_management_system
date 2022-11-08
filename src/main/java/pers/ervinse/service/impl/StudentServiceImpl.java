@@ -206,4 +206,10 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Override
+    public void resetPassword(String accountName) {
+        log.info("StudentService - resetPassword :accountName = {}", accountName);
+
+    }
+
 }

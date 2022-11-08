@@ -101,7 +101,9 @@ public class CourseServiceImpl implements CourseService {
                 .or()
                 .like(StringUtils.isNotEmpty(course.getCourseAddress()), Course::getCourseAddress, course.getCourseAddress())
                 .or()
-                .like(StringUtils.isNotEmpty(course.getCourseDescription()), Course::getCourseDescription, course.getCourseDescription());
+                .like(StringUtils.isNotEmpty(course.getCourseDescription()), Course::getCourseDescription, course.getCourseDescription())
+                .or()
+                .like(course.getCourseTeacherId() != null, Course::getCourseTeacherId, course.getCourseTeacherId());
 
         return courseMapper.selectList(wrapper);
     }

@@ -185,6 +185,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
 
     /**
      * 根据作业答案的作业答案id或作业id删除作业答案
+     *
      * @param homeworkAnswer 含有要删除的作业答案信息的作业答案对象
      */
     @Override
@@ -199,7 +200,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
 
         //搜索要删除的作业答案列表
         List<HomeworkAnswer> homeworkAnswerListBySearch = homeworkAnswerMapper.selectList(wrapper);
-        if (homeworkAnswerListBySearch.size() > 0){
+        if (homeworkAnswerListBySearch.size() > 0) {
             //获取每一个要删除的作业答案的作业答案id,根据作业答案id删除图片和文件
             homeworkAnswerListBySearch.forEach(homeworkAnswerItem -> {
                 imageService.deleteImageByReferenceId(homeworkAnswerItem.getHomeworkAnswerId());

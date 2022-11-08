@@ -391,14 +391,14 @@
                                             <div class="demo-image__preview">
                                                 <el-image
                                                         style="width: 100px; height: 100px"
-                                                        v-for="image in homeworkAnswerDetailData.homeworkAnswerImages"
-                                                        :src="'../../imageItem/' + image.url"
+                                                        v-for="image in homeworkAnswerDetailData.imageUploadNameList"
+                                                        :src="getImage(image)"
                                                         :preview-src-list="imagePreviewSrcList">
                                                 </el-image>
                                             </div>
                                         </el-descriptions-item>
                                         <el-descriptions-item label="附件">
-                                            <a v-for="fileItem in homeworkAnswerDetailData.homeworkFiles"
+                                            <a v-for="fileItem in homeworkAnswerDetailData.fileUploadUserNameList"
                                                :href="'../../file/' + fileItem.homeworkAnswerFileName"
                                                download="">
                                                 <div>{{fileItem.homeworkAnswerFileName}}</div>

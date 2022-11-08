@@ -7,9 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pers.ervinse.Dto.HomeworkAnswerDto;
 import pers.ervinse.common.R;
+import pers.ervinse.domain.File;
 import pers.ervinse.domain.HomeworkAnswer;
+import pers.ervinse.domain.Image;
 import pers.ervinse.domain.Student;
+import pers.ervinse.service.FileService;
 import pers.ervinse.service.HomeworkAnswerService;
+import pers.ervinse.service.ImageService;
 import pers.ervinse.service.StudentService;
 
 import java.util.List;
@@ -25,6 +29,12 @@ public class HomeworkAnswerController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Autowired
+    private FileService fileService;
 
 
     /**
@@ -57,9 +67,29 @@ public class HomeworkAnswerController {
         log.info("HomeworkAnswerController - getHomeworkAnswerById :homeworkAnswerId = {}", homeworkAnswerId);
 
         HomeworkAnswer homeworkAnswer = homeworkAnswerService.selectHomeworkAnswerById(homeworkAnswerId);
-        Student student = studentService.selectStudentById(homeworkAnswer.getStudentId());
         HomeworkAnswerDto homeworkAnswerDto = new HomeworkAnswerDto();
+        //搜索学生
+        Student student = studentService.selectStudentById(homeworkAnswer.getStudentId());
         homeworkAnswerDto.setStudentName(student.getStudentName());
+        //搜索图片
+        Image imageToSearch = new Image();
+        imageToSearch.setReferenceId(homeworkAnswerId);
+        List<Image> imageList = imageService.selectImageListByConditionInOr(imageToSearch);
+        if (imageList.size() > 0){
+            List<String> imageNameList = imageList.stream().map(Image::getImageName).collect(Collectors.toList());
+            homeworkAnswerDto.setImageUploadNameList(imageNameList);
+        }
+        //搜索文件
+        File fileToSearch = new File();
+        fileToSearch.setReferenceId(homeworkAnswerId);
+        List<File> fileList = fileService.selectFileListByConditionInOr(fileToSearch);
+        if (fileList.size() > 0){
+            List<String> fileNameList = fileList.stream().map(File::getFileName).collect(Collectors.toList());
+            List<String> fileUserNameList = fileList.stream().map(File::getFileUserName).collect(Collectors.toList());
+            homeworkAnswerDto.setFileUploadNameList(fileNameList);
+            homeworkAnswerDto.setFileUploadUserNameList(fileUserNameList);
+        }
+
         BeanUtils.copyProperties(homeworkAnswer,homeworkAnswerDto);
         return R.getSuccessInstance(homeworkAnswerDto);
     }

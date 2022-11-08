@@ -1,7 +1,7 @@
 // 发送验证码
 const sendMessageAxios = (phoneNumber) => {
     return $axios({
-        url: '../../json/common/success.json',
+        url: '/login/sendMsg',
         method: 'get',
         params: {
             phoneNumber: phoneNumber
@@ -26,7 +26,7 @@ const loginAxios = (params) => {
 }
 const checkPhoneNumber = (params) => {
     return $axios({
-        url: '../../json/common/success.json',
+        url: '/login/checkPhoneNumber',
         method: 'post',
         data: {...params}
     })

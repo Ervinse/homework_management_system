@@ -12,15 +12,6 @@ const getCoursePageAxios = (currentPage,pageSize,searchValue) => {
     })
 }
 
-// 查询课程搜索列表接口
-const getCoursePageSearchAxios = (params) => {
-    return $axios({
-        url: '../../json/course/course_page_search_success.json',
-        method: 'get',
-        params: {params}
-    })
-}
-
 // 查询课程详情接口
 const getCourseDetailAxios = (courseId) => {
     return $axios({

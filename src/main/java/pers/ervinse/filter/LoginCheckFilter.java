@@ -34,10 +34,9 @@ public class LoginCheckFilter implements Filter {
 
         //定义不需要处理的请求路径
         String[] permitUrls = new String[]{
-                //登录,登出,注册
+                //登录模块
                 "/login",
-                "/login/logout",
-                "/login/register",
+                "/login/**",
                 //发送验证码
                 "/user/sendMsg",
                 //静态资源

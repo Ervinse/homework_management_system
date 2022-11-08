@@ -192,7 +192,7 @@
                     //发送验证码
                     sendMessage: async function () {
 
-                        //验证手机号符合表单规则
+                        //验证账户名和手机号符合表单规则
                         let verification = this.validatePhoneNumber();
 
                         let check = false;
@@ -201,6 +201,7 @@
                             //检查手机号和账号匹配
                             await this.checkPhoneNumber();
                             check = this.checkPhoneNumberFlag;
+                            console.log(2)
                         }
                         if (check === true) {
                             sendMessageAxios(this.forgetForm.phoneNumber).then(
@@ -280,23 +281,33 @@
                         });
                         return flag;
                     },
-                    //验证手机号
+                    //验证账户名和手机号符合表单规则
                     validatePhoneNumber: function () {
                         let flag = false;
-                        this.$refs['forgetPasswordForm'].validateField('phoneNumber', (errorMessage) => {
-                            if (errorMessage !== '') {
-                                this.$message.info(errorMessage);
+                        let validateFieldList = [];
+                        this.$refs['forgetPasswordForm'].validateField(['phoneNumber', 'accountName'], (valid) => {
+                            if (!valid) {
+                                //校验通过走这里,每通过一次,会往这个数组里加一个""
+                                validateFieldList.push(valid);
+
+                                //因为我这里总共校验了2个字段,所有最终2个字段都校验成功之后,数组中会有2个""
+                                if (validateFieldList.length === 2 &&
+                                    validateFieldList.every((item) => item === "")) {
+                                    //这里写校验通过的业务逻辑
+                                    flag = true;
+                                }
                             }
-                            flag = errorMessage === '';
                         });
                         return flag;
                     },
                     //检查手机号是否匹配账号
                     checkPhoneNumber: async function () {
+                        this.checkPhoneNumberFlag = false;
                         await checkPhoneNumber(this.forgetForm).then(
                             (response) => {
                                 if (response.data.code === 1) {
                                     this.checkPhoneNumberFlag = true;
+                                    console.log(1)
                                 } else {
                                     this.$message.error(response.data.msg)
                                 }

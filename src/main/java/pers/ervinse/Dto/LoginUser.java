@@ -12,6 +12,9 @@ public class LoginUser {
     //登录类型("1"为教师,"2"为学生)
     private String loginType;
 
+    //电话号码
+    private String phoneNumber;
+
     //用户id
     private Long id;
     //姓名

@@ -36,7 +36,7 @@
                         <div id="aside-user" @click="skipUser">
                             <!--用户头像开始-->
                             <el-avatar id="aside-userPortrait" :size="80"
-                                       :src="loginUser.accountPortrait"></el-avatar>
+                                       :src="getImage(loginUser.accountPortrait)"></el-avatar>
                             <!--用户头像结束-->
                             <div id="aside-user-name-box">
                                 <span class="name">{{loginUser.userName}}</span>
@@ -180,7 +180,7 @@
                                                 :show-file-list="false"
                                                 :on-success="handleAvatarSuccess"
                                                 :before-upload="beforeAvatarUpload">
-                                            <img v-if="imageUploadVisible" :src="getImage(this.form.imageUploadName)" class="avatar">
+                                            <img v-if="imageUploadVisible" :src="getImage(this.form.accountPortrait)" class="avatar">
                                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                         </el-upload>
 
@@ -238,7 +238,7 @@
                         accountName: "",
                         accountPassword: "",
                         phoneNumber: "",
-                        imageUploadName: ""
+                        accountPortrait: ""
                     },
                     //图片墙图片显示标志位
                     imageUploadVisible: false,
@@ -401,7 +401,7 @@
                             accountType: "",
                             accountStatus: "1",
                             phoneNumber: "",
-                            imageUploadName: ""
+                            accountPortrait: ""
                         };
                         this.imageUploadVisible = false;
                         this.imagePreviewSrcList = [];
@@ -461,7 +461,7 @@
                     //图片上传成功回调函数
                     handleAvatarSuccess: function (response) {
                         if (response.code === 1) {
-                            this.form.imageUploadName = response.data;
+                            this.form.accountPortrait = response.data;
                             // this.imageUrl = '../../imageItem/' + response.data.imageName;
                             this.imageUploadVisible = true;
                         } else {
@@ -470,10 +470,10 @@
                     },
                     //图片删除回调函数
                     async handleRemove() {
-                        console.log(this.form.imageUploadName);
-                        if (this.form.imageUploadName !== ""){
+                        console.log(this.form.accountPortrait);
+                        if (this.form.accountPortrait !== ""){
                             //通知服务器删除存储的图片
-                            await removeImageAxios(this.form.imageUploadName).then(
+                            await removeImageAxios(this.form.accountPortrait).then(
                                 (response) => {
                                     if (response.data.code === 1) {
                                         console.log('图片删除成功')

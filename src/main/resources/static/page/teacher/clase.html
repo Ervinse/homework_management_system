@@ -36,7 +36,7 @@
                         <div id="aside-user" @click="skipUser">
                             <!--用户头像开始-->
                             <el-avatar id="aside-userPortrait" :size="80"
-                                       :src="loginUser.accountPortrait"></el-avatar>
+                                       :src="getImage(loginUser.accountPortrait)"></el-avatar>
                             <!--用户头像结束-->
                             <div id="aside-user-name-box">
                                 <span class="name">{{loginUser.userName}}</span>
@@ -571,6 +571,10 @@
                             }).catch((err) => {
                             this.$message.error('请求出错了：' + err);
                         })
+                    },
+                    //获取服务器图片
+                    getImage (image) {
+                        return `/common/downloadImage?imageName=${image}`
                     },
 
 

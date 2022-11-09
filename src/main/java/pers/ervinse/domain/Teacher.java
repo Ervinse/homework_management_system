@@ -25,10 +25,9 @@ public class Teacher implements Serializable {
     private String accountType;
     //账号状态
     private String accountStatus;
-    //账号头像
-    private String accountPortrait;
     //手机号
     private String phoneNumber;
-
+    //账号头像
+    private String accountPortrait;
 
 }

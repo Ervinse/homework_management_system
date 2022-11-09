@@ -1,140 +1,308 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>云作业-教师端</title>
+<head>
+    <meta charset="UTF-8">
+    <title>云作业-教师端</title>
 
-        <!--引入vue框架-->
-        <script src="../../framework/vue/vue.js" type="text/javascript" charset="utf-8"></script>
-        <!--引入element UI样式和组件-->
-        <link href="../../framework/element/index.css" rel="stylesheet" type="text/css">
-        <script src="../../framework/element/index.js" type="text/javascript" charset="utf-8"></script>
-        <!--引入axios框架-->
-        <script src="../../framework/axios/axios.js" type="text/javascript" charset="utf-8"></script>
-        <!--引入当前页面样式-->
-        <link href="homework.css" rel="stylesheet" type="text/css">
-        <!--引入请求相关文件-->
-        <script src="../../api/homework.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../../api/common.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../../js/request.js" type="text/javascript" charset="utf-8"></script>
-    </head>
-    <body>
+    <!--引入vue框架-->
+    <script src="../../framework/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+    <!--引入element UI样式和组件-->
+    <link href="../../framework/element/index.css" rel="stylesheet" type="text/css">
+    <script src="../../framework/element/index.js" type="text/javascript" charset="utf-8"></script>
+    <!--引入axios框架-->
+    <script src="../../framework/axios/axios.js" type="text/javascript" charset="utf-8"></script>
+    <!--引入当前页面样式-->
+    <link href="homework.css" rel="stylesheet" type="text/css">
+    <!--引入请求相关文件-->
+    <script src="../../api/homework.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../api/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/request.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
 
-        <div id="vue">
+<div id="vue">
 
-            <el-container id="container">
-                <!--主标题栏开始-->
-                <el-header id="header" style="text-align: left; font-size: 12px">
-                    <span style="color: #fff; font-size: 20px">云作业管理系统--教师端</span>
-                </el-header>
-                <!--主标题栏结束-->
-                <!--主页开始-->
-                <el-container id="main">
-                    <!--主页侧边栏开始-->
-                    <el-aside id="aside" width="250px">
-                        <!--用户容器开始-->
-                        <div id="aside-user" @click="skipUser">
-                            <!--用户头像开始-->
-                            <el-avatar id="aside-userPortrait" :size="80"
-                                       :src="getImage(loginUser.accountPortrait)"></el-avatar>
-                            <!--用户头像结束-->
-                            <div id="aside-user-name-box">
-                                <span class="name">{{loginUser.userName}}</span>
-                                <span class="text1">老师</span>
-                                <br>
-                                <span class="text2">欢迎回来!</span>
-                            </div>
+    <el-container id="container">
+        <!--主标题栏开始-->
+        <el-header id="header" style="text-align: left; font-size: 12px">
+            <span style="color: #fff; font-size: 20px">云作业管理系统--教师端</span>
+        </el-header>
+        <!--主标题栏结束-->
+        <!--主页开始-->
+        <el-container id="main">
+            <!--主页侧边栏开始-->
+            <el-aside id="aside" width="250px">
+                <!--用户容器开始-->
+                <div id="aside-user" @click="skipUser">
+                    <!--用户头像开始-->
+                    <el-avatar id="aside-userPortrait" :size="80"
+                               :src="getImage(loginUser.accountPortrait)"></el-avatar>
+                    <!--用户头像结束-->
+                    <div id="aside-user-name-box">
+                        <span class="name">{{loginUser.userName}}</span>
+                        <span class="text1">老师</span>
+                        <br>
+                        <span class="text2">欢迎回来!</span>
+                    </div>
+                </div>
+                <!--用户容器结束-->
+                <div id="cut-off"></div>
+                <!--主页菜单开始-->
+                <el-menu id="aside-menu"
+                         default-active="5"
+                         @select="handleSelect"
+                         class="el-menu-vertical-demo"
+                         background-color="#353741"
+                         text-color="#fff"
+                         active-text-color="#62A1A4">
+                    <el-menu-item class="item" index="1" :disabled="isAdmin">
+                        <i class="el-icon-service"></i>
+                        <span class="text" slot="title">教师管理</span>
+                    </el-menu-item>
+                    <el-menu-item class="item" index="2" :disabled="isAdmin">
+                        <i class="el-icon-user"></i>
+                        <span class="text" slot="title">学生管理</span>
+                    </el-menu-item>
+                    <el-menu-item class="item" index="3">
+                        <i class="el-icon-date"></i>
+                        <span class="text" slot="title">课程管理</span>
+                    </el-menu-item>
+                    <el-menu-item class="item" index="4">
+                        <i class="el-icon-tickets"></i>
+                        <span class="text" slot="title">班级管理</span>
+                    </el-menu-item>
+                    <el-menu-item class="item" index="5">
+                        <i class="el-icon-edit-outline"></i>
+                        <span class="text" slot="title">作业管理</span>
+                    </el-menu-item>
+                    <el-menu-item class="item" index="6">
+                        <i class="el-icon-setting"></i>
+                        <span class="text" slot="title">账号信息</span>
+                    </el-menu-item>
+                    <el-menu-item class="item" index="7">
+                        <i class="el-icon-back"></i>
+                        <span class="text" slot="title">退出系统</span>
+                    </el-menu-item>
+                </el-menu>
+                <!--主页菜单结束-->
+                <div id="fill"></div>
+            </el-aside>
+            <!--主页侧边栏结束-->
+
+
+            <!--主页内容开始-->
+            <el-main>
+                <!--面包屑导航开始-->
+                <div id="breadcrumb-box">
+                    <el-breadcrumb separator-class="el-icon-arrow-right">
+                        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                        <el-breadcrumb-item :to="{ path: '/' }"><a @click="goBack">作业管理</a>
+                        </el-breadcrumb-item>
+                        <el-breadcrumb-item :to="{ path: '/' }" v-if="addPageBreadcrumbShow">新增作业
+                        </el-breadcrumb-item>
+                        <el-breadcrumb-item :to="{ path: '/' }" v-if="editPageBreadcrumbShow">编辑作业
+                        </el-breadcrumb-item>
+                        <el-breadcrumb-item :to="{ path: '/' }" v-if="detailHomeworkPageBreadcrumbShow">作业详情
+                        </el-breadcrumb-item>
+                        <el-breadcrumb-item :to="{ path: '/' }" v-if="detailHomeworkAnswerPageBreadcrumbShow">
+                            作业答案详情
+                        </el-breadcrumb-item>
+                    </el-breadcrumb>
+                </div>
+                <!--面包屑导航结束-->
+
+
+                <!--列表表格容器开始-->
+                <el-card id="list" class="box-card" v-if="listPageShow">
+                    <!--标题开始-->
+                    <div id="list-title" slot="header" class="clearfix">
+                        <span>作业管理</span>
+                    </div>
+                    <!--标题结束-->
+                    <!--输入框开始-->
+                    <el-input id="list-search_input"
+                              placeholder="请输入查询内容"
+                              v-model="searchValue"
+                              clearable>
+                    </el-input>
+                    <!--输入框结束-->
+                    <!--按钮组开始-->
+                    <el-button id="list-search_button" type="primary" icon="el-icon-search" @click="handleSearch">搜索
+                    </el-button>
+                    <el-button id="list-add_button" type="primary" @click="showAddPage">新增</el-button>
+                    <!--按钮组开结束-->
+
+
+                    <template>
+                        <el-table id="list-table"
+                                  :data="homeworkTableData"
+                                  stripe
+                                  style="width: 100%">
+                            <el-table-column
+                                    type="selection"
+                                    width="55">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="claseName"
+                                    label="班级名"
+                                    width="180">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="courseName"
+                                    label="课程名"
+                                    width="180">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="homeworkName"
+                                    label="作业名">
+                            </el-table-column>
+                            <el-table-column label="操作" width="240">
+                                <template slot-scope="scope">
+                                    <el-button
+                                            size="mini"
+                                            @click="handleHomeworkDetail(scope.$index, scope.row)">详情
+                                    </el-button>
+                                    <el-button
+                                            size="mini"
+                                            @click="handleDelete(scope.$index, scope.row)">删除
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+
+                        <div id="list-pagination">
+                            <el-pagination
+                                    background
+                                    layout="total , prev, pager, next , jumper"
+                                    :total="total"
+                                    :page-size="pageSize"
+                                    :current-page="currentPage">
+                            </el-pagination>
                         </div>
-                        <!--用户容器结束-->
-                        <div id="cut-off"></div>
-                        <!--主页菜单开始-->
-                        <el-menu id="aside-menu"
-                                 default-active="5"
-                                 @select="handleSelect"
-                                 class="el-menu-vertical-demo"
-                                 background-color="#353741"
-                                 text-color="#fff"
-                                 active-text-color="#62A1A4">
-                            <el-menu-item class="item" index="1" :disabled="isAdmin">
-                                <i class="el-icon-service"></i>
-                                <span class="text" slot="title">教师管理</span>
-                            </el-menu-item>
-                            <el-menu-item class="item" index="2" :disabled="isAdmin">
-                                <i class="el-icon-user"></i>
-                                <span class="text" slot="title">学生管理</span>
-                            </el-menu-item>
-                            <el-menu-item class="item" index="3">
-                                <i class="el-icon-date"></i>
-                                <span class="text" slot="title">课程管理</span>
-                            </el-menu-item>
-                            <el-menu-item class="item" index="4">
-                                <i class="el-icon-tickets"></i>
-                                <span class="text" slot="title">班级管理</span>
-                            </el-menu-item>
-                            <el-menu-item class="item" index="5">
-                                <i class="el-icon-edit-outline"></i>
-                                <span class="text" slot="title">作业管理</span>
-                            </el-menu-item>
-                            <el-menu-item class="item" index="6">
-                                <i class="el-icon-setting"></i>
-                                <span class="text" slot="title">账号信息</span>
-                            </el-menu-item>
-                            <el-menu-item class="item" index="7">
-                                <i class="el-icon-back"></i>
-                                <span class="text" slot="title">退出系统</span>
-                            </el-menu-item>
-                        </el-menu>
-                        <!--主页菜单结束-->
-                        <div id="fill"></div>
-                    </el-aside>
-                    <!--主页侧边栏结束-->
+                    </template>
 
 
-                    <!--主页内容开始-->
-                    <el-main>
-                        <!--面包屑导航开始-->
-                        <div id="breadcrumb-box">
-                            <el-breadcrumb separator-class="el-icon-arrow-right">
-                                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                                <el-breadcrumb-item :to="{ path: '/' }"><a @click="goBack">作业管理</a>
-                                </el-breadcrumb-item>
-                                <el-breadcrumb-item :to="{ path: '/' }" v-if="addPageBreadcrumbShow">新增作业
-                                </el-breadcrumb-item>
-                                <el-breadcrumb-item :to="{ path: '/' }" v-if="editPageBreadcrumbShow">编辑作业
-                                </el-breadcrumb-item>
-                                <el-breadcrumb-item :to="{ path: '/' }" v-if="detailHomeworkPageBreadcrumbShow">作业详情
-                                </el-breadcrumb-item>
-                                <el-breadcrumb-item :to="{ path: '/' }" v-if="detailHomeworkAnswerPageBreadcrumbShow">
-                                    作业答案详情
-                                </el-breadcrumb-item>
-                            </el-breadcrumb>
-                        </div>
-                        <!--面包屑导航结束-->
+                </el-card>
+                <!--列表表格容器结束-->
 
 
-                        <!--列表表格容器开始-->
-                        <el-card id="list" class="box-card" v-if="listPageShow">
-                            <!--标题开始-->
-                            <div id="list-title" slot="header" class="clearfix">
-                                <span>作业管理</span>
-                            </div>
-                            <!--标题结束-->
-                            <!--输入框开始-->
-                            <el-input id="list-search_input"
-                                      placeholder="请输入查询内容"
-                                      v-model="searchValue"
-                                      clearable>
-                            </el-input>
-                            <!--输入框结束-->
-                            <!--按钮组开始-->
-                            <el-button id="list-search_button" type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-                            <el-button id="list-add_button" type="primary" @click="showAddPage">新增</el-button>
-                            <!--按钮组开结束-->
+                <!--添加表格容器开始-->
+                <el-card id="add" class="box-card" v-if="addPageShow">
+                    <!--标题开始-->
+                    <div id="add-title" slot="header" class="clearfix">
+                        <i class="el-icon-arrow-left" @click="goBack"></i>
+                        <span id="add-title-span2">添加作业</span>
+                    </div>
+                    <!--标题结束-->
+                    <div id="add-form">
+                        <el-form ref="addForm" :model="form" :rules="rules" label-width="80px">
+                            <el-form-item label="作业名" prop="homeworkName">
+                                <el-input class="input" v-model="form.homeworkName"></el-input>
+                            </el-form-item>
+                            <el-form-item label="作业描述" prop="homeworkDescription">
+                                <el-input type="textarea" class="input"
+                                          v-model="form.homeworkDescription"></el-input>
+                            </el-form-item>
+                            <el-form-item label="所属班级" prop="claseId">
+                                <el-select v-model="form.claseId" placeholder="请选择所属班级">
+                                    <el-option v-for="clase in claseList" :label="clase.claseName"
+                                               :value="clase.claseId"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="所属课程" prop="courseId">
+                                <el-select v-model="form.courseId" placeholder="请选择所属课程">
+                                    <el-option v-for="course in courseList" :label="course.courseName"
+                                               :value="course.courseId"></el-option>
+                                    <el-option label="未定" value="0"></el-option>
+                                </el-select>
+                            </el-form-item>
+
+                            <!--上传图片开始-->
+                            <el-form-item>
+                                <el-upload
+                                        :action="imageUploadAction"
+                                        list-type="picture-card"
+                                        :on-success="handleAvatarSuccess"
+                                        :on-preview="handlePictureCardPreview"
+                                        :on-remove="handleRemove"
+                                        :before-upload="beforeAvatarUpload">
+                                    <i class="el-icon-plus"></i>
+                                </el-upload>
+                                <el-dialog :visible.sync="imageUploadVisible">
+                                    <img width="100%" :src="dialogImageUrl" alt="">
+                                </el-dialog>
+                            </el-form-item>
+                            <!--上传图片结束-->
+
+                            <el-form-item>
+                                <el-button type="primary" @click="submitAddForm">提交</el-button>
+                                <el-button @click="resetForm('ruleForm2')">重置</el-button>
+                            </el-form-item>
 
 
-                            <template>
-                                <el-table id="list-table"
-                                          :data="homeworkTableData"
+                        </el-form>
+                    </div>
+
+                </el-card>
+                <!--添加表格容器结束-->
+
+
+                <!--作业详情表格容器开始-->
+                <el-card id="detailHomework" class="box-card" v-if="detailHomeworkPageShow">
+                    <!--标题开始-->
+                    <div id="detailHomework-title" slot="header" class="clearfix">
+                        <i class="el-icon-arrow-left" @click="goBack"></i>
+                        <span id="detailHomework-title-span2">作业详情</span>
+                    </div>
+                    <!--标题结束-->
+                    <!--当前作业详情内容开始-->
+                    <div id="detailHomework-info">
+                        <!--折叠面板开始-->
+                        <el-collapse accordion value="1">
+                            <el-collapse-item name="1">
+                                <template slot="title">
+                                    <h3>当前作业信息 </h3>
+                                </template>
+
+                                <el-descriptions direction="vertical" :column="4" border>
+                                    <el-descriptions-item label="作业名">{{homeworkDetailData.homeworkName}}
+                                    </el-descriptions-item>
+                                    <el-descriptions-item label="班级名">{{homeworkDetailData.claseName}}
+                                    </el-descriptions-item>
+                                    <el-descriptions-item label="课程名">{{homeworkDetailData.courseName}}
+                                    </el-descriptions-item>
+                                    <el-descriptions-item label="课程任课老师">
+                                        {{homeworkDetailData.claseTeacherName}}
+                                    </el-descriptions-item>
+                                    <el-descriptions-item label="作业描述">
+                                        {{homeworkDetailData.homeworkDescription}}
+                                    </el-descriptions-item>
+                                </el-descriptions>
+                            </el-collapse-item>
+
+                            <el-collapse-item name="2">
+                                <template slot="title">
+                                    <h3>当前作业图片</h3>
+                                </template>
+
+                                <div class="demo-image__preview">
+                                    <el-image
+                                            style="width: 100px; height: 100px"
+                                            v-for="image in homeworkDetailData.imageUploadNameList"
+                                            :src="getImage(image)"
+                                            :preview-src-list="imagePreviewSrcList">
+                                    </el-image>
+                                </div>
+                            </el-collapse-item>
+
+                            <el-collapse-item name="3">
+                                <template slot="title">
+                                    <h3>当前作业已提交答案:</h3>
+                                </template>
+
+                                <!--当前作业答案开始-->
+                                <el-table id="detailHomework-table"
+                                          :data="homeworkAnswerTableData"
                                           stripe
                                           style="width: 100%">
                                     <el-table-column
@@ -142,953 +310,786 @@
                                             width="55">
                                     </el-table-column>
                                     <el-table-column
-                                            prop="claseName"
-                                            label="班级名"
+                                            prop="studentName"
+                                            label="学生"
+                                            width="120">
+                                    </el-table-column>
+                                    <el-table-column
+                                            show-overflow-tooltip
+                                            prop="homeworkAnswerContent"
+                                            label="回答">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="updateTime"
+                                            label="提交时间"
                                             width="180">
                                     </el-table-column>
                                     <el-table-column
-                                            prop="courseName"
-                                            label="课程名"
-                                            width="180">
+                                            prop="homeworkRate"
+                                            :formatter="homeworkRateFormatterInRow"
+                                            label="评分"
+                                            width="120">
                                     </el-table-column>
-                                    <el-table-column
-                                            prop="homeworkName"
-                                            label="作业名">
-                                    </el-table-column>
-                                    <el-table-column label="操作" width="240">
+                                    <el-table-column label="操作" width="120">
                                         <template slot-scope="scope">
                                             <el-button
                                                     size="mini"
-                                                    @click="handleHomeworkDetail(scope.$index, scope.row)">详情
-                                            </el-button>
-                                            <el-button
-                                                    size="mini"
-                                                    @click="handleDelete(scope.$index, scope.row)">删除
+                                                    @click="handleHomeworkAnswerDetail(scope.$index, scope.row)">
+                                                详情
                                             </el-button>
                                         </template>
+
+                                        <div id="detailHomework-pagination">
+                                            <el-pagination
+                                                    background
+                                                    layout="total , prev, pager, next , jumper"
+                                                    :total="total"
+                                                    :page-size="pageSize"
+                                                    :current-page="currentPage">
+                                            </el-pagination>
+                                        </div>
                                     </el-table-column>
                                 </el-table>
-
-                                <div id="list-pagination">
-                                    <el-pagination
-                                            background
-                                            layout="total , prev, pager, next , jumper"
-                                            :total="total"
-                                            :page-size="pageSize"
-                                            :current-page="currentPage">
-                                    </el-pagination>
-                                </div>
-                            </template>
+                                <!--当前作业包含答案结束-->
+                            </el-collapse-item>
+                        </el-collapse>
+                        <!--折叠面板结束-->
+                    </div>
+                    <!--当前作业详情内容结束-->
+                </el-card>
+                <!--作业详情表格容器结束-->
 
 
-                        </el-card>
-                        <!--列表表格容器结束-->
+                <!--作业答案详情表格容器开始-->
+                <el-card id="detailHomeworkAnswer" class="box-card" v-if="detailHomeworkAnswerPageShow">
+                    <!--标题开始-->
+                    <div id="detailHomeworkAnswer-title" slot="header" class="clearfix">
+                        <i class="el-icon-arrow-left" @click="goBack"></i>
+                        <span id="detailHomeworkAnswer-title-span2">作业详情</span>
+                    </div>
+                    <!--标题结束-->
+                    <!--当前作业详情内容开始-->
+                    <div id="detailHomeworkAnswer-info">
+                        <div class="info-descriptions">
+                            <el-descriptions title="此份作业详情：" direction="vertical" :column="4" border>
+                                <el-descriptions-item label="学号">{{homeworkAnswerDetailData.studentId}}
+                                </el-descriptions-item>
+                                <el-descriptions-item label="姓名">{{homeworkAnswerDetailData.studentName}}
+                                </el-descriptions-item>
+                                <el-descriptions-item label="提交时间">{{homeworkAnswerDetailData.updateTime}}
+                                </el-descriptions-item>
+                                <el-descriptions-item label="评分">
+                                    {{homeworkRateFormatter(homeworkAnswerDetailData.homeworkRate)}}
+                                </el-descriptions-item>
+                            </el-descriptions>
+                        </div>
+                        <div class="info-descriptions">
+                            <el-descriptions title="此份作业内容如下：" direction="vertical" :column="1" border>
+                                <el-descriptions-item label="文字内容">
+                                    {{homeworkAnswerDetailData.homeworkAnswerContent}}
+                                </el-descriptions-item>
+                                <el-descriptions-item label="图片">
+                                    <div class="demo-image__preview">
+                                        <el-image
+                                                style="width: 100px; height: 100px"
+                                                v-for="image in homeworkAnswerDetailData.imageUploadNameList"
+                                                :src="getImage(image)"
+                                                :preview-src-list="imagePreviewSrcList">
+                                        </el-image>
+                                    </div>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="附件">
+                                    <a v-for="(fileItem,index) in homeworkAnswerDetailData.fileUploadUserNameList"
+                                       :href="getFile(homeworkAnswerDetailData.fileUploadNameList[index])"
+                                       :download="fileItem">
+                                        <div>{{fileItem}}</div>
+                                    </a>
+                                </el-descriptions-item>
+                            </el-descriptions>
+                        </div>
+                    </div>
+                    <!--当前作业详情内容结束-->
+                </el-card>
+                <!--作业详情表格容器结束-->
+
+                <!--作业答案评分容器开始-->
+                <el-card id="rate" class="box-card" v-if="homeworkRateShow">
+                    <!--标题开始-->
+                    <div id="rate-title" slot="header" class="clearfix">
+                        <span id="rate-title-span2">教师评分</span>
+                    </div>
+                    <!--标题结束-->
+                    <!--评分表单开始-->
+                    <div id="rate-form" class="block">
+                        <span class="demonstration">对此份作业的评分为 (0-10分)</span>
+                        <el-slider
+                                v-model="rate"
+                                :max="10"
+                                :step="1"
+                                show-stops
+                                show-input>
+                        </el-slider>
+                    </div>
+                    <!--评分表单结束-->
+
+                    <div id="rate-button">
+                        <el-button type="primary" @click="submitRate">提交</el-button>
+                        <el-button @click="resetRate()">重置</el-button>
+                    </div>
+                </el-card>
+                <!--作业答案评分容器结束-->
+
+            </el-main>
+        </el-container>
+        <!--主页结束-->
+    </el-container>
 
 
-                        <!--添加表格容器开始-->
-                        <el-card id="add" class="box-card" v-if="addPageShow">
-                            <!--标题开始-->
-                            <div id="add-title" slot="header" class="clearfix">
-                                <i class="el-icon-arrow-left" @click="goBack"></i>
-                                <span id="add-title-span2">添加作业</span>
-                            </div>
-                            <!--标题结束-->
-                            <div id="add-form">
-                                <el-form ref="addForm" :model="form" :rules="rules" label-width="80px">
-                                    <el-form-item label="作业名" prop="homeworkName">
-                                        <el-input class="input" v-model="form.homeworkName"></el-input>
-                                    </el-form-item>
-                                    <el-form-item label="作业描述" prop="homeworkDescription">
-                                        <el-input type="textarea" class="input"
-                                                  v-model="form.homeworkDescription"></el-input>
-                                    </el-form-item>
-                                    <el-form-item label="所属班级" prop="claseId">
-                                        <el-select v-model="form.claseId" placeholder="请选择所属班级">
-                                            <el-option v-for="clase in claseList" :label="clase.claseName"
-                                                       :value="clase.claseId"></el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                    <el-form-item label="所属课程" prop="courseId">
-                                        <el-select v-model="form.courseId" placeholder="请选择所属课程">
-                                            <el-option v-for="course in courseList" :label="course.courseName"
-                                                       :value="course.courseId"></el-option>
-                                            <el-option label="未定" value="0"></el-option>
-                                        </el-select>
-                                    </el-form-item>
-
-                                    <!--上传图片开始-->
-                                    <el-form-item>
-                                        <el-upload
-                                                :action="imageUploadAction"
-                                                list-type="picture-card"
-                                                :on-success="handleAvatarSuccess"
-                                                :on-preview="handlePictureCardPreview"
-                                                :on-remove="handleRemove"
-                                                :before-upload="beforeAvatarUpload">
-                                            <i class="el-icon-plus"></i>
-                                        </el-upload>
-                                        <el-dialog :visible.sync="imageUploadVisible">
-                                            <img width="100%" :src="dialogImageUrl" alt="">
-                                        </el-dialog>
-                                    </el-form-item>
-                                    <!--上传图片结束-->
-
-                                    <el-form-item>
-                                        <el-button type="primary" @click="submitAddForm">提交</el-button>
-                                        <el-button @click="resetForm('ruleForm2')">重置</el-button>
-                                    </el-form-item>
+</div>
 
 
-                                </el-form>
-                            </div>
+<script>
 
-                        </el-card>
-                        <!--添加表格容器结束-->
-
-
-                        <!--作业详情表格容器开始-->
-                        <el-card id="detailHomework" class="box-card" v-if="detailHomeworkPageShow">
-                            <!--标题开始-->
-                            <div id="detailHomework-title" slot="header" class="clearfix">
-                                <i class="el-icon-arrow-left" @click="goBack"></i>
-                                <span id="detailHomework-title-span2">作业详情</span>
-                            </div>
-                            <!--标题结束-->
-                            <!--当前作业详情内容开始-->
-                            <div id="detailHomework-info">
-                                <!--折叠面板开始-->
-                                <el-collapse accordion value="1">
-                                    <el-collapse-item name="1">
-                                        <template slot="title">
-                                            <h3>当前作业信息 </h3>
-                                        </template>
-
-                                        <el-descriptions direction="vertical" :column="4" border>
-                                            <el-descriptions-item label="作业名">{{homeworkDetailData.homeworkName}}
-                                            </el-descriptions-item>
-                                            <el-descriptions-item label="班级名">{{homeworkDetailData.claseName}}
-                                            </el-descriptions-item>
-                                            <el-descriptions-item label="课程名">{{homeworkDetailData.courseName}}
-                                            </el-descriptions-item>
-                                            <el-descriptions-item label="课程任课老师">
-                                                {{homeworkDetailData.claseTeacherName}}
-                                            </el-descriptions-item>
-                                            <el-descriptions-item label="作业描述">
-                                                {{homeworkDetailData.homeworkDescription}}
-                                            </el-descriptions-item>
-                                        </el-descriptions>
-                                    </el-collapse-item>
-
-                                    <el-collapse-item name="2">
-                                        <template slot="title">
-                                            <h3>当前作业图片</h3>
-                                        </template>
-
-                                        <div class="demo-image__preview">
-                                            <el-image
-                                                    style="width: 100px; height: 100px"
-                                                    v-for="image in homeworkDetailData.imageUploadNameList"
-                                                    :src="getImage(image)"
-                                                    :preview-src-list="imagePreviewSrcList">
-                                            </el-image>
-                                        </div>
-                                    </el-collapse-item>
-
-                                    <el-collapse-item name="3">
-                                        <template slot="title">
-                                            <h3>当前作业已提交答案:</h3>
-                                        </template>
-
-                                        <!--当前作业答案开始-->
-                                        <el-table id="detailHomework-table"
-                                                  :data="homeworkAnswerTableData"
-                                                  stripe
-                                                  style="width: 100%">
-                                            <el-table-column
-                                                    type="selection"
-                                                    width="55">
-                                            </el-table-column>
-                                            <el-table-column
-                                                    prop="studentName"
-                                                    label="学生"
-                                                    width="120">
-                                            </el-table-column>
-                                            <el-table-column
-                                                    show-overflow-tooltip
-                                                    prop="homeworkAnswerContent"
-                                                    label="回答">
-                                            </el-table-column>
-                                            <el-table-column
-                                                    prop="updateTime"
-                                                    label="提交时间"
-                                                    width="180">
-                                            </el-table-column>
-                                            <el-table-column
-                                                    prop="homeworkRate"
-                                                    :formatter="homeworkRateFormatterInRow"
-                                                    label="评分"
-                                                    width="120">
-                                            </el-table-column>
-                                            <el-table-column label="操作" width="120">
-                                                <template slot-scope="scope">
-                                                    <el-button
-                                                            size="mini"
-                                                            @click="handleHomeworkAnswerDetail(scope.$index, scope.row)">
-                                                        详情
-                                                    </el-button>
-                                                </template>
-
-                                                <div id="detailHomework-pagination">
-                                                    <el-pagination
-                                                            background
-                                                            layout="total , prev, pager, next , jumper"
-                                                            :total="total"
-                                                            :page-size="pageSize"
-                                                            :current-page="currentPage">
-                                                    </el-pagination>
-                                                </div>
-                                            </el-table-column>
-                                        </el-table>
-                                        <!--当前作业包含答案结束-->
-                                    </el-collapse-item>
-                                </el-collapse>
-                                <!--折叠面板结束-->
-                            </div>
-                            <!--当前作业详情内容结束-->
-                        </el-card>
-                        <!--作业详情表格容器结束-->
+    new Vue({
+        el: "#vue",  //基本方式绑定元素
+        data: {      //定义数据变量
 
 
-                        <!--作业答案详情表格容器开始-->
-                        <el-card id="detailHomeworkAnswer" class="box-card" v-if="detailHomeworkAnswerPageShow">
-                            <!--标题开始-->
-                            <div id="detailHomeworkAnswer-title" slot="header" class="clearfix">
-                                <i class="el-icon-arrow-left" @click="goBack"></i>
-                                <span id="detailHomeworkAnswer-title-span2">作业详情</span>
-                            </div>
-                            <!--标题结束-->
-                            <!--当前作业详情内容开始-->
-                            <div id="detailHomeworkAnswer-info">
-                                <div class="info-descriptions">
-                                    <el-descriptions title="此份作业详情：" direction="vertical" :column="4" border>
-                                        <el-descriptions-item label="学号">{{homeworkAnswerDetailData.studentId}}
-                                        </el-descriptions-item>
-                                        <el-descriptions-item label="姓名">{{homeworkAnswerDetailData.studentName}}
-                                        </el-descriptions-item>
-                                        <el-descriptions-item label="提交时间">{{homeworkAnswerDetailData.updateTime}}
-                                        </el-descriptions-item>
-                                        <el-descriptions-item label="评分">
-                                            {{homeworkRateFormatter(homeworkAnswerDetailData.homeworkRate)}}
-                                        </el-descriptions-item>
-                                    </el-descriptions>
-                                </div>
-                                <div class="info-descriptions">
-                                    <el-descriptions title="此份作业内容如下：" direction="vertical" :column="1" border>
-                                        <el-descriptions-item label="文字内容">
-                                            {{homeworkAnswerDetailData.homeworkAnswerContent}}
-                                        </el-descriptions-item>
-                                        <el-descriptions-item label="图片">
-                                            <div class="demo-image__preview">
-                                                <el-image
-                                                        style="width: 100px; height: 100px"
-                                                        v-for="image in homeworkAnswerDetailData.imageUploadNameList"
-                                                        :src="getImage(image)"
-                                                        :preview-src-list="imagePreviewSrcList">
-                                                </el-image>
-                                            </div>
-                                        </el-descriptions-item>
-                                        <el-descriptions-item label="附件">
-                                            <a v-for="(fileItem,index) in homeworkAnswerDetailData.fileUploadUserNameList"
-                                               :href="getFile(homeworkAnswerDetailData.fileUploadNameList[index])"
-                                               :download="fileItem">
-                                                <div>{{fileItem}}</div>
-                                            </a>
-                                        </el-descriptions-item>
-                                    </el-descriptions>
-                                </div>
-                            </div>
-                            <!--当前作业详情内容结束-->
-                        </el-card>
-                        <!--作业详情表格容器结束-->
+            //接口地址
+            imageUploadAction: imageUploadUrl,
 
-                        <!--作业答案评分容器开始-->
-                        <el-card id="rate" class="box-card" v-if="homeworkRateShow">
-                            <!--标题开始-->
-                            <div id="rate-title" slot="header" class="clearfix">
-                                <span id="rate-title-span2">教师评分</span>
-                            </div>
-                            <!--标题结束-->
-                            <!--评分表单开始-->
-                            <div id="rate-form" class="block">
-                                <span class="demonstration">对此份作业的评分为 (0-10分)</span>
-                                <el-slider
-                                        v-model="rate"
-                                        :max="10"
-                                        :step="1"
-                                        show-stops
-                                        show-input>
-                                </el-slider>
-                            </div>
-                            <!--评分表单结束-->
+            //当前登录的用户
+            loginUser: {},
+            //是否是管理员
+            isAdmin: "",
+            //搜索输入框内容
+            searchValue: "",
 
-                            <div id="rate-button">
-                                <el-button type="primary" @click="submitRate">提交</el-button>
-                                <el-button @click="resetRate()">重置</el-button>
-                            </div>
-                        </el-card>
-                        <!--作业答案评分容器结束-->
+            // 选项数据
+            teacherList: [],
+            courseList: [],
+            studentList: [],
 
-                    </el-main>
-                </el-container>
-                <!--主页结束-->
-            </el-container>
+            //页面显示
+            //列表页面显示
+            listPageShow: true,
 
+            //添加页面显示
+            addPageShow: false,
+            //添加页面面包屑显示
+            addPageBreadcrumbShow: false,
 
-        </div>
+            //编辑页面显示
+            editPageShow: false,
+            //编辑页面面包屑显示
+            editPageBreadcrumbShow: false,
 
+            //作业详情页面显示
+            detailHomeworkPageShow: false,
+            //作业详情页面面包屑显示
+            detailHomeworkPageBreadcrumbShow: false,
 
-        <script>
+            //作业答案详情页面显示
+            detailHomeworkAnswerPageShow: false,
+            //作业答案详情页面面包屑显示
+            detailHomeworkAnswerPageBreadcrumbShow: false,
 
-            new Vue({
-                el: "#vue",  //基本方式绑定元素
-                data: {      //定义数据变量
+            //作业评分页面显示
+            homeworkRateShow: false,
 
+            //分页列表数据
+            total: 0,
+            pageSize: 10,
+            currentPage: 1,
+            pages: 0,
+            //作业表格数据
+            homeworkTableData: [],
+            //作业表格数据
+            homeworkAnswerTableData: [],
+            //添加/编辑表单数据
+            form: {
+                claseId: "",
+                courseId: "",
+                homeworkId: "",
+                homeworkName: "",
+                homeworkDescription: "",
+                imageUploadNameList: []
+            },
+            //作业详情数据
+            homeworkDetailData: {},
+            //作业答案详情数据
+            homeworkAnswerDetailData: {},
+            //教师评分
+            rate: 0,
+            //图片大图预览
+            imagePreviewSrcList: [],
+            //图片墙图片显示标志位
+            imageUploadVisible: false,
+            dialogImageUrl: '',
+            rules: {
+                homeworkName: [
+                    {required: true, message: '请输入作业名称', trigger: 'blur'},
+                    {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
+                ],
+                homeworkDescription: [
+                    {required: true, message: '请输入作业描述', trigger: 'blur'},
+                    {min: 1, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur'}
+                ],
+                claseId: [
+                    {required: true, message: '请勾选所属班级', trigger: 'blur'},
+                ],
+                courseId: [
+                    {required: true, message: '请勾选所属课程', trigger: 'blur'},
+                ]
+            },
 
-                    //接口地址
-                    imageUploadAction: imageUploadUrl,
+        },
+        methods: {
 
-                    //当前登录的用户
-                    loginUser: {},
-                    //是否是管理员
-                    isAdmin: "",
-                    //搜索输入框内容
-                    searchValue: "",
+            //公共页面函数
+            handleSelect(key) {
 
-                    // 选项数据
-                    teacherList: [],
-                    courseList: [],
-                    studentList: [],
-
-                    //页面显示
-                    //列表页面显示
-                    listPageShow: true,
-
-                    //添加页面显示
-                    addPageShow: false,
-                    //添加页面面包屑显示
-                    addPageBreadcrumbShow: false,
-
-                    //编辑页面显示
-                    editPageShow: false,
-                    //编辑页面面包屑显示
-                    editPageBreadcrumbShow: false,
-
-                    //作业详情页面显示
-                    detailHomeworkPageShow: false,
-                    //作业详情页面面包屑显示
-                    detailHomeworkPageBreadcrumbShow: false,
-
-                    //作业答案详情页面显示
-                    detailHomeworkAnswerPageShow: false,
-                    //作业答案详情页面面包屑显示
-                    detailHomeworkAnswerPageBreadcrumbShow: false,
-
-                    //作业评分页面显示
-                    homeworkRateShow: false,
-
-                    //分页列表数据
-                    total: 0,
-                    pageSize: 10,
-                    currentPage: 1,
-                    pages: 0,
-                    //作业表格数据
-                    homeworkTableData: [],
-                    //作业表格数据
-                    homeworkAnswerTableData: [],
-                    //添加/编辑表单数据
-                    form: {
-                        claseId: "",
-                        courseId: "",
-                        homeworkId: "",
-                        homeworkName: "",
-                        homeworkDescription: "",
-                        imageUploadNameList: []
-                    },
-                    //作业详情数据
-                    homeworkDetailData: {},
-                    //作业答案详情数据
-                    homeworkAnswerDetailData: {},
-                    //教师评分
-                    rate: 0,
-                    //图片大图预览
-                    imagePreviewSrcList: [],
-                    //图片墙图片显示标志位
-                    imageUploadVisible: false,
-                    dialogImageUrl: '',
-                    rules: {
-                        homeworkName: [
-                            {required: true, message: '请输入作业名称', trigger: 'blur'},
-                            {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
-                        ],
-                        homeworkDescription: [
-                            {required: true, message: '请输入作业描述', trigger: 'blur'},
-                            {min: 1, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur'}
-                        ],
-                        claseId: [
-                            {required: true, message: '请勾选所属班级', trigger: 'blur'},
-                        ],
-                        courseId: [
-                            {required: true, message: '请勾选所属课程', trigger: 'blur'},
-                        ]
-                    },
-
-                },
-                methods: {
-
-                    //公共页面函数
-                    handleSelect(key) {
-
-                        switch (key) {
-                            case "1":
-                                window.location.href = "teacher.html";
-                                break;
-                            case "2":
-                                window.location.href = "student.html";
-                                break;
-                            case "3":
-                                window.location.href = "course.html";
-                                break;
-                            case "4":
-                                window.location.href = "clase.html";
-                                break;
-                            case "5":
-                                window.location.href = "homework.html";
-                                break;
-                            case "6":
-                                window.location.href = "user.html";
-                                break;
-                            case "7":
-                                this.logout();
-                        }
-
-                    },
-                    //从session中获取当前登录用户
-                    getUser: function () {
-                        //登录用户
-                        var loginUser = window.localStorage.getItem('loginUser');
-
-                        if (loginUser) {
-                            loginUser = JSON.parse(loginUser);
-                        }
-                        if (loginUser.accountPortrait == null){
-                            loginUser.accountPortrait = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
-                        }
-                        console.log(loginUser);
-
-                        this.loginUser = loginUser;
-                    },
-
-                    //点击用户信息跳转函数
-                    skipUser: function () {
+                switch (key) {
+                    case "1":
+                        window.location.href = "teacher.html";
+                        break;
+                    case "2":
+                        window.location.href = "student.html";
+                        break;
+                    case "3":
+                        window.location.href = "course.html";
+                        break;
+                    case "4":
+                        window.location.href = "clase.html";
+                        break;
+                    case "5":
+                        window.location.href = "homework.html";
+                        break;
+                    case "6":
                         window.location.href = "user.html";
-                    },
+                        break;
+                    case "7":
+                        this.logout();
+                }
 
-                    // 清空表单数据函数
-                    clearData: function () {
-                        this.form = {
-                            claseId: "",
-                            courseId: "",
-                            homeworkId: "",
-                            homeworkName: "",
-                            imageUploadNameList: []
-                        };
-                        this.imagePreviewSrcList = [];
-                    },
+            },
+            //从session中获取当前登录用户
+            getUser: function () {
+                //登录用户
+                var loginUser = window.localStorage.getItem('loginUser');
 
-                    // 表单数据格式转换
-                    homeworkRateFormatterInRow: function (row) {
-                        if (row.homeworkRate === -1) {
-                            return "未评分";
+                if (loginUser) {
+                    loginUser = JSON.parse(loginUser);
+                }
+                if (loginUser.accountPortrait == null) {
+                    loginUser.accountPortrait = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
+                }
+                console.log(loginUser);
+
+                this.loginUser = loginUser;
+            },
+
+            //点击用户信息跳转函数
+            skipUser: function () {
+                window.location.href = "user.html";
+            },
+
+            // 清空表单数据函数
+            clearData: function () {
+                this.form = {
+                    claseId: "",
+                    courseId: "",
+                    homeworkId: "",
+                    homeworkName: "",
+                    imageUploadNameList: []
+                };
+                this.imagePreviewSrcList = [];
+            },
+
+            // 表单数据格式转换
+            homeworkRateFormatterInRow: function (row) {
+                if (row.homeworkRate === -1) {
+                    return "未评分";
+                } else {
+                    return row.homeworkRate;
+                }
+            },
+            homeworkRateFormatter: function (rate) {
+                if (rate === -1) {
+                    return "未评分";
+                } else {
+                    return rate;
+                }
+            },
+
+
+            //数据请求函数
+            //候选数据函数
+            getTeacherList: function () {
+                var vueObj = this;
+                getTeacherListAxios().then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            vueObj.teacherList = response.data.data;
                         } else {
-                            return row.homeworkRate;
+                            this.$message.error(response.data.msg)
                         }
-                    },
-                    homeworkRateFormatter: function (rate) {
-                        if (rate === -1) {
-                            return "未评分";
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                });
+            },
+            getClaseList: function () {
+                var vueObj = this;
+                getClaseListAxios().then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            vueObj.claseList = response.data.data;
                         } else {
-                            return rate;
+                            this.$message.error(response.data.msg)
                         }
-                    },
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                })
+            },
+            getStudentList: function () {
+                var vueObj = this;
+                getStudentListAxios().then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            vueObj.studentList = response.data.data;
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                })
+            },
+            getCourseList: function () {
+                var vueObj = this;
+                getCourseListAxios().then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            vueObj.courseList = response.data.data;
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                })
+            },
+            //获取服务器图片
+            getImage(image) {
+                return `/common/downloadImage?imageName=${image}`
+            },
+            //获取服务器文件
+            getFile(file) {
+                return `/common/downloadFile?fileName=${file}`
+            },
 
 
-                    //数据请求函数
-                    //候选数据函数
-                    getTeacherList: function () {
-                        var vueObj = this;
-                        getTeacherListAxios().then(
-                            (response) => {
-                                if (response.data.code === 1) {
-                                    vueObj.teacherList = response.data.data;
-                                } else {
-                                    this.$message.error(response.data.msg)
-                                }
-                            }).catch((err) => {
-                            this.$message.error('请求出错了：' + err);
-                        });
-                    },
-                    getClaseList: function () {
-                        var vueObj = this;
-                        getClaseListAxios().then(
-                            (response) => {
-                                if (response.data.code === 1) {
-                                    vueObj.claseList = response.data.data;
-                                } else {
-                                    this.$message.error(response.data.msg)
-                                }
-                            }).catch((err) => {
-                            this.$message.error('请求出错了：' + err);
-                        })
-                    },
-                    getStudentList: function () {
-                        var vueObj = this;
-                        getStudentListAxios().then(
-                            (response) => {
-                                if (response.data.code === 1) {
-                                    vueObj.studentList = response.data.data;
-                                } else {
-                                    this.$message.error(response.data.msg)
-                                }
-                            }).catch((err) => {
-                            this.$message.error('请求出错了：' + err);
-                        })
-                    },
-                    getCourseList: function () {
-                        var vueObj = this;
-                        getCourseListAxios().then(
-                            (response) => {
-                                if (response.data.code === 1) {
-                                    vueObj.courseList = response.data.data;
-                                } else {
-                                    this.$message.error(response.data.msg)
-                                }
-                            }).catch((err) => {
-                            this.$message.error('请求出错了：' + err);
-                        })
-                    },
-                    //获取服务器图片
-                    getImage (image) {
-                        return `/common/downloadImage?imageName=${image}`
-                    },
-                    //获取服务器文件
-                    getFile (file) {
-                        return `/common/downloadFile?fileName=${file}`
-                    },
+            //表格数据函数
+            getHomeworkPage: function () {
+                var vueObj = this;
+                getHomeworkPageAxios(this.currentPage, this.pageSize, null).then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            vueObj.homeworkTableData = response.data.data.records;
+                            vueObj.total = response.data.data.total;
+                            vueObj.pageSize = response.data.data.size;
+                            vueObj.currentPage = response.data.data.current;
+                            vueObj.pages = response.data.data.pages;
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                })
+            },
 
 
-                    //表格数据函数
-                    getHomeworkPage: function () {
-                        var vueObj = this;
-                        getHomeworkPageAxios(this.currentPage, this.pageSize, null).then(
-                            (response) => {
-                                if (response.data.code === 1) {
-                                    vueObj.homeworkTableData = response.data.data.records;
-                                    vueObj.total = response.data.data.total;
-                                    vueObj.pageSize = response.data.data.size;
-                                    vueObj.currentPage = response.data.data.current;
-                                    vueObj.pages = response.data.data.pages;
-                                } else {
-                                    this.$message.error(response.data.msg)
-                                }
-                            }).catch((err) => {
-                            this.$message.error('请求出错了：' + err);
-                        })
-                    },
+            //表格单项详情数据函数
+            getHomeworkDetail: function (row) {
+                var vueObj = this;
+                getHomeworkDetailAxios().then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            vueObj.homeworkDetailData = response.data.data;
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                });
+            },
 
+            //图片处理函数
+            //处理图片大图预览
+            handleImagePreviewSrcList: function () {
+                this.homeworkDetailData.imageUploadNameList.forEach((image) => {
+                    this.imagePreviewSrcList.push('/common/downloadImage?name=' + image);
+                });
+            },
+            //页面跳转函数
+            //返回函数
+            goBack: function () {
+                this.listPageShow = true;
+                this.addPageShow = false;
+                this.addPageBreadcrumbShow = false;
+                this.editPageShow = false;
+                this.editPageBreadcrumbShow = false;
+                this.detailHomeworkPageShow = false;
+                this.detailHomeworkPageBreadcrumbShow = false;
+                this.detailHomeworkAnswerPageShow = false;
+                this.detailHomeworkAnswerPageBreadcrumbShow = false;
+                this.homeworkRateShow = false;
+                this.clearData();
+            },
+            // 显示作业详情页面函数
+            showDetailHomeworkPage: function () {
+                this.listPageShow = false;
+                this.addPageShow = false;
+                this.addPageBreadcrumbShow = false;
+                this.editPageShow = false;
+                this.editPageBreadcrumbShow = false;
+                this.detailHomeworkPageBreadcrumbShow = true;
+                this.detailHomeworkPageShow = true;
+                this.detailHomeworkAnswerPageShow = false;
+                this.detailHomeworkAnswerPageBreadcrumbShow = false;
+            },
+            showDetailHomeworkAnswerPage: function () {
+                this.listPageShow = false;
+                this.addPageShow = false;
+                this.addPageBreadcrumbShow = false;
+                this.editPageShow = false;
+                this.editPageBreadcrumbShow = false;
+                this.detailHomeworkPageShow = false;
+                this.detailHomeworkPageBreadcrumbShow = false;
+                this.detailHomeworkAnswerPageShow = true;
+                this.detailHomeworkAnswerPageBreadcrumbShow = true;
+            },
+            // 显示新增表单页面函数
+            showAddPage: function () {
+                this.listPageShow = false;
+                this.addPageBreadcrumbShow = true;
+                this.addPageShow = true;
+                this.editPageShow = false;
+                this.editPageBreadcrumbShow = false;
+                this.detailHomeworkPageShow = false;
+                this.detailHomeworkPageBreadcrumbShow = false;
+                this.detailHomeworkAnswerPageShow = false;
+                this.detailHomeworkAnswerPageBreadcrumbShow = false;
+            },
+            // 显示新增表单页面函数
+            showEditPage: function () {
+                this.listPageShow = false;
+                this.addPageShow = false;
+                this.addPageBreadcrumbShow = false;
+                this.editPageBreadcrumbShow = true;
+                this.editPageShow = true;
+                this.detailHomeworkPageShow = false;
+                this.detailHomeworkPageBreadcrumbShow = false;
+                this.detailHomeworkAnswerPageShow = false;
+                this.detailHomeworkAnswerPageBreadcrumbShow = false;
+            },
+            showHomeworkRate: function () {
+                this.homeworkRateShow = true;
+            },
 
-                    //表格单项详情数据函数
-                    getHomeworkDetail: function (row) {
-                        var vueObj = this;
-                        getHomeworkDetailAxios().then(
-                            (response) => {
-                                if (response.data.code === 1) {
-                                    vueObj.homeworkDetailData = response.data.data;
-                                } else {
-                                    this.$message.error(response.data.msg)
-                                }
-                            }).catch((err) => {
-                            this.$message.error('请求出错了：' + err);
-                        });
-                    },
+            // 按钮函数
+            // 添加表单重置函数
+            resetForm: function () {
+                this.clearData();
+            },
+            //重置评级表单
+            resetRate: function () {
+                this.rate = 0;
+            },
 
-                    //图片处理函数
-                    //处理图片大图预览
-                    handleImagePreviewSrcList: function () {
-                        this.homeworkDetailData.imageUploadNameList.forEach((image) => {
-                            this.imagePreviewSrcList.push('/common/downloadImage?name=' + image);
-                        });
-                    },
-                    //页面跳转函数
-                    //返回函数
-                    goBack: function () {
-                        this.listPageShow = true;
-                        this.addPageShow = false;
-                        this.addPageBreadcrumbShow = false;
-                        this.editPageShow = false;
-                        this.editPageBreadcrumbShow = false;
-                        this.detailHomeworkPageShow = false;
-                        this.detailHomeworkPageBreadcrumbShow = false;
-                        this.detailHomeworkAnswerPageShow = false;
-                        this.detailHomeworkAnswerPageBreadcrumbShow = false;
-                        this.homeworkRateShow = false;
-                        this.clearData();
-                    },
-                    // 显示作业详情页面函数
-                    showDetailHomeworkPage: function () {
-                        this.listPageShow = false;
-                        this.addPageShow = false;
-                        this.addPageBreadcrumbShow = false;
-                        this.editPageShow = false;
-                        this.editPageBreadcrumbShow = false;
-                        this.detailHomeworkPageBreadcrumbShow = true;
-                        this.detailHomeworkPageShow = true;
-                        this.detailHomeworkAnswerPageShow = false;
-                        this.detailHomeworkAnswerPageBreadcrumbShow = false;
-                    },
-                    showDetailHomeworkAnswerPage: function () {
-                        this.listPageShow = false;
-                        this.addPageShow = false;
-                        this.addPageBreadcrumbShow = false;
-                        this.editPageShow = false;
-                        this.editPageBreadcrumbShow = false;
-                        this.detailHomeworkPageShow = false;
-                        this.detailHomeworkPageBreadcrumbShow = false;
-                        this.detailHomeworkAnswerPageShow = true;
-                        this.detailHomeworkAnswerPageBreadcrumbShow = true;
-                    },
-                    // 显示新增表单页面函数
-                    showAddPage: function () {
-                        this.listPageShow = false;
-                        this.addPageBreadcrumbShow = true;
-                        this.addPageShow = true;
-                        this.editPageShow = false;
-                        this.editPageBreadcrumbShow = false;
-                        this.detailHomeworkPageShow = false;
-                        this.detailHomeworkPageBreadcrumbShow = false;
-                        this.detailHomeworkAnswerPageShow = false;
-                        this.detailHomeworkAnswerPageBreadcrumbShow = false;
-                    },
-                    // 显示新增表单页面函数
-                    showEditPage: function () {
-                        this.listPageShow = false;
-                        this.addPageShow = false;
-                        this.addPageBreadcrumbShow = false;
-                        this.editPageBreadcrumbShow = true;
-                        this.editPageShow = true;
-                        this.detailHomeworkPageShow = false;
-                        this.detailHomeworkPageBreadcrumbShow = false;
-                        this.detailHomeworkAnswerPageShow = false;
-                        this.detailHomeworkAnswerPageBreadcrumbShow = false;
-                    },
-                    showHomeworkRate: function () {
-                        this.homeworkRateShow = true;
-                    },
+            //搜索按钮
+            handleSearch: function () {
+                var vueObj = this;
+                getHomeworkPageAxios(this.currentPage, this.pageSize, this.searchValue).then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            this.$message.success('搜索成功！共搜索到' + response.data.data.total + '条记录');
+                            vueObj.homeworkTableData = response.data.data.records;
+                            vueObj.total = response.data.data.total;
+                            vueObj.pageSize = response.data.data.size;
+                            vueObj.currentPage = response.data.data.current;
+                            vueObj.pages = response.data.data.pages;
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                })
+            },
 
-                    // 按钮函数
-                    // 添加表单重置函数
-                    resetForm: function () {
-                        this.clearData();
-                    },
-                    //重置评级表单
-                    resetRate: function () {
-                        this.rate = 0;
-                    },
+            //作业详情按钮处理函数
+            handleHomeworkDetail: async function (index, row) {
 
-                    //搜索按钮
-                    handleSearch: function () {
-                        var vueObj = this;
-                        getHomeworkPageAxios(this.currentPage, this.pageSize,this.searchValue).then(
-                            (response) => {
-                                if (response.data.code === 1) {
-                                    this.$message.success('搜索成功！共搜索到' + response.data.data.total + '条记录');
-                                    vueObj.homeworkTableData = response.data.data.records;
-                                    vueObj.total = response.data.data.total;
-                                    vueObj.pageSize = response.data.data.size;
-                                    vueObj.currentPage = response.data.data.current;
-                                    vueObj.pages = response.data.data.pages;
-                                } else {
-                                    this.$message.error(response.data.msg)
-                                }
-                            }).catch((err) => {
-                            this.$message.error('请求出错了：' + err);
-                        })
-                    },
+                var vueObj = this;
 
-                    //作业详情按钮处理函数
-                    handleHomeworkDetail: async function (index, row) {
+                //获取当前作业详情
+                await getHomeworkDetailAxios(row.homeworkId).then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            vueObj.homeworkDetailData = response.data.data;
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                });
 
-                        var vueObj = this;
+                this.handleImagePreviewSrcList();
 
-                        //获取当前作业详情
-                        await getHomeworkDetailAxios(row.homeworkId).then(
-                            (response) => {
-                                if (response.data.code === 1) {
-                                    vueObj.homeworkDetailData = response.data.data;
-                                } else {
-                                    this.$message.error(response.data.msg)
-                                }
-                            }).catch((err) => {
-                            this.$message.error('请求出错了：' + err);
-                        });
+                //获取当前作业下的回答列表
+                await getHomeworkAnswerPageAxios(row.homeworkId).then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            vueObj.homeworkAnswerTableData = response.data.data;
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                });
 
-                        this.handleImagePreviewSrcList();
+                this.showDetailHomeworkPage();
+            },
 
-                        //获取当前作业下的回答列表
-                        await getHomeworkAnswerPageAxios(row.homeworkId).then(
-                            (response) => {
-                                if (response.data.code === 1) {
-                                    vueObj.homeworkAnswerTableData = response.data.data;
-                                } else {
-                                    this.$message.error(response.data.msg)
-                                }
-                            }).catch((err) => {
-                            this.$message.error('请求出错了：' + err);
-                        });
+            //作业答案详情按钮处理函数
+            handleHomeworkAnswerDetail: async function (index, row) {
+                var vueObj = this;
 
-                        this.showDetailHomeworkPage();
-                    },
+                //获取当前作业详情
+                await getHomeworkAnswerDetailAxios(row.homeworkAnswerId).then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            vueObj.homeworkAnswerDetailData = response.data.data;
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                });
 
-                    //作业答案详情按钮处理函数
-                    handleHomeworkAnswerDetail: async function (index,row) {
-                        var vueObj = this;
+                this.showHomeworkRate();
 
-                        //获取当前作业详情
-                        await getHomeworkAnswerDetailAxios(row.homeworkAnswerId).then(
-                            (response) => {
-                                if (response.data.code === 1) {
-                                    vueObj.homeworkAnswerDetailData = response.data.data;
-                                } else {
-                                    this.$message.error(response.data.msg)
-                                }
-                            }).catch((err) => {
-                            this.$message.error('请求出错了：' + err);
-                        });
+                this.showDetailHomeworkAnswerPage();
+                this.rate = vueObj.homeworkAnswerDetailData.homeworkRate;
+                this.handleImagePreviewSrcList();
+            },
+            //删除按钮处理函数
+            handleDelete: function (index, row) {
+                this.$confirm('此操作将永久删除该项内容, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    console.log('删除作业，id：' + row.homeworkId)
+                    deleteHomeworkAxios(row.homeworkId).then(
+                        res => {
+                            if (res.data.code === 1) {
+                                var imageList = [];
+                                imageList = res.data.data;
 
-                        this.showHomeworkRate();
-
-                        this.showDetailHomeworkAnswerPage();
-                        this.rate = vueObj.homeworkAnswerDetailData.homeworkRate;
-                        this.handleImagePreviewSrcList();
-                    },
-                    //删除按钮处理函数
-                    handleDelete: function (index, row) {
-                        this.$confirm('此操作将永久删除该项内容, 是否继续?', '提示', {
-                            confirmButtonText: '确定',
-                            cancelButtonText: '取消',
-                            type: 'warning'
-                        }).then(() => {
-                            console.log('删除作业，id：' + row.homeworkId)
-                            deleteHomeworkAxios(row.homeworkId).then(
-                                res => {
-                                    if (res.data.code === 1) {
-                                        var imageList = [];
-                                        imageList = res.data.data;
-
-                                        let imageDeleteFlage = true;
-                                        imageList.forEach(image => {
-                                            removeImageAxios(image).then(
-                                                res => {
-                                                    if (res.data.code !== 1){
-                                                        imageDeleteFlage = false;
-                                                    }
-                                                }
-                                            )
-                                        })
-
-                                        if (imageDeleteFlage){
-                                            this.$message.success('删除成功！');
+                                let imageDeleteFlage = true;
+                                imageList.forEach(image => {
+                                    removeImageAxios(image).then(
+                                        res => {
+                                            if (res.data.code !== 1) {
+                                                imageDeleteFlage = false;
+                                            }
                                         }
-                                        this.getHomeworkPage();
-                                    } else {
-                                        this.$message.error(res.data.msg)
-                                    }
+                                    )
+                                })
+
+                                if (imageDeleteFlage) {
+                                    this.$message.success('删除成功！');
                                 }
-                            )
-                        }).catch(() => {
-                            this.$message({
-                                type: 'info',
-                                message: '已取消删除'
-                            });
-                        });
-                    },
+                                this.getHomeworkPage();
+                            } else {
+                                this.$message.error(res.data.msg)
+                            }
+                        }
+                    )
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
 
 
-                    // 表单提交函数
-                    // 添加表单提交
-                    submitAddForm: function () {
-                        let verification = this.validateForm("addForm");
-                        if (verification) {
-                            this.$confirm('此操作将提交表单内容, 是否继续?', '提示', {
-                                confirmButtonText: '确定',
-                                cancelButtonText: '取消',
-                                type: 'warning'
-                            }).then(() => {
-                                console.log(this.form);
-                                addHomeworkAxios(this.form).then(
-                                    res => {
-                                        if (res.data.code === 1) {
-                                            this.$message.success('提交成功！')
-                                            this.getHomeworkPage()
-                                        } else {
-                                            this.$message.error(res.data.msg)
-                                        }
-                                    }
-                                )
-                            }).catch(() => {
-                                this.$message({
-                                    type: 'info',
-                                    message: '已取消提交'
-                                });
-                            });
-                        }
-                    },
-                    submitRate: function () {
-                        var homeworkAnswerRate = {
-                            homeworkAnswerId: this.homeworkAnswerDetailData.homeworkAnswerId,
-                            homeworkRate: this.rate
-                        }
-                        vueObj = this;
-                        updateRateAxios(homeworkAnswerRate).then(
-                            async res => {
+            // 表单提交函数
+            // 添加表单提交
+            submitAddForm: function () {
+                let verification = this.validateForm("addForm");
+                if (verification) {
+                    this.$confirm('此操作将提交表单内容, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        console.log(this.form);
+                        addHomeworkAxios(this.form).then(
+                            res => {
                                 if (res.data.code === 1) {
                                     this.$message.success('提交成功！')
-
-                                    //获取当前作业详情
-                                    await getHomeworkAnswerDetailAxios(this.homeworkAnswerDetailData.homeworkAnswerId).then(
-                                        (response) => {
-                                            if (response.data.code === 1) {
-                                                vueObj.homeworkAnswerDetailData = response.data.data;
-                                            } else {
-                                                this.$message.error(response.data.msg)
-                                            }
-                                        }).catch((err) => {
-                                        this.$message.error('请求出错了：' + err);
-                                    });
-
+                                    this.getHomeworkPage()
                                 } else {
                                     this.$message.error(res.data.msg)
                                 }
                             }
                         )
-                    },
-
-                    //验证表单
-                    validateForm: function (formRef) {
-                        let flag = false;
-                        this.$refs[formRef].validate((valid) => {
-                            if (valid === true) {
-                                flag = true;
-                            }
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消提交'
                         });
-                        return flag;
-                    },
-
-                    //图片上传成功回调函数
-                    handleAvatarSuccess: function (response) {
-                        if (response.code === 1) {
-                            this.form.imageUploadNameList.push(response.data);
-                        } else {
-                            this.$message.error(response.msg)
-                        }
-                        console.log(this.form.imageUploadNameList);
-                    },
-                    //图片删除回调函数
-                    //file为删除的图片，fileList为剩下的图片
-                    async handleRemove(file, fileList) {
-
-                        console.log(file)
-                        //如果在未上传图片前由于不符合类型导致上传文件被删除，则不需要继续执行
-                        if (typeof(file.response) == "undefined"){
-                            return;
-                        }
-                        //通知服务器删除存储的图片
-                        await removeImageAxios(file.response.data).then(
-                            (response) => {
-                                if (response.data.code === 1) {
-                                    this.$message.success('图片删除成功')
-                                } else {
-                                    this.$message.error(response.data.msg)
-                                }
-                            }).catch((err) => {
-                            this.$message.error('请求出错了：' + err);
-                        });
-                        //删除表单中将要提交到数据库中的图片名列表中的图片名
-                        for (var i = this.form.imageUploadNameList.length - 1; i >= 0; i--) {
-                            if (this.form.imageUploadNameList[i] === file.response.data.imageName) {
-                                this.form.imageUploadNameList.splice(i, 1);
-                            }
-                        }
-                    },
-                    handlePictureCardPreview(file) {
-                        this.dialogImageUrl = file.url;
-                        this.imageUploadVisible = true;
-                    },
-                    //上传图片前校验
-                    beforeAvatarUpload(file) {
-                        const isJPG = file.type === 'image/jpeg';
-                        const isLt10M = file.size / 1024 / 1024 < 10;
-
-                        if (!isJPG) {
-                            this.$message.error('上传图片只能是 JPG 格式!');
-                        } else if (!isLt10M) {
-                            this.$message.error('上传图片大小不能超过 10MB!');
-                        }
-                        return isJPG && isLt10M;
-                    },
-                    logout: function () {
-
-                        console.log('logout');
-                        this.$confirm('即将退出系统, 是否继续?', '提示', {
-                            confirmButtonText: '确定',
-                            cancelButtonText: '取消',
-                            type: 'warning'
-                        }).then(() => {
-                            logoutAxios().then(
-                                res => {
-                                    if (res.data.code === 1) {
-                                        window.localStorage.removeItem('loginUser');
-                                        window.location.href = "../login/login.html"
-                                    } else {
-                                        this.$message.error(res.data.msg)
-                                    }
-                                }
-                            ).catch((err) => {
-                                this.$message.error('请求出错了：' + err);
-                            })
-                        })
-                    }
-
-
-                },
-                created() {
-                    //获取当前登录用户
-                    this.getUser();
-                },
-                mounted() {
-                    this.$message.success('登录成功');
-                    //获取表单数据
-                    this.getHomeworkPage();
-
-                    //获取候选项数据
-                    this.getTeacherList();
-                    this.getClaseList();
-                    this.getStudentList();
-                    this.getCourseList();
-
-                    this.isAdmin = this.loginUser.accountType !== "1";
+                    });
                 }
-            });
-        </script>
+            },
+            submitRate: function () {
+                var homeworkAnswerRate = {
+                    homeworkAnswerId: this.homeworkAnswerDetailData.homeworkAnswerId,
+                    homeworkRate: this.rate
+                }
+                vueObj = this;
+                updateRateAxios(homeworkAnswerRate).then(
+                    async res => {
+                        if (res.data.code === 1) {
+                            this.$message.success('提交成功！')
 
-    </body>
+                            //获取当前作业详情
+                            await getHomeworkAnswerDetailAxios(this.homeworkAnswerDetailData.homeworkAnswerId).then(
+                                (response) => {
+                                    if (response.data.code === 1) {
+                                        vueObj.homeworkAnswerDetailData = response.data.data;
+                                    } else {
+                                        this.$message.error(response.data.msg)
+                                    }
+                                }).catch((err) => {
+                                this.$message.error('请求出错了：' + err);
+                            });
+
+                        } else {
+                            this.$message.error(res.data.msg)
+                        }
+                    }
+                )
+            },
+
+            //验证表单
+            validateForm: function (formRef) {
+                let flag = false;
+                this.$refs[formRef].validate((valid) => {
+                    if (valid === true) {
+                        flag = true;
+                    }
+                });
+                return flag;
+            },
+
+            //图片上传成功回调函数
+            handleAvatarSuccess: function (response) {
+                if (response.code === 1) {
+                    this.form.imageUploadNameList.push(response.data);
+                } else {
+                    this.$message.error(response.msg)
+                }
+                console.log(this.form.imageUploadNameList);
+            },
+            //图片删除回调函数
+            //file为删除的图片，fileList为剩下的图片
+            async handleRemove(file, fileList) {
+
+                console.log(file)
+                //如果在未上传图片前由于不符合类型导致上传文件被删除，则不需要继续执行
+                if (typeof (file.response) == "undefined") {
+                    return;
+                }
+                //通知服务器删除存储的图片
+                await removeImageAxios(file.response.data).then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            this.$message.success('图片删除成功')
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                });
+                //删除表单中将要提交到数据库中的图片名列表中的图片名
+                for (var i = this.form.imageUploadNameList.length - 1; i >= 0; i--) {
+                    if (this.form.imageUploadNameList[i] === file.response.data.imageName) {
+                        this.form.imageUploadNameList.splice(i, 1);
+                    }
+                }
+            },
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.imageUploadVisible = true;
+            },
+            //上传图片前校验
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt10M = file.size / 1024 / 1024 < 10;
+
+                if (!isJPG) {
+                    this.$message.error('上传图片只能是 JPG 格式!');
+                } else if (!isLt10M) {
+                    this.$message.error('上传图片大小不能超过 10MB!');
+                }
+                return isJPG && isLt10M;
+            },
+            logout: function () {
+
+                console.log('logout');
+                this.$confirm('即将退出系统, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    logoutAxios().then(
+                        res => {
+                            if (res.data.code === 1) {
+                                window.localStorage.removeItem('loginUser');
+                                window.location.href = "../login/login.html"
+                            } else {
+                                this.$message.error(res.data.msg)
+                            }
+                        }
+                    ).catch((err) => {
+                        this.$message.error('请求出错了：' + err);
+                    })
+                })
+            }
+
+
+        },
+        created() {
+            //获取当前登录用户
+            this.getUser();
+        },
+        mounted() {
+            this.$message.success('登录成功');
+            //获取表单数据
+            this.getHomeworkPage();
+
+            //获取候选项数据
+            this.getTeacherList();
+            this.getClaseList();
+            this.getStudentList();
+            this.getCourseList();
+
+            this.isAdmin = this.loginUser.accountType !== "1";
+        }
+    });
+</script>
+
+</body>
 </html>

@@ -13,6 +13,11 @@ spring:
     url: jdbc:mysql://192.168.1.18:3306/homework_management_system?useSSL=false&serverTimezone=UTC&allowMultiQueries=true&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+#业务配置
+service:
+  #用户默认重置密码
+  resetNewPassword: 123456
+
 #图片存放目录
 image-path: /Users/ervinse/Documents/IdeaProjects/homework_management_system/src/main/resources/upload/
 

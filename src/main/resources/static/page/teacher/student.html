@@ -362,7 +362,7 @@
                 if (loginUser) {
                     loginUser = JSON.parse(loginUser);
                 }
-                if (loginUser.accountPortrait == null){
+                if (loginUser.accountPortrait == null) {
                     loginUser.accountPortrait = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
                 }
                 console.log(loginUser);
@@ -417,7 +417,7 @@
                     })
             },
             //获取服务器图片
-            getImage (image) {
+            getImage(image) {
                 return `/common/downloadImage?imageName=${image}`
             },
 
@@ -518,7 +518,7 @@
                 this.currentPage = currentPage;
                 if (this.searchValue !== "") {
                     this.handleSearch();
-                }else {
+                } else {
                     this.getStudentPage();
                 }
             },

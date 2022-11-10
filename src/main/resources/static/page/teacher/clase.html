@@ -354,16 +354,6 @@
                     </el-table>
                     <!--当前班级包含课程结束-->
 
-                    <div id="detail-pagination">
-                        <el-pagination
-                                background
-                                layout="total , prev, pager, next , jumper"
-                                :total="total"
-                                :page-size="pageSize"
-                                :current-page="currentPage"
-                                @current-change="handleCourseCurrentChange">
-                        </el-pagination>
-                    </div>
                 </el-card>
                 <!--添加表格容器结束-->
 
@@ -757,10 +747,6 @@
                     this.getClasePage();
                 }
             },
-            // handleCourseCurrentChange: function (currentPage) {
-            //     this.currentPage = currentPage;
-            //     this.getCoursePage();
-            // },
 
             // 表单提交函数
             // 添加表单提交

@@ -176,7 +176,8 @@
                                     layout="total , prev, pager, next , jumper"
                                     :total="total"
                                     :page-size="pageSize"
-                                    :current-page="currentPage">
+                                    :current-page="currentPage"
+                                    @current-change="handleCurrentChange">
                             </el-pagination>
                         </div>
                     </template>
@@ -921,6 +922,14 @@
                         message: '已取消删除'
                     });
                 });
+            },
+            handleCurrentChange: function (currentPage) {
+                this.currentPage = currentPage;
+                if (this.searchValue !== "") {
+                    this.handleSearch();
+                } else {
+                    this.getHomeworkPage();
+                }
             },
 
 

@@ -157,7 +157,8 @@
                                     layout="total , prev, pager, next , jumper"
                                     :total="total"
                                     :page-size="pageSize"
-                                    :current-page="currentPage">
+                                    :current-page="currentPage"
+                                    @current-change="handleCourseCurrentChange">
                             </el-pagination>
                         </div>
                     </template>
@@ -558,6 +559,14 @@
                     }).catch((err) => {
                     this.$message.error('请求出错了：' + err);
                 })
+            },
+            handleCourseCurrentChange: function (currentPage) {
+                this.currentPage = currentPage;
+                if (this.searchValue !== "") {
+                    this.handleSearch();
+                } else {
+                    this.getHomeworkPage();
+                }
             },
             // 添加表单重置函数
             resetForm: function () {

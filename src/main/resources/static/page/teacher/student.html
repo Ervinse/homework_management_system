@@ -500,7 +500,7 @@
                                 this.$message.success('删除成功！')
                                 this.getStudentPage()
                             } else {
-                                this.$message.error(res.data.msg + '，操作失败!')
+                                this.$message.error(res.data.msg)
                             }
                         }
                     ).catch((err) => {
@@ -542,7 +542,7 @@
                                     this.$message.success('提交成功！')
                                     this.getStudentPage();
                                 } else {
-                                    this.$message.error(res.data.msg + '，操作失败!')
+                                    this.$message.error(res.data.msg)
                                 }
                             }
                         )

@@ -53,8 +53,12 @@ public class GlobalExceptionHandler {
             return "添加失败,登录账号名不能相同!";
         } else if ("'course.course_name'".equals(exceptionMessageList[5])) {
             return "添加失败,课程名不能相同!";
+        } else if ("'clase.clase_name'".equals(exceptionMessageList[5])) {
+            return "添加失败,班级名不能相同!";
+        } else if ("'homework.homework_name'".equals(exceptionMessageList[5])) {
+            return "添加失败,作业名不能相同!";
         } else {
-            return "未知错误";
+            return "添加失败,未知字段重复!";
         }
 
     }

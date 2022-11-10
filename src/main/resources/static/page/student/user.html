@@ -129,24 +129,24 @@
                     </div>
                     <!--标题结束-->
                     <div id="edit-form">
-                        <el-form ref="form" :model="form" label-width="120px">
-                            <el-form-item label="学号">
+                        <el-form ref="editForm" :model="form" :rules="rules" label-width="120px">
+                            <el-form-item label="学号" prop="studentNumber">
                                 <el-input class="input" v-model="form.studentNumber"></el-input>
                             </el-form-item>
-                            <el-form-item label="学生姓名">
+                            <el-form-item label="学生姓名" prop="studentName">
                                 <el-input class="input" v-model="form.studentName"></el-input>
                             </el-form-item>
-                            <el-form-item label="登录账号名">
+                            <el-form-item label="登录账号名" prop="accountName">
                                 <el-input class="input" v-model="form.accountName"></el-input>
                             </el-form-item>
-                            <el-form-item label="登录账号密码">
+                            <el-form-item label="登录账号密码" prop="accountPassword">
                                 <el-input type="password" v-model="form.accountPassword"
                                           auto-complete="off"></el-input>
                             </el-form-item>
-                            <el-form-item label="学生手机号">
+                            <el-form-item label="学生手机号" prop="phoneNumber">
                                 <el-input class="input" v-model="form.phoneNumber"></el-input>
                             </el-form-item>
-                            <el-form-item label="学生性别">
+                            <el-form-item label="学生性别" prop="studentGender">
                                 <el-radio-group v-model="form.studentGender">
                                     <el-radio label="1">男</el-radio>
                                     <el-radio label="2">女</el-radio>
@@ -221,7 +221,32 @@
             },
             //图片墙图片显示标志位
             imageUploadVisible: false,
-            imageUrl: ''
+            imageUrl: '',
+            rules: {
+                studentNumber: [
+                    {required: true, message: '请输入学号', trigger: 'blur'},
+                    {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
+                ],
+                studentName: [
+                    {required: true, message: '请输入姓名', trigger: 'blur'},
+                    {min: 1, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur'}
+                ],
+                studentGender: [
+                    {required: true, message: '请勾选学生性别', trigger: 'blur'},
+                ],
+                accountName: [
+                    {required: true, message: '请输入账户名', trigger: 'blur'},
+                    {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
+                ],
+                accountPassword: [
+                    {required: true, message: '请输入账户密码', trigger: 'blur'},
+                    {min: 4, max: 20, message: '长度在 4 到 20 个字符', trigger: 'blur'}
+                ],
+                phoneNumber: [
+                    {required: true, message: '请输入手机号', trigger: 'blur'},
+                    {pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur'},
+                ],
+            },
         },
         methods: {
 
@@ -355,28 +380,31 @@
             // 修改表单提交
             submitEditForm: function () {
 
-                this.$confirm('此操作将提交表单内容, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    editStudentAxios(this.form).then(
-                        res => {
-                            if (res.data.code === 1) {
-                                this.$message.success('提交成功！')
-                                this.getUserDetail()
-                            } else {
-                                this.$message.error(res.data.msg + '，操作失败!')
+                let verification = this.validateForm("editForm");
+                console.log(verification);
+                if (verification) {
+                    this.$confirm('此操作将提交表单内容, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        editStudentAxios(this.form).then(
+                            res => {
+                                if (res.data.code === 1) {
+                                    this.$message.success('提交成功！')
+                                    this.getUserDetail()
+                                } else {
+                                    this.$message.error(res.data.msg + '，操作失败!')
+                                }
                             }
-                        }
-                    )
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消提交'
+                        )
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消提交'
+                        });
                     });
-                });
-
+                }
             },
             //图片上传成功回调函数
             handleAvatarSuccess: function (response) {
@@ -416,6 +444,16 @@
                     this.$message.error('上传头像图片大小不能超过 10MB!');
                 }
                 return isJPG && isLt2M;
+            },
+            //验证表单
+            validateForm: function (formRef) {
+                let flag = false;
+                this.$refs[formRef].validate((valid) => {
+                    if (valid === true) {
+                        flag = true;
+                    }
+                });
+                return flag;
             },
             logout: function () {
 

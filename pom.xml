@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.4</version>
+        <version>2.7.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>pers.ervinse</groupId>
     <artifactId>homework_management_system</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.7.9.7-alpha</version>
     <name>homework_management_system</name>
     <description>homework_management_system</description>
     <properties>

@@ -214,7 +214,8 @@
                                     layout="total , prev, pager, next , jumper"
                                     :total="total"
                                     :page-size="pageSize"
-                                    :current-page="currentPage">
+                                    :current-page="currentPage"
+                                    @current-change="handleHomeworkCurrentChange">
                             </el-pagination>
                         </div>
                     </template>
@@ -380,6 +381,8 @@
             pageSize: 10,
             currentPage: 0,
             pages: 0,
+            //用于记录父项列表点开的是哪一行
+            subRowId: 0,
             claseTableData: [],
             homeworkTableData: [],
             //添加课程表单数据
@@ -477,6 +480,7 @@
             //获取课程对应作业列表
             getHomeworkPage: function (index, row) {
 
+                this.subRowId = row.courseId;
                 this.showHomeworkPage();
                 var vueObj = this;
                 getHomeworkPageAxios(this.currentPage, this.pageSize, row.courseId).then(
@@ -565,7 +569,16 @@
                 if (this.searchValue !== "") {
                     this.handleSearch();
                 } else {
-                    this.getHomeworkPage();
+                    this.getCoursePage();
+                }
+            },
+
+            handleHomeworkCurrentChange: function (currentPage) {
+                this.currentPage = currentPage;
+                if (this.searchValue !== "") {
+                    this.handleSearch();
+                } else {
+                    this.getHomeworkPageAxios(this.currentPage, this.pageSize, this.subRowId);
                 }
             },
             // 添加表单重置函数

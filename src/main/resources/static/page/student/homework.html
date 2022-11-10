@@ -575,11 +575,21 @@
 
             handleHomeworkCurrentChange: function (currentPage) {
                 this.currentPage = currentPage;
-                if (this.searchValue !== "") {
-                    this.handleSearch();
-                } else {
-                    this.getHomeworkPageAxios(this.currentPage, this.pageSize, this.subRowId);
-                }
+                var vueObj = this;
+                getHomeworkPageAxios(this.currentPage, this.pageSize, this.subRowId).then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            vueObj.homeworkTableData = response.data.data.records;
+                            vueObj.total = response.data.data.total;
+                            vueObj.pageSize = response.data.data.size;
+                            vueObj.currentPage = response.data.data.current;
+                            vueObj.pages = response.data.data.pages;
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                });
             },
             // 添加表单重置函数
             resetForm: function () {

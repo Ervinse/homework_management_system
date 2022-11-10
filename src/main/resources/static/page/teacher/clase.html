@@ -184,7 +184,8 @@
                                     layout="total , prev, pager, next , jumper"
                                     :total="total"
                                     :page-size="pageSize"
-                                    :current-page="currentPage">
+                                    :current-page="currentPage"
+                                    @current-change="handleClaseCurrentChange">
                             </el-pagination>
                         </div>
                     </template>
@@ -359,7 +360,8 @@
                                 layout="total , prev, pager, next , jumper"
                                 :total="total"
                                 :page-size="pageSize"
-                                :current-page="currentPage">
+                                :current-page="currentPage"
+                                @current-change="handleCourseCurrentChange">
                         </el-pagination>
                     </div>
                 </el-card>
@@ -747,7 +749,18 @@
                     });
                 });
             },
-
+            handleClaseCurrentChange: function (currentPage) {
+                this.currentPage = currentPage;
+                if (this.searchValue !== "") {
+                    this.handleSearch();
+                } else {
+                    this.getClasePage();
+                }
+            },
+            // handleCourseCurrentChange: function (currentPage) {
+            //     this.currentPage = currentPage;
+            //     this.getCoursePage();
+            // },
 
             // 表单提交函数
             // 添加表单提交

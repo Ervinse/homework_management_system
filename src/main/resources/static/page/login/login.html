@@ -75,7 +75,8 @@
                             <el-input class="input" v-model="forgetForm.phoneNumber"
                                       placeholder="请输入注册手机号"></el-input>
                             <el-button style="line-height: 18px" type="primary" size="mini"
-                                       @click="sendMessage">发送验证码
+                                       @click="sendMessage"
+                                       :disabled="sendMessageDisableFlag">{{sendMessageButtonValue}}
                             </el-button>
                         </el-form-item>
 
@@ -121,6 +122,15 @@
             //页面显示
             loginFormPageShow: true,
             forgetPasswordPageShow: false,
+
+            //发送验证码按钮
+            sendMessageDisableFlag: false,
+            //验证码倒计时
+            countDownTime: 0,
+            //验证码按钮显示字符串
+            sendMessageButtonValue: "",
+
+            intervalId: 0,
 
             // 选项数据
             claseList: [],
@@ -212,6 +222,8 @@
                     console.log(2)
                 }
                 if (check === true) {
+                    this.sendMessageDisableFlag = true;
+                    this.sendMessageCountDown();
                     sendMessageAxios(this.forgetForm.accountName, this.forgetForm.phoneNumber).then(
                         (response) => {
                             if (response.data.code === 1) {
@@ -323,16 +335,47 @@
                     this.$message.error('请求出错了：' + err);
                 });
             },
-            sleep: function (numberMillis) {
-                var now = new Date();
-                var exitTime = now.getTime() + numberMillis;
-                while (true) {
-                    now = new Date();
-                    if (now.getTime() > exitTime)
-                        return true;
+            //发送验证码显示倒计时
+            sendMessageCountDown: function () {
+                //重置倒计时时间
+                this.resetCountDownTime();
+                let vueObj = this;
+                this.showSendMessageCountDown();
+                setTimeout(function () {
+                    vueObj.sendMessageDisableFlag = false;
+                }, 5000);
+
+            },
+            //实时更新倒计时时间到前台
+            showSendMessageCountDown: function () {
+                let vueObj = this;
+                this.intervalId = setInterval(function () {
+                    vueObj.countDownTime--;
+                    vueObj.sendMessageFormatter();
+                    if (vueObj.countDownTime === 0) {
+                        clearInterval(vueObj.intervalId);
+                    }
+                }, 1000);
+            },
+            //发送验证码按钮显示文件格式化函数
+            sendMessageFormatter: function () {
+                if (this.countDownTime === 0 || this.countDownTime === 5) {
+                    this.sendMessageButtonValue = "发送验证码"
+                } else {
+                    this.sendMessageButtonValue = this.countDownTime + "秒后再发送验证码";
                 }
+            },
+            //重置倒计时时间
+            resetCountDownTime: function () {
+                this.countDownTime = 5;
             }
         },
+        mounted() {
+            //重置倒计时时间
+            this.resetCountDownTime();
+            //发送验证码按钮显示文件格式化函数
+            this.sendMessageFormatter();
+        }
     })
 
 </script>

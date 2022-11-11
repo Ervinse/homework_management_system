@@ -41,7 +41,8 @@
                         </el-form-item>
                         <el-form-item prop="accountPassword">
                             <el-input type="password" v-model="form.accountPassword"
-                                      auto-complete="off" placeholder="请输入登录密码"></el-input>
+                                      auto-complete="off" placeholder="请输入登录密码"
+                                      @keyup.enter.native="login"></el-input>
                         </el-form-item>
                         <el-form-item prop="loginType">
                             <el-radio-group v-model="form.loginType">

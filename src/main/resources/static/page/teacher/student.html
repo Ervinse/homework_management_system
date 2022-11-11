@@ -116,7 +116,8 @@
                     <el-input id="list-search_input"
                               placeholder="请输入查询内容"
                               v-model="searchValue"
-                              clearable>
+                              clearable
+                              @keyup.enter.native="handleSearch">
                     </el-input>
                     <!--输入框结束-->
                     <!--按钮组开始-->
@@ -539,10 +540,10 @@
                         editStudentAxios(this.form).then(
                             res => {
                                 if (res.data.code === 1) {
-                                    this.$message.success('提交成功！')
+                                    this.$message.success('提交成功！');
                                     this.getStudentPage();
                                 } else {
-                                    this.$message.error(res.data.msg)
+                                    this.$message.error(res.data.msg);
                                 }
                             }
                         )

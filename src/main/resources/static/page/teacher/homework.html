@@ -123,7 +123,8 @@
                     <el-input id="list-search_input"
                               placeholder="请输入查询内容"
                               v-model="searchValue"
-                              clearable>
+                              clearable
+                              @keyup.enter.native="handleSearch">
                     </el-input>
                     <!--输入框结束-->
                     <!--按钮组开始-->

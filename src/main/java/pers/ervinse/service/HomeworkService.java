@@ -14,9 +14,13 @@ public interface HomeworkService {
 
     Homework selectHomeworkById(Long homeworkId);
 
+    List<Homework> selectHomeworkListByConditionInOr(Homework homework);
+
     void addHomework(HomeworkDto homeworkDto);
 
     List<Homework> selectHomeworkListByConditionInAnd(Homework homework);
 
-    List<Image> deleteHomework(Long homeworkId);
+    List<Image> deleteHomeworkById(Long homeworkId);
+
+    void deleteHomework(Homework homework, boolean isCoercive);
 }

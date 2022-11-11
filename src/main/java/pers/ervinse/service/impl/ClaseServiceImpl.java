@@ -8,13 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pers.ervinse.Dto.ClaseDto;
-import pers.ervinse.exception.BusinessException;
+import pers.ervinse.domain.Homework;
 import pers.ervinse.domain.Clase;
 import pers.ervinse.domain.ClaseCourse;
 import pers.ervinse.exception.ProgramException;
 import pers.ervinse.mapper.ClaseCourseMapper;
 import pers.ervinse.mapper.ClaseMapper;
+import pers.ervinse.service.ClaseCourseService;
 import pers.ervinse.service.ClaseService;
+import pers.ervinse.service.HomeworkService;
 
 import java.util.List;
 
@@ -27,6 +29,12 @@ public class ClaseServiceImpl implements ClaseService {
 
     @Autowired
     private ClaseCourseMapper claseCourseMapper;
+
+    @Autowired
+    private ClaseCourseService claseCourseService;
+
+    @Autowired
+    private HomeworkService homeworkService;
 
     @Override
     public Page<Clase> selectClasePage(int currentPage, int pageSize, String searchValue) {
@@ -183,10 +191,33 @@ public class ClaseServiceImpl implements ClaseService {
         }
     }
 
+    /**
+     * 根据班级id删除班级,课程,以及班级下的作业
+     * @param claseId
+     */
     @Override
     @Transactional
     public void deleteClaseById(Long claseId) {
         log.info("ClaseService - deleteClaseById : claseId = {}", claseId);
+
+        //根据班级id搜索班级/课程
+        ClaseCourse claseCourseToSearch = new ClaseCourse();
+        claseCourseToSearch.setClaseId(claseId);
+        List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourseToSearch);
+        ClaseCourse claseCourseBySearch = new ClaseCourse();
+        if (claseCourseList.size() > 0){
+            claseCourseBySearch = claseCourseList.get(0);
+        }else {
+            throw new ProgramException();
+        }
+        //获取班级/课程id
+        Long claseCourseId = claseCourseBySearch.getClaseCourseId();
+
+        //删除所属此班级/课程id的作业
+        Homework homeworkToDelete = new Homework();
+        homeworkToDelete.setClaseCourseId(claseCourseId);
+        homeworkService.deleteHomework(homeworkToDelete, false);
+
 
         //删除班级
         int affectClaseRows = claseMapper.deleteById(claseId);

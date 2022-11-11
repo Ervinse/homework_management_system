@@ -691,6 +691,7 @@
             handleEdit: async function (index, row) {
                 this.showEditPage();
 
+                console.log(this.form.time);
                 var vueObj = this;
                 await getClaseDetailAxios(row.claseId).then(
                     (response) => {
@@ -788,6 +789,7 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
+                        this.form.timeOfEnrollment = this.form.time.getFullYear();
                         console.log(this.form);
                         editClaseAxios(this.form).then(
                             res => {

@@ -216,13 +216,13 @@ public class HomeworkController {
     /**
      * 根据作业id删除作业
      * @param homeworkId 作业id
-     * @return 删除的作业所对应的图片名结合
+     * @return 删除的作业所对应的图片名集合
      */
     @DeleteMapping
     public R<List<String>> deleteHomework(Long homeworkId) {
         log.info("HomeworkController - deleteHomework :homeworkId = {}", homeworkId);
 
-        List<Image> imageList = homeworkService.deleteHomework(homeworkId);
+        List<Image> imageList = homeworkService.deleteHomeworkById(homeworkId);
         List<String> imageNameList = imageList.stream().map(Image::getImageName).collect(Collectors.toList());
 
         return R.getSuccessInstance(imageNameList);

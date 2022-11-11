@@ -178,7 +178,7 @@
     color: #FFF;
 }
 
-.el-button--primary:focus, .el-button--primary:hover {
+.el-button--primary:focus, .el-button--primary:hover, .el-button--primary.is-disabled, .el-button--primary.is-disabled:hover {
     background: #91dbdb;
     border-color: #91dbdb;
     color: #FFF;

@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pers.ervinse.common.CustomException;
-import pers.ervinse.common.R;
+import pers.ervinse.exception.BusinessException;
+import pers.ervinse.exception.ProgramException;
 import pers.ervinse.service.CommonService;
 
 import java.io.File;
@@ -61,12 +61,12 @@ public class CommonServiceImpl implements CommonService {
     public void deleteImage(String imageName) {
 
         if (imageName == null){
-            throw new CustomException("服务器错误,图片删除异常");
+            throw new ProgramException("服务器错误,图片删除异常");
         }
         File imageFile = new File(imageDirectoryPath + imageName);
 
         if (!imageFile.delete()){
-            throw new CustomException("服务器错误,图片删除异常");
+            throw new ProgramException("服务器错误,图片删除异常");
         }
     }
 
@@ -78,12 +78,12 @@ public class CommonServiceImpl implements CommonService {
     public void deleteFile(String fileName) {
 
         if (fileName == null){
-            throw new CustomException("服务器错误,文件删除异常");
+            throw new ProgramException("服务器错误,文件删除异常");
         }
         File imageFile = new File(fileDirectoryPath + fileName);
 
         if (!imageFile.delete()){
-            throw new CustomException("服务器错误,文件删除异常");
+            throw new ProgramException("服务器错误,文件删除异常");
         }
     }
 

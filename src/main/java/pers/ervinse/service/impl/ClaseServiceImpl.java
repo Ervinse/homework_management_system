@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pers.ervinse.Dto.ClaseDto;
-import pers.ervinse.common.CustomException;
+import pers.ervinse.exception.BusinessException;
 import pers.ervinse.domain.Clase;
 import pers.ervinse.domain.ClaseCourse;
+import pers.ervinse.exception.ProgramException;
 import pers.ervinse.mapper.ClaseCourseMapper;
 import pers.ervinse.mapper.ClaseMapper;
 import pers.ervinse.service.ClaseService;
@@ -139,7 +140,7 @@ public class ClaseServiceImpl implements ClaseService {
             log.info("添加班级成功,影响了" + affectClaseRows + "条Clase数据,影响了" + affectClaseCourseRows + "条claseCourse数据");
         } else {
             log.error("添加班级失败,影响了" + affectClaseRows + "条Clase数据,影响了" + affectClaseCourseRows + "条claseCourse数据");
-            throw new CustomException("服务器错误,添加失败!");
+            throw new ProgramException("服务器错误,添加失败!");
         }
 
     }
@@ -178,7 +179,7 @@ public class ClaseServiceImpl implements ClaseService {
             log.info("修改班级成功,影响了" + affectClaseRows + "条Clase数据,影响了" + affectClaseCourseRows + "条claseCourse数据");
         } else {
             log.error("修改班级失败,影响了" + affectClaseRows + "条Clase数据,影响了" + affectClaseCourseRows + "条claseCourse数据");
-            throw new CustomException("服务器错误,编辑失败!");
+            throw new ProgramException("服务器错误,编辑失败!");
         }
     }
 
@@ -201,7 +202,7 @@ public class ClaseServiceImpl implements ClaseService {
             log.info("删除班级成功,影响了" + affectClaseRows + "条Clase数据,影响了" + affectClaseCourseRows + "条claseCourse数据");
         } else {
             log.error("删除班级失败,影响了" + affectClaseRows + "条Clase数据,影响了" + affectClaseCourseRows + "条claseCourse数据");
-            throw new CustomException("服务器错误,删除失败!");
+            throw new ProgramException("服务器错误,删除失败!");
         }
     }
 }

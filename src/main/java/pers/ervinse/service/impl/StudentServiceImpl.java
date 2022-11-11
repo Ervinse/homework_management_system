@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-import pers.ervinse.common.CustomException;
+import pers.ervinse.exception.BusinessException;
 import pers.ervinse.domain.Student;
+import pers.ervinse.exception.ProgramException;
 import pers.ervinse.mapper.StudentMapper;
-import pers.ervinse.service.ClaseService;
 import pers.ervinse.service.StudentService;
 
 import java.nio.charset.StandardCharsets;
@@ -174,7 +174,7 @@ public class StudentServiceImpl implements StudentService {
             log.info("添加学生成功,影响了" + affectRows + "条数据");
         } else {
             log.error("添加学生失败,影响了" + affectRows + "条数据");
-            throw new CustomException("服务器错误,添加失败!");
+            throw new ProgramException("服务器错误,添加失败!");
         }
     }
 
@@ -193,7 +193,7 @@ public class StudentServiceImpl implements StudentService {
             log.info("修改学生成功,影响了" + affectRows + "条数据");
         } else {
             log.error("修改学生失败,影响了" + affectRows + "条数据");
-            throw new CustomException("服务器错误,修改失败!");
+            throw new ProgramException("服务器错误,修改失败!");
         }
 
     }
@@ -212,7 +212,7 @@ public class StudentServiceImpl implements StudentService {
             log.info("删除学生成功,影响了" + delete + "条数据");
         } else {
             log.error("删除学生失败,影响了" + delete + "条数据");
-            throw new CustomException("服务器错误,删除失败!");
+            throw new ProgramException("服务器错误,删除失败!");
         }
     }
 

@@ -6,7 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pers.ervinse.Dto.HomeworkDto;
-import pers.ervinse.common.CustomException;
+import pers.ervinse.exception.BusinessException;
 import pers.ervinse.common.R;
 import pers.ervinse.domain.*;
 import pers.ervinse.service.*;
@@ -205,7 +205,7 @@ public class HomeworkController {
         if (claseCourseList.size() > 0) {
             homeworkDto.setClaseCourseId(claseCourseList.get(0).getClaseCourseId());
         } else {
-            throw new CustomException("该班级没有此课程,请重试!");
+            throw new BusinessException("该班级没有此课程,请重试!");
         }
         homeworkService.addHomework(homeworkDto);
 

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import pers.ervinse.exception.BusinessException;
+import pers.ervinse.exception.ProgramException;
 
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -91,14 +93,28 @@ public class GlobalExceptionHandler {
      * @param exception 异常对象
      * @return 抛异常时的响应对象
      */
-    @ExceptionHandler(CustomException.class)   //处理的异常类
-    public R<String> exceptionHandler(CustomException exception) {
+    @ExceptionHandler(BusinessException.class)   //处理的异常类
+    public R<String> exceptionHandler(BusinessException exception) {
         String exceptionMessage = exception.getMessage();
-        log.info("GlobalExceptionHandler - CustomException : {}", exceptionMessage);
+        log.info("GlobalExceptionHandler - BusinessException : {}", exceptionMessage);
 
         return R.getErrorInstance(exceptionMessage);
     }
 
+
+    /**
+     * 处理程序相关异常
+     *
+     * @param exception 异常对象
+     * @return 抛异常时的响应对象
+     */
+    @ExceptionHandler(ProgramException.class)   //处理的异常类
+    public R<String> exceptionHandler(ProgramException exception) {
+        String exceptionMessage = exception.getMessage();
+        log.error("GlobalExceptionHandler - ProgramException : {}", exceptionMessage);
+
+        return R.getErrorInstance(exceptionMessage);
+    }
 
     /**
      * 阿里云短信异常

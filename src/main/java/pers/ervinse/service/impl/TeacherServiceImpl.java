@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-import pers.ervinse.common.CustomException;
+import pers.ervinse.exception.BusinessException;
 import pers.ervinse.domain.Clase;
 import pers.ervinse.domain.Course;
-import pers.ervinse.domain.Student;
 import pers.ervinse.domain.Teacher;
+import pers.ervinse.exception.ProgramException;
 import pers.ervinse.mapper.TeacherMapper;
 import pers.ervinse.service.ClaseService;
 import pers.ervinse.service.CourseService;
@@ -200,7 +200,7 @@ public class TeacherServiceImpl implements TeacherService {
             log.info("添加教师成功,影响了" + affectRows + "条数据");
         } else {
             log.error("添加教师失败,影响了" + affectRows + "条数据");
-            throw new CustomException("服务器错误,添加失败!");
+            throw new ProgramException("服务器错误,添加失败!");
         }
     }
 
@@ -219,7 +219,7 @@ public class TeacherServiceImpl implements TeacherService {
             log.info("修改教师成功,影响了" + affectRows + "条数据");
         } else {
             log.error("修改教师失败,影响了" + affectRows + "条数据");
-            throw new CustomException("服务器错误,修改失败!");
+            throw new ProgramException("服务器错误,修改失败!");
         }
     }
 
@@ -236,14 +236,14 @@ public class TeacherServiceImpl implements TeacherService {
         clase.setClaseTeacherId(teacherId);
         List<Clase> claseList = claseService.selectClaseListByConditionInOr(clase);
         if (claseList.size() > 0){
-            throw new CustomException("此教师是相关班级的管理教师,无法删除!");
+            throw new BusinessException("此教师是相关班级的管理教师,无法删除!");
         }
 
         Course course = new Course();
         course.setCourseTeacherId(teacherId);
         List<Course> courseList = courseService.selectCourseByConditionInOR(course);
         if (courseList.size() > 0){
-            throw new CustomException("此教师是相关课程的任课教师,无法删除!");
+            throw new BusinessException("此教师是相关课程的任课教师,无法删除!");
         }
 
         int delete = teacherMapper.deleteById(teacherId);
@@ -251,7 +251,7 @@ public class TeacherServiceImpl implements TeacherService {
             log.info("删除教师成功,影响了" + delete + "条数据");
         } else {
             log.error("删除教师失败,影响了" + delete + "条数据");
-            throw new CustomException("服务器错误,删除失败!");
+            throw new ProgramException("服务器错误,删除失败!");
         }
     }
 
@@ -272,7 +272,7 @@ public class TeacherServiceImpl implements TeacherService {
             log.info("修改教师成功,影响了" + affectRows + "条数据");
         } else {
             log.error("修改教师失败,影响了" + affectRows + "条数据");
-            throw new CustomException("服务器错误,修改失败!");
+            throw new ProgramException("服务器错误,修改失败!");
         }
     }
 
@@ -293,7 +293,7 @@ public class TeacherServiceImpl implements TeacherService {
             log.info("修改教师成功,影响了" + affectRows + "条数据");
         } else {
             log.error("修改教师失败,影响了" + affectRows + "条数据");
-            throw new CustomException("服务器错误,修改失败!");
+            throw new ProgramException("服务器错误,修改失败!");
         }
     }
 

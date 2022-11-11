@@ -8,10 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pers.ervinse.Dto.HomeworkDto;
-import pers.ervinse.common.CustomException;
+import pers.ervinse.exception.BusinessException;
 import pers.ervinse.domain.Homework;
 import pers.ervinse.domain.HomeworkAnswer;
 import pers.ervinse.domain.Image;
+import pers.ervinse.exception.ProgramException;
 import pers.ervinse.mapper.HomeworkMapper;
 import pers.ervinse.mapper.ImageMapper;
 import pers.ervinse.service.HomeworkAnswerService;
@@ -117,10 +118,10 @@ public class HomeworkServiceImpl implements HomeworkService {
                 Homework homework = homeworkList.get(0);
                 homeworkDto.setHomeworkId(homework.getHomeworkId());
             }else {
-                throw new CustomException("服务器错误,添加失败!");
+                throw new ProgramException("服务器错误,添加失败!");
             }
         }else {
-            throw new CustomException("服务器错误,添加失败!");
+            throw new ProgramException("服务器错误,添加失败!");
         }
         //将每一个图片插入图片表
         List<String> imageUploadNameList = homeworkDto.getImageUploadNameList();
@@ -160,7 +161,7 @@ public class HomeworkServiceImpl implements HomeworkService {
             log.info("删除作业成功,影响了" + affectRows + "条数据");
         } else {
             log.error("删除作业失败,影响了" + affectRows + "条数据");
-            throw new CustomException("服务器错误,删除失败!");
+            throw new ProgramException("服务器错误,删除失败!");
         }
 
         return imageList;

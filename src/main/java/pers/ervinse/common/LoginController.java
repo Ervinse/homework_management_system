@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import pers.ervinse.Dto.LoginUser;
 import pers.ervinse.domain.Student;
 import pers.ervinse.domain.Teacher;
+import pers.ervinse.exception.BusinessException;
+import pers.ervinse.exception.ProgramException;
 import pers.ervinse.service.StudentService;
 import pers.ervinse.service.TeacherService;
 import pers.ervinse.utils.SMSUtils;
@@ -19,8 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
@@ -114,7 +114,7 @@ public class LoginController {
                 }
             }
         } else {
-            throw new CustomException("未知错误");
+            throw new ProgramException("未知错误");
         }
 
     }
@@ -200,7 +200,7 @@ public class LoginController {
                 } else if ("2".equals(loginType)) {
                     studentService.resetPassword(accountName);
                 } else {
-                    throw new CustomException("服务器错误!");
+                    throw new ProgramException();
                 }
             } else {
                 return R.getErrorInstance("验证码错误!");

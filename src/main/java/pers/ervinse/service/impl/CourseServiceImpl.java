@@ -6,9 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pers.ervinse.common.CustomException;
+import pers.ervinse.exception.BusinessException;
 import pers.ervinse.domain.ClaseCourse;
 import pers.ervinse.domain.Course;
+import pers.ervinse.exception.ProgramException;
 import pers.ervinse.mapper.CourseMapper;
 import pers.ervinse.service.ClaseCourseService;
 import pers.ervinse.service.CourseService;
@@ -122,7 +123,7 @@ public class CourseServiceImpl implements CourseService {
             log.info("添加课程成功,影响了" + affectRows + "条数据");
         } else {
             log.error("添加课程失败,影响了" + affectRows + "条数据");
-            throw new CustomException("服务器错误,添加失败!");
+            throw new ProgramException("服务器错误,添加失败!");
         }
     }
 
@@ -141,7 +142,7 @@ public class CourseServiceImpl implements CourseService {
             log.info("修改课程成功,影响了" + affectRows + "条数据");
         } else {
             log.error("修改课程失败,影响了" + affectRows + "条数据");
-            throw new CustomException("服务器错误,添加失败!");
+            throw new ProgramException("服务器错误,添加失败!");
         }
     }
 
@@ -158,7 +159,7 @@ public class CourseServiceImpl implements CourseService {
         claseCourse.setCourseId(courseId);
         List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourse);
         if (claseCourseList.size() > 0){
-            throw new CustomException("有相关班级的课程中含有此课程,无法删除!");
+            throw new BusinessException("有相关班级的课程中含有此课程,无法删除!");
         }
 
         int affectRows = courseMapper.deleteById(courseId);
@@ -166,7 +167,7 @@ public class CourseServiceImpl implements CourseService {
             log.info("删除课程成功,影响了" + affectRows + "条数据");
         } else {
             log.error("删除课程失败,影响了" + affectRows + "条数据");
-            throw new CustomException("服务器错误,删除失败!");
+            throw new ProgramException("服务器错误,删除失败!");
         }
     }
 }

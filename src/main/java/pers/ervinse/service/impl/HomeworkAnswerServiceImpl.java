@@ -2,15 +2,15 @@ package pers.ervinse.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pers.ervinse.Dto.HomeworkAnswerDto;
-import pers.ervinse.common.CustomException;
+import pers.ervinse.exception.BusinessException;
 import pers.ervinse.domain.File;
 import pers.ervinse.domain.HomeworkAnswer;
 import pers.ervinse.domain.Image;
+import pers.ervinse.exception.ProgramException;
 import pers.ervinse.mapper.FileMapper;
 import pers.ervinse.mapper.HomeworkAnswerMapper;
 import pers.ervinse.mapper.ImageMapper;
@@ -124,7 +124,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
             homeworkAnswer = homeworkAnswerListBySearch.get(0);
 
             if (homeworkAnswer.getHomeworkRate() != -1) {
-                throw new CustomException("该回答已被教师评分,无法修改!");
+                throw new BusinessException("该回答已被教师评分,无法修改!");
             }
 
 
@@ -174,7 +174,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
                 fileArray[i] = file;
             }
         } else {
-            throw new CustomException("服务器错误!");
+            throw new ProgramException();
         }
 
         //将文件数组转换为list,依次取出每一个文件对象,插入数据库
@@ -213,7 +213,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
             log.info("删除作业答案成功,影响了" + affectRows + "条数据");
         } else {
             log.error("删除答案失败,影响了" + affectRows + "条数据");
-            throw new CustomException("服务器错误,删除失败!");
+            throw new ProgramException("服务器错误,删除失败!");
         }
     }
 

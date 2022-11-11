@@ -153,7 +153,7 @@ public class HomeworkServiceImpl implements HomeworkService {
         //删除与此作业相关的作业答案
         HomeworkAnswer homeworkAnswerToDelete = new HomeworkAnswer();
         homeworkAnswerToDelete.setHomeworkId(homeworkId);
-        homeworkAnswerService.deleteHomeworkAnswer(homeworkAnswerToDelete);
+        homeworkAnswerService.deleteHomeworkAnswer(homeworkAnswerToDelete,false);
 
         int affectRows = homeworkMapper.deleteById(homeworkId);
 

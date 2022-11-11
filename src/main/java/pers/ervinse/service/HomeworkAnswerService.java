@@ -14,7 +14,7 @@ public interface HomeworkAnswerService {
 
     void addHomeworkAnswer(HomeworkAnswerDto homeworkAnswerDto);
 
-    void deleteHomeworkAnswer(HomeworkAnswer homeworkAnswer);
+    void deleteHomeworkAnswer(HomeworkAnswer homeworkAnswer, boolean isCoercive);
 
     void updateRate(HomeworkAnswer homeworkAnswer);
 }

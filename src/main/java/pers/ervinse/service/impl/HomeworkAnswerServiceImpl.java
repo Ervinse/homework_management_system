@@ -187,10 +187,11 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
      * 根据作业答案的作业答案id或作业id删除作业答案
      *
      * @param homeworkAnswer 含有要删除的作业答案信息的作业答案对象
+     * @param isCoercive 是否强制删除
      */
     @Override
-    public void deleteHomeworkAnswer(HomeworkAnswer homeworkAnswer) {
-        log.info("HomeworkAnswerService - deleteHomeworkAnswer :homeworkAnswer = {}", homeworkAnswer);
+    public void deleteHomeworkAnswer(HomeworkAnswer homeworkAnswer,boolean isCoercive) {
+        log.info("HomeworkAnswerService - deleteHomeworkAnswer :homeworkAnswer = {},isCoercive = {}", homeworkAnswer,isCoercive);
 
         //构建 "根据作业答案的作业答案id或作业id" 条件
         LambdaQueryWrapper<HomeworkAnswer> wrapper = new LambdaQueryWrapper<>();
@@ -209,12 +210,15 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
         }
         int affectRows = homeworkAnswerMapper.delete(wrapper);
 
-        if (affectRows > 0) {
-            log.info("删除作业答案成功,影响了" + affectRows + "条数据");
-        } else {
-            log.error("删除答案失败,影响了" + affectRows + "条数据");
-            throw new ProgramException("服务器错误,删除失败!");
+        if (isCoercive){
+            if (affectRows > 0) {
+                log.info("删除作业答案成功,影响了" + affectRows + "条数据");
+            } else {
+                log.error("删除答案失败,影响了" + affectRows + "条数据");
+                throw new ProgramException("服务器错误,删除失败!");
+            }
         }
+
     }
 
     /**

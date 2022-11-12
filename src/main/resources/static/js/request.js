@@ -47,6 +47,7 @@
             if (res.data.code === 0 && res.data.msg === 'NOTLOGIN') {// 返回登录页面
                 //拦截到未登录状态时删除localStorage中存储的用户信息
                 localStorage.removeItem('loginUser')
+                localStorage.removeItem('loginSuccess');
                 window.top.location.href = '/page/login/login.html'
             } else {
                 return res;

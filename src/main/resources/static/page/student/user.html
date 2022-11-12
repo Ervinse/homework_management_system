@@ -482,7 +482,13 @@
             this.getUser();
         },
         mounted() {
-            this.$message.success('登录成功');
+
+            let loginSuccess = window.localStorage.getItem('loginSuccess');
+            if (loginSuccess != null) {
+                this.$message.success('登录成功');
+            }
+            localStorage.removeItem('loginSuccess');
+
             this.getUserDetail();
         }
     })

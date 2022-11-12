@@ -40,6 +40,12 @@ body {
     float: right;
 }
 /*修改element UI 按钮默认按钮颜色*/
+.el-button:focus, .el-button:hover {
+    color: #31a5b9;
+    border-color: #a5d2da;
+    background-color: #fafffe;
+}
+
 .el-button--primary.is-active, .el-button--primary:active {
     background: #70b7b7;
     border-color: #70b7b7;

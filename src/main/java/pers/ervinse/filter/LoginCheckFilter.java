@@ -47,8 +47,8 @@ public class LoginCheckFilter implements Filter {
                 "/api/**",
                 "/images/**",
                 "/imageItem/**",
-                //添加测试数据接口
-                "/employee/addEmployeeTestRecords"
+                "/index.html",
+                "/"
         };
 
         //检查本次请求地址是否需要处理

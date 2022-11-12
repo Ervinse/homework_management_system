@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>连接至服务器</title>
+
+    <!--引入vue框架-->
+    <script src="/framework/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div id="vue">
+    连接至服务器
+</div>
+
+<script>
+
+    var vueObj = new Vue({
+        el: "#vue",
+        data: {},
+        methods: {},
+        mounted() {
+            window.location.href = "./page/login/login.html";
+        }
+    })
+
+</script>
+</body>
+</html>

@@ -484,7 +484,7 @@
                 this.subRowId = row.courseId;
                 this.showHomeworkPage();
                 var vueObj = this;
-                getHomeworkPageAxios(this.currentPage, this.pageSize, row.courseId).then(
+                getHomeworkPageByCourseIdAxios(this.currentPage, this.pageSize, row.courseId).then(
                     (response) => {
                         if (response.data.code === 1) {
                             vueObj.homeworkTableData = response.data.data.records;

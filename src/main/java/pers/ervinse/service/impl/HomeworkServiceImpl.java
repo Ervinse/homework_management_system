@@ -90,7 +90,9 @@ public class HomeworkServiceImpl implements HomeworkService {
         //过滤条件:实体类对应字段 == 变量
         wrapper.eq(homework.getHomeworkId() != null, Homework::getHomeworkId, homework.getHomeworkId())
                 .eq(StringUtils.isNotEmpty(homework.getHomeworkName()), Homework::getHomeworkName, homework.getHomeworkName())
-                .eq(StringUtils.isNotEmpty(homework.getHomeworkDescription()), Homework::getHomeworkDescription, homework.getHomeworkDescription());
+                .eq(StringUtils.isNotEmpty(homework.getHomeworkDescription()), Homework::getHomeworkDescription, homework.getHomeworkDescription())
+                .eq(homework.getClaseCourseId() != null, Homework::getClaseCourseId, homework.getClaseCourseId());
+
 
         return homeworkMapper.selectList(wrapper);
     }
@@ -115,7 +117,9 @@ public class HomeworkServiceImpl implements HomeworkService {
                 .or()
                 .eq(StringUtils.isNotEmpty(homework.getHomeworkName()), Homework::getHomeworkName, homework.getHomeworkName())
                 .or()
-                .eq(StringUtils.isNotEmpty(homework.getHomeworkDescription()), Homework::getHomeworkDescription, homework.getHomeworkDescription());
+                .eq(StringUtils.isNotEmpty(homework.getHomeworkDescription()), Homework::getHomeworkDescription, homework.getHomeworkDescription())
+                .or()
+                .eq(homework.getClaseCourseId() != null, Homework::getClaseCourseId, homework.getClaseCourseId());
 
         return homeworkMapper.selectList(wrapper);
     }

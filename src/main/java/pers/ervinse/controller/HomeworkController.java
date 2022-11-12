@@ -9,8 +9,10 @@ import pers.ervinse.Dto.HomeworkDto;
 import pers.ervinse.exception.BusinessException;
 import pers.ervinse.common.R;
 import pers.ervinse.domain.*;
+import pers.ervinse.exception.ProgramException;
 import pers.ervinse.service.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -144,8 +146,91 @@ public class HomeworkController {
         return R.getSuccessInstance(homeworkDtoPage);
     }
 
+
+    /**
+     * 根据课程id查询获取作业分页(用于学生端根据课程获取课程中包含的作业)
+     *
+     * @param currentPage 当前页
+     * @param pageSize    每页条数
+     * @param courseId    要搜索的作业所属课程id
+     * @return 作业传输分页
+     */
+    @GetMapping("/page/course")
+    public R<Page<HomeworkDto>> getHomeworkPageByCourseId(Integer currentPage, Integer pageSize, Long courseId) {
+        log.info("HomeworkController - getHomeworkPage :currentPage = {},pageSize = {},courseId = {}", currentPage, pageSize, courseId);
+
+
+        //根据课程id搜索课程
+        Course courseToSearch = new Course();
+        courseToSearch.setCourseId(courseId);
+        List<Course> courseList = courseService.selectCourseByConditionInOR(courseToSearch);
+        //搜素到课程
+        if (courseList.size() > 0) {
+            Course courseBySearch = courseList.get(0);
+            log.info("search - course = {}", courseBySearch);
+            //以搜索到的课程id为值,继续搜索班级课程表
+            ClaseCourse claseCourseToSearch = new ClaseCourse();
+            claseCourseToSearch.setCourseId(courseBySearch.getCourseId());
+            List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourseToSearch);
+
+            //根据搜索到的班级/课程id,搜索每一个班级/课程id中包含的作业集合,打包成一个含有作业集合的集合
+            List<List<Homework>> homeworkListList;
+            if (claseCourseList.size() > 0) {
+
+                homeworkListList = claseCourseList.stream().map(claseCourseItem -> {
+
+                    Homework homework = new Homework();
+                    homework.setClaseCourseId(claseCourseItem.getClaseCourseId());
+                    return homeworkService.selectHomeworkListByConditionInAnd(homework);
+                }).collect(Collectors.toList());
+            } else {
+                throw new ProgramException();
+            }
+
+            //将上一步获取的含有作业集合的集合,重新打包为一个含有所有作业的集合,即所有作业的列表
+            ArrayList<Homework> homeworkList = new ArrayList<>();
+            homeworkListList.forEach(homeworkList::addAll);
+
+
+            //遍历作业列表中的每一个作业对象,获取其对应的作业传输对象,收集为list
+            List<HomeworkDto> homeworkDtoPageRecords = homeworkList.stream().map(homework -> {
+                //对每一个作业,创建作业传输对象,并将每个作业数据复制到对应的传输对象中
+                HomeworkDto homeworkDto = new HomeworkDto();
+                BeanUtils.copyProperties(homework, homeworkDto);
+
+                //对每一个作业,根据班级课程id获取班级课程对象
+                ClaseCourse claseCourse = claseCourseService.selectClaseCourseById(homework.getClaseCourseId());
+
+                //通过班级课程对象中的班级课程id,获取班级名和课程名,填入作业传输对象
+                Clase clase = claseService.selectClaseById(claseCourse.getClaseId());
+                Course course = courseService.selectCourseById(claseCourse.getCourseId());
+                homeworkDto.setClaseName(clase.getClaseName());
+                homeworkDto.setCourseName(course.getCourseName());
+
+                //返回传输对象
+                return homeworkDto;
+            }).collect(Collectors.toList());
+
+
+            //创建作业传输分页,设置作业分页中的分页数据
+            Page<HomeworkDto> homeworkDtoPage = new Page<>();
+            homeworkDtoPage.setCurrent(currentPage);
+            homeworkDtoPage.setSize(pageSize);
+            homeworkDtoPage.setTotal(homeworkDtoPageRecords.size());
+            //为课程传输分页添加课程传输对象集合
+            homeworkDtoPage.setRecords(homeworkDtoPageRecords);
+            log.info("page信息:current = {},pages = {},size = {},total = {},records = {}", homeworkDtoPage.getCurrent(), homeworkDtoPage.getPages(), homeworkDtoPage.getSize(), homeworkDtoPage.getTotal(), homeworkDtoPage.getRecords());
+            return R.getSuccessInstance(homeworkDtoPage);
+        } else {
+            throw new ProgramException();
+        }
+
+    }
+
+
     /**
      * 根据作业id获取作业详情
+     *
      * @param homeworkId 作业id
      * @return 作业详情传输类
      */
@@ -160,7 +245,7 @@ public class HomeworkController {
         ClaseCourse claseCourse = new ClaseCourse();
         claseCourse.setClaseCourseId(homework.getClaseCourseId());
         List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourse);
-        if (claseCourseList.size() > 0){
+        if (claseCourseList.size() > 0) {
             ClaseCourse claseCourseBySearch = claseCourseList.get(0);
             claseCourse.setCourseId(claseCourseBySearch.getCourseId());
             claseCourse.setClaseId(claseCourseBySearch.getClaseId());
@@ -215,6 +300,7 @@ public class HomeworkController {
 
     /**
      * 根据作业id删除作业
+     *
      * @param homeworkId 作业id
      * @return 删除的作业所对应的图片名集合
      */

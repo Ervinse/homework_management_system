@@ -11,7 +11,18 @@ const getHomeworkPageAxios = (currentPage,pageSize,searchValue) => {
         }
     })
 }
-
+//
+const getHomeworkPageByCourseIdAxios = (currentPage,pageSize,courseId) => {
+    return $axios({
+        url: '/homework/page/course',
+        method: 'get',
+        params:{
+            currentPage: currentPage,
+            pageSize: pageSize,
+            courseId: courseId
+        }
+    })
+}
 // 查询作业详情接口
 const getHomeworkDetailAxios = (homeworkId) => {
     return $axios({

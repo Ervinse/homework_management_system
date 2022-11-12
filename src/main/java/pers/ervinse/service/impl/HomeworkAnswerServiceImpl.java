@@ -150,7 +150,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
 
         //遍历作业答案中包含的图片列表,上传每一个图片
         List<String> imageUploadNameList = homeworkAnswerDto.getImageUploadNameList();
-        if (imageUploadNameList.size() > 0) {
+        if (imageUploadNameList != null && imageUploadNameList.size() > 0) {
             imageUploadNameList.forEach(imageName -> {
                 Image imageToInsert = new Image();
                 imageToInsert.setReferenceId(homeworkAnswerDto.getHomeworkAnswerId());

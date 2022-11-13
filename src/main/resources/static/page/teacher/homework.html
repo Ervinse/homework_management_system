@@ -584,7 +584,7 @@
                     loginUser = JSON.parse(loginUser);
                 }
                 if (loginUser.accountPortrait == null) {
-                    loginUser.accountPortrait = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
+                    loginUser.accountPortrait = "defaultPortrait.png";
                 }
                 console.log(loginUser);
 
@@ -681,7 +681,11 @@
             },
             //获取服务器图片
             getImage(image) {
-                return `/common/downloadImage?imageName=${image}`
+                if (image === "defaultPortrait.png") {
+                    return "../../images/icons/defaultPortrait.png";
+                } else {
+                    return `/common/downloadImage?imageName=${image}`;
+                }
             },
             //获取服务器文件
             getFile(file) {

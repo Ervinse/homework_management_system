@@ -94,9 +94,12 @@ public class TeacherController {
     public R<String> updateTeacher(@RequestBody Teacher teacher) {
         log.info("TeacherController - updateTeacher :teacher = {}", teacher);
 
-        //对密码进行md5加密
-        String password = DigestUtils.md5DigestAsHex(teacher.getAccountPassword().getBytes(StandardCharsets.UTF_8));
-        teacher.setAccountPassword(password);
+        //编辑教师资料时允许不输入密码
+        if (teacher.getAccountPassword() != null){
+            //对密码进行md5加密
+            String password = DigestUtils.md5DigestAsHex(teacher.getAccountPassword().getBytes(StandardCharsets.UTF_8));
+            teacher.setAccountPassword(password);
+        }
 
         teacherService.updateStudentById(teacher);
         return R.getSuccessInstance(null);

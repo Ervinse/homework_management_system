@@ -411,7 +411,7 @@
                 await getTeacherDetailAxios(this.loginUser.id).then(
                     (response) => {
                         if (response.data.code === 1) {
-                            vueObj.userData = response.data.data;
+                            vueObj.form = response.data.data;
                         } else {
                             this.$message.error(response.data.msg)
                         }
@@ -419,11 +419,6 @@
                     this.$message.error('请求出错了：' + err);
                 });
 
-                this.form.teacherId = this.userData.teacherId;
-                this.form.teacherName = this.userData.teacherName;
-                this.form.teacherGender = this.userData.teacherGender;
-                this.form.accountName = this.userData.accountName;
-                this.form.phoneNumber = this.userData.phoneNumber;
             },
             // 表单提交函数
             // 修改表单提交

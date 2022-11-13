@@ -64,6 +64,9 @@ public class TeacherController {
 
         Teacher teacher = teacherService.selectTeacherById(teacherId);
 
+        //抹去密码
+        teacher.setAccountPassword("");
+
         return R.getSuccessInstance(teacher);
     }
 

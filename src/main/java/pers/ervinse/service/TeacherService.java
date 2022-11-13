@@ -19,7 +19,7 @@ public interface TeacherService {
 
     void addTeacher(Teacher teacher);
 
-    void updateStudentById(Teacher teacher);
+    void updateTeacherById(Teacher teacher);
 
     void deleteTeacherById(Long teacherId);
 

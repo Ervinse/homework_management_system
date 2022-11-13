@@ -205,14 +205,14 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     /**
-     * 根据id修改学生信息
+     * 根据id修改教师信息
      * 当教师信息中的账户名重名时,抛出sql异常
      *
      * @param teacher 含有教师修改信息的对象
      */
     @Override
-    public void updateStudentById(Teacher teacher) {
-        log.info("TeacherService - updateStudentById :teacher = {}", teacher);
+    public void updateTeacherById(Teacher teacher) {
+        log.info("TeacherService - updateTeacherById :teacher = {}", teacher);
 
         int affectRows = teacherMapper.updateById(teacher);
         if (affectRows > 0) {

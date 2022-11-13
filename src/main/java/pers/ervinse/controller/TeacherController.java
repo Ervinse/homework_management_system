@@ -2,6 +2,7 @@ package pers.ervinse.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -95,13 +96,14 @@ public class TeacherController {
         log.info("TeacherController - updateTeacher :teacher = {}", teacher);
 
         //编辑教师资料时允许不输入密码
-        if (teacher.getAccountPassword() != null){
-            //对密码进行md5加密
-            String password = DigestUtils.md5DigestAsHex(teacher.getAccountPassword().getBytes(StandardCharsets.UTF_8));
-            teacher.setAccountPassword(password);
+        if (StringUtils.isEmpty(teacher.getAccountPassword())){
+            teacher.setAccountPassword("123456");
         }
 
-        teacherService.updateStudentById(teacher);
+        //对密码进行md5加密
+        String password = DigestUtils.md5DigestAsHex(teacher.getAccountPassword().getBytes(StandardCharsets.UTF_8));
+        teacher.setAccountPassword(password);
+        teacherService.updateTeacherById(teacher);
         return R.getSuccessInstance(null);
     }
 

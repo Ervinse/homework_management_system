@@ -480,13 +480,22 @@
                 await getStudentDetailAxios(row.studentId).then(
                     (response) => {
                         if (response.data.code === 1) {
-                            vueObj.form = response.data.data;
+                            vueObj.tableDetailData = response.data.data;
                         } else {
                             this.$message.error(response.data.msg)
                         }
                     }).catch((err) => {
                     this.$message.error('请求出错了：' + err);
                 });
+
+                this.form.studentId = this.tableDetailData.studentId;
+                this.form.studentNumber = this.tableDetailData.studentNumber;
+                this.form.studentName = this.tableDetailData.studentName;
+                this.form.studentGender = this.tableDetailData.studentGender;
+                this.form.accountName = this.tableDetailData.accountName;
+                this.form.phoneNumber = this.tableDetailData.phoneNumber;
+                this.form.claseId = this.tableDetailData.claseId;
+
             },
             //删除按钮处理函数
             handleDelete: function (index, row) {

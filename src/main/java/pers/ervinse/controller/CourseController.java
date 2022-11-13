@@ -114,6 +114,15 @@ public class CourseController {
         //根据学生所属班级id获取班级
         Clase clase = claseService.selectClaseById(student.getClaseId());
 
+        //学生没有所属班级,或所属班级被删除
+        if (clase == null){
+            //返回空数据
+            Page<CourseDto> courseDtoPage = new Page<>();
+            courseDtoPage.setCurrent(currentPage);
+            courseDtoPage.setSize(pageSize);
+            return R.getSuccessInstance(courseDtoPage);
+        }
+
         //根据班级id获取班级/课程表中相关班级课程集合
         ClaseCourse claseCourseBySearch = new ClaseCourse();
         claseCourseBySearch.setClaseId(clase.getClaseId());
@@ -127,7 +136,7 @@ public class CourseController {
         }).collect(Collectors.toList());
 
 
-        //创建课程传输分页,设置分页数据
+        //创建课程传输分页,获取课程分页中的分页数据
         Page<CourseDto> courseDtoPage = new Page<>();
         courseDtoPage.setCurrent(currentPage);
         courseDtoPage.setSize(pageSize);

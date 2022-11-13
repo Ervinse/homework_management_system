@@ -468,7 +468,7 @@
             //表格数据函数
             getCoursePage: function () {
                 var returnObj = this;//当运行axios中的回调函数时，this对象已经改变，要把this暂存到一个变量中，等之后输出
-                getCoursePageAxios(this.currentPage, this.pageSize, null).then(
+                getCoursePageByStudentIdAxios(this.currentPage, this.pageSize, this.loginUser.id).then(
                     function (response) {
                         returnObj.claseTableData = response.data.data.records;
                         returnObj.total = response.data.data.total;

@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pers.ervinse.Dto.CourseDto;
 import pers.ervinse.common.R;
-import pers.ervinse.domain.Course;
-import pers.ervinse.domain.Teacher;
-import pers.ervinse.service.CourseService;
-import pers.ervinse.service.TeacherService;
+import pers.ervinse.domain.*;
+import pers.ervinse.service.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +23,15 @@ public class CourseController {
 
     @Autowired
     private TeacherService teacherService;
+
+    @Autowired
+    private StudentService studentService;
+
+    @Autowired
+    private ClaseService claseService;
+
+    @Autowired
+    private ClaseCourseService claseCourseService;
 
     /**
      * 根据条件获取课程分页
@@ -71,6 +78,63 @@ public class CourseController {
         List<Course> coursePageRecords = coursePage.getRecords();
         //遍历课程列表中的每一个课程对象,获取其对应的课程传输对象,收集为list
         List<CourseDto> courseDtoPageRecords = coursePageRecords.stream().map(course -> {
+            //对每一个课程,创建课程传输对象,并将每个课程数据复制到对应的传输对象中
+            CourseDto courseDto = new CourseDto();
+            BeanUtils.copyProperties(course, courseDto);
+            //对每一个课程,根据教师id获取教师对象,并将教师名字添加到传输对象中
+            Teacher teacher = teacherService.selectTeacherById(course.getCourseTeacherId());
+            courseDto.setCourseTeacherName(teacher.getTeacherName());
+
+            //返回传输对象
+            return courseDto;
+        }).collect(Collectors.toList());
+
+        //为课程传输分页添加课程传输对象集合
+        courseDtoPage.setRecords(courseDtoPageRecords);
+
+        return R.getSuccessInstance(courseDtoPage);
+    }
+
+
+    /**
+     * 根据条学生id获取课程分页
+     *
+     * @param currentPage 当前页
+     * @param pageSize    每页条数
+     * @param studentId   学生id
+     * @return 课程传输分页
+     */
+    @GetMapping("/pageByStudent")
+    public R<Page<CourseDto>> getCoursePageByStudentId(Integer currentPage, Integer pageSize, Long studentId) {
+        log.info("CourseController - getCoursePage :currentPage = {},pageSize = {},studentId = {}", currentPage, pageSize, studentId);
+
+        //根据学生id获取对应学生
+        Student student = studentService.selectStudentById(studentId);
+
+        //根据学生所属班级id获取班级
+        Clase clase = claseService.selectClaseById(student.getClaseId());
+
+        //根据班级id获取班级/课程表中相关班级课程集合
+        ClaseCourse claseCourseBySearch = new ClaseCourse();
+        claseCourseBySearch.setClaseId(clase.getClaseId());
+        List<ClaseCourse> claseCourseList = claseCourseService.selectClaseCourseByConditionInAnd(claseCourseBySearch);
+
+        //根据每一个班级/课程id获取课程
+        List<Course> courseList = claseCourseList.stream().map(claseCourse -> {
+            Long courseId = claseCourse.getCourseId();
+
+            return courseService.selectCourseById(courseId);
+        }).collect(Collectors.toList());
+
+
+        //创建课程传输分页,设置分页数据
+        Page<CourseDto> courseDtoPage = new Page<>();
+        courseDtoPage.setCurrent(currentPage);
+        courseDtoPage.setSize(pageSize);
+        courseDtoPage.setTotal(courseList.size());
+
+        //遍历课程列表中的每一个课程对象,获取其对应的课程传输对象,收集为list
+        List<CourseDto> courseDtoPageRecords = courseList.stream().map(course -> {
             //对每一个课程,创建课程传输对象,并将每个课程数据复制到对应的传输对象中
             CourseDto courseDto = new CourseDto();
             BeanUtils.copyProperties(course, courseDto);

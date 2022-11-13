@@ -116,6 +116,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
 
         HomeworkAnswer homeworkAnswer = new HomeworkAnswer();
         homeworkAnswer.setHomeworkId(homeworkAnswerDto.getHomeworkId());
+        homeworkAnswer.setStudentId(homeworkAnswerDto.getStudentId());
         List<HomeworkAnswer> homeworkAnswerListBySearch = selectHomeworkAnswerListByConditionInAnd(homeworkAnswer);
         if (homeworkAnswerListBySearch.size() > 0) {
             //不是新回答

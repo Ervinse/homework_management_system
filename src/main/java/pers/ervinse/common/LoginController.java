@@ -68,6 +68,10 @@ public class LoginController {
                 return R.getErrorInstance("账户未注册!");
             } else {
                 if (loginAccountPassword.equals(teacherBySearch.getAccountPassword())) {
+
+                    if ("0".equals(teacherBySearch.getAccountStatus())){
+                        return R.getErrorInstance("账户被禁用,请联系管理员!");
+                    }
                     log.info("登录成功");
 
                     //处理返回数值,抹去密码

@@ -729,9 +729,20 @@
             },
 
             //图片处理函数
-            //处理图片大图预览
-            handleImagePreviewSrcList: function () {
+            //处理作业图片大图预览
+            handleHomeworkImagePreviewSrcList: function () {
+                //情况大图预览数组中的图片名
+                this.imagePreviewSrcList= [];
+                //将作业详情中的图片名依次添加到大图预览数组中
                 this.homeworkDetailData.imageUploadNameList.forEach((image) => {
+                    this.imagePreviewSrcList.push('/common/downloadImage?imageName=' + image);
+                });
+            },
+            handleHomeworkAnswerImagePreviewSrcList: function () {
+                //情况大图预览数组中的图片名
+                this.imagePreviewSrcList = [];
+                //将作业答案详情中的图片名依次添加到大图预览数组中
+                this.homeworkAnswerDetailData.imageUploadNameList.forEach((image) => {
                     this.imagePreviewSrcList.push('/common/downloadImage?imageName=' + image);
                 });
             },
@@ -848,7 +859,7 @@
                     this.$message.error('请求出错了：' + err);
                 });
 
-                this.handleImagePreviewSrcList();
+                this.handleHomeworkImagePreviewSrcList();
 
                 //获取当前作业下的回答列表
                 await getHomeworkAnswerPageAxios(row.homeworkId).then(
@@ -885,7 +896,7 @@
 
                 this.showDetailHomeworkAnswerPage();
                 this.rate = vueObj.homeworkAnswerDetailData.homeworkRate;
-                this.handleImagePreviewSrcList();
+                this.handleHomeworkAnswerImagePreviewSrcList();
             },
             //删除按钮处理函数
             handleDelete: function (index, row) {

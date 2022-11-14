@@ -500,11 +500,11 @@
                 })
             },
             //获取作业详情函数
-            handleHomeworkDetail: function (index, row) {
+            handleHomeworkDetail: async function (index, row) {
 
                 this.showHomeworkSubmitPage();
                 var vueObj = this;
-                getHomeworkDetailAxios(row.homeworkId).then(
+                await getHomeworkDetailAxios(row.homeworkId).then(
                     (response) => {
                         if (response.data.code === 1) {
                             vueObj.homeworkDetailData = response.data.data;
@@ -515,6 +515,9 @@
                     }).catch((err) => {
                     this.$message.error('请求出错了：' + err);
                 });
+
+                //处理作业图片大图预览
+                this.handleHomeworkImagePreviewSrcList();
             },
 
 
@@ -674,9 +677,19 @@
                 }
                 console.log(this.form.imageUploadNameList);
             },
+            //图片上传预览
             handlePictureCardPreview(file) {
                 this.dialogImageUrl = file.url;
                 this.imageUploadVisible = true;
+            },
+            //处理作业图片大图预览
+            handleHomeworkImagePreviewSrcList: function () {
+                //情况大图预览数组中的图片名
+                this.imagePreviewSrcList= [];
+                //将作业详情中的图片名依次添加到大图预览数组中
+                this.homeworkDetailData.imageUploadNameList.forEach((image) => {
+                    this.imagePreviewSrcList.push('/common/downloadImage?imageName=' + image);
+                });
             },
             //上传图片前校验
             beforeAvatarUpload(file) {

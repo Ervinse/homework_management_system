@@ -428,7 +428,6 @@
                 if (loginUser.accountPortrait == null) {
                     loginUser.accountPortrait = "defaultPortrait.png";
                 }
-                console.log(loginUser);
 
                 this.loginUser = loginUser;
             },
@@ -611,7 +610,6 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    console.log(this.form);
                     submitHomeworkAnswerAxios(this.form).then(
                         res => {
                             if (res.data.code === 1) {
@@ -648,7 +646,6 @@
                 } else {
                     this.$message.error(response.msg)
                 }
-                console.log(this.form.imageUploadNameList);
             },
             //图片删除回调函数
             //file为删除的图片，fileList为剩下的图片
@@ -675,7 +672,6 @@
                         this.form.imageUploadNameList.splice(i, 1);
                     }
                 }
-                console.log(this.form.imageUploadNameList);
             },
             //图片上传预览
             handlePictureCardPreview(file) {
@@ -709,7 +705,6 @@
 
             //文件上传成功回调函数
             handleFileSuccess: function (response, file) {
-                console.log(file);
                 if (response.code === 1) {
                     //将服务器中重命名的文件名传入fileUploadNameList
                     this.form.fileUploadNameList.push(response.data);
@@ -718,8 +713,6 @@
                 } else {
                     this.$message.error(response.msg)
                 }
-                console.log(this.form.fileUploadNameList);
-                console.log(this.form.fileUploadUserNameList);
             },
 
             //文件删除回调函数
@@ -753,8 +746,6 @@
                         this.form.fileUploadUserNameList.splice(i, 1);
                     }
                 }
-                console.log(this.form.fileUploadNameList);
-                console.log(this.form.fileUploadUserNameList);
             },
             //上传文件前校验
             beforeFileUpload(file) {
@@ -767,7 +758,6 @@
             },
             logout: function () {
 
-                console.log('logout');
                 this.$confirm('即将退出系统, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',

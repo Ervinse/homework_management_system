@@ -390,7 +390,6 @@
                 if (loginUser.accountPortrait == null) {
                     loginUser.accountPortrait = "defaultPortrait.png";
                 }
-                console.log(loginUser);
 
                 this.loginUser = loginUser;
             },
@@ -556,7 +555,6 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                        console.log(this.form);
                         addCourseAxios(this.form).then(
                             res => {
                                 if (res.data.code === 1) {
@@ -591,7 +589,6 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                        console.log(this.form);
                         updateCourseAxios(this.form).then(
                             res => {
                                 if (res.data.code === 1) {
@@ -611,7 +608,6 @@
             },
             //验证表单
             validateForm: function (formRef) {
-                console.log(formRef);
                 let flag = false;
                 this.$refs[formRef].validate((valid) => {
                     if (valid === true) {
@@ -622,7 +618,6 @@
             },
             logout: function () {
 
-                console.log('logout');
                 this.$confirm('即将退出系统, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',

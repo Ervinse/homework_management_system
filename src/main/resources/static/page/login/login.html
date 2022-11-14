@@ -139,8 +139,8 @@
             checkPhoneNumberFlag: false,
 
             form: {
-                accountName: "admin",
-                accountPassword: "123456",
+                accountName: "",
+                accountPassword: "",
                 loginType: "1"
             },
             forgetForm: {
@@ -219,7 +219,6 @@
                     //检查手机号和账号匹配
                     await this.checkPhoneNumber();
                     check = this.checkPhoneNumberFlag;
-                    console.log(2)
                 }
                 if (check === true) {
                     this.sendMessageDisableFlag = true;
@@ -328,7 +327,6 @@
                     (response) => {
                         if (response.data.code === 1) {
                             this.checkPhoneNumberFlag = true;
-                            console.log(1)
                         } else {
                             this.$message.error(response.data.msg)
                         }

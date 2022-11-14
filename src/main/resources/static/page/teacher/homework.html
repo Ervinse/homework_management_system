@@ -586,7 +586,6 @@
                 if (loginUser.accountPortrait == null) {
                     loginUser.accountPortrait = "defaultPortrait.png";
                 }
-                console.log(loginUser);
 
                 this.loginUser = loginUser;
             },
@@ -909,7 +908,6 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    console.log('删除作业，id：' + row.homeworkId)
                     deleteHomeworkAxios(row.homeworkId).then(
                         res => {
                             if (res.data.code === 1) {
@@ -963,7 +961,6 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                        console.log(this.form);
                         addHomeworkAxios(this.form).then(
                             res => {
                                 if (res.data.code === 1) {
@@ -1030,13 +1027,11 @@
                 } else {
                     this.$message.error(response.msg)
                 }
-                console.log(this.form.imageUploadNameList);
             },
             //图片删除回调函数
             //file为删除的图片，fileList为剩下的图片
             async handleRemove(file, fileList) {
 
-                console.log(file)
                 //如果在未上传图片前由于不符合类型导致上传文件被删除，则不需要继续执行
                 if (typeof (file.response) == "undefined") {
                     return;
@@ -1077,7 +1072,6 @@
             },
             logout: function () {
 
-                console.log('logout');
                 this.$confirm('即将退出系统, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',

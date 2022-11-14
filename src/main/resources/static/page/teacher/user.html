@@ -298,7 +298,6 @@
                 if (loginUser.accountPortrait == null) {
                     loginUser.accountPortrait = "defaultPortrait.png";
                 }
-                console.log(loginUser);
 
                 this.loginUser = loginUser;
             },
@@ -431,7 +430,6 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                        console.log(this.form);
                         editTeacherAxios(this.form).then(
                             res => {
                                 if (res.data.code === 1) {
@@ -462,13 +460,11 @@
             },
             //图片删除回调函数
             async handleRemove() {
-                console.log(this.form.accountPortrait);
                 if (this.form.accountPortrait !== "") {
                     //通知服务器删除存储的图片
                     await removeImageAxios(this.form.accountPortrait).then(
                         (response) => {
                             if (response.data.code === 1) {
-                                console.log('图片删除成功')
                             } else {
                                 this.$message.error(response.data.msg)
                             }
@@ -501,7 +497,6 @@
             },
             logout: function () {
 
-                console.log('logout');
                 this.$confirm('即将退出系统, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',

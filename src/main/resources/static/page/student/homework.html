@@ -685,11 +685,13 @@
             //处理作业图片大图预览
             handleHomeworkImagePreviewSrcList: function () {
                 //情况大图预览数组中的图片名
-                this.imagePreviewSrcList= [];
+                this.imagePreviewSrcList = [];
                 //将作业详情中的图片名依次添加到大图预览数组中
-                this.homeworkDetailData.imageUploadNameList.forEach((image) => {
-                    this.imagePreviewSrcList.push('/common/downloadImage?imageName=' + image);
-                });
+                if (this.homeworkDetailData.imageUploadNameList != null) {
+                    this.homeworkDetailData.imageUploadNameList.forEach((image) => {
+                        this.imagePreviewSrcList.push('/common/downloadImage?imageName=' + image);
+                    });
+                }
             },
             //上传图片前校验
             beforeAvatarUpload(file) {

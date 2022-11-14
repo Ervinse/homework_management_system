@@ -734,17 +734,21 @@
                 //情况大图预览数组中的图片名
                 this.imagePreviewSrcList= [];
                 //将作业详情中的图片名依次添加到大图预览数组中
-                this.homeworkDetailData.imageUploadNameList.forEach((image) => {
-                    this.imagePreviewSrcList.push('/common/downloadImage?imageName=' + image);
-                });
+                if (this.homeworkDetailData.imageUploadNameList != null){
+                    this.homeworkDetailData.imageUploadNameList.forEach((image) => {
+                        this.imagePreviewSrcList.push('/common/downloadImage?imageName=' + image);
+                    });
+                }
             },
             handleHomeworkAnswerImagePreviewSrcList: function () {
                 //情况大图预览数组中的图片名
                 this.imagePreviewSrcList = [];
                 //将作业答案详情中的图片名依次添加到大图预览数组中
-                this.homeworkAnswerDetailData.imageUploadNameList.forEach((image) => {
-                    this.imagePreviewSrcList.push('/common/downloadImage?imageName=' + image);
-                });
+                if (this.homeworkAnswerDetailData.imageUploadNameList != null){
+                    this.homeworkAnswerDetailData.imageUploadNameList.forEach((image) => {
+                        this.imagePreviewSrcList.push('/common/downloadImage?imageName=' + image);
+                    });
+                }
             },
             //页面跳转函数
             //返回函数

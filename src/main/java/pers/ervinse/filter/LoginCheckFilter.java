@@ -48,7 +48,11 @@ public class LoginCheckFilter implements Filter {
                 "/images/**",
                 "/imageItem/**",
                 "/index.html",
-                "/"
+                "/",
+                //测试数据
+                "/data",
+                "/common/fullSimulatedData",
+                "/common/basicSimulatedData"
         };
 
         //检查本次请求地址是否需要处理

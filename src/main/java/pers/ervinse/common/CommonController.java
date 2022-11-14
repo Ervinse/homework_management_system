@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pers.ervinse.mapper.SimulationMapper;
 import pers.ervinse.service.CommonService;
 
 import javax.servlet.ServletOutputStream;
@@ -28,6 +29,9 @@ public class CommonController {
 
     @Autowired
     private CommonService commonService;
+
+    @Autowired
+    private SimulationMapper simulationMapper;
 
     /**
      * 接收上传图片,并将图片转存到对应的路径中
@@ -186,5 +190,31 @@ public class CommonController {
         return R.getSuccessOperationInstance();
     }
 
+
+    /**
+     * 生成全部模拟数据(包含作业,作业答案以及相关文件,图片数据)
+     * @return 生成模拟数据响应
+     */
+    @PostMapping("/fullSimulatedData")
+    public R<String> generateFullSimulatedData(){
+        log.info("CommonController - generateFullSimulatedData");
+
+        simulationMapper.generateFullSimulatedData();
+
+        return R.getSuccessOperationInstance();
+    }
+
+    /**
+     * 生成部分模拟数据(仅包含教师,学生,班级,课程数据,不包含作业,作业答案以及相关文件,图片数据)
+     * @return 生成模拟数据响应
+     */
+    @PostMapping("/basicSimulatedData")
+    public R<String> generateBasicSimulatedData(){
+        log.info("CommonController - generateBasicSimulatedData");
+
+        simulationMapper.generateBasicSimulatedData();
+
+        return R.getSuccessOperationInstance();
+    }
 
 }

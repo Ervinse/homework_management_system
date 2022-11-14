@@ -65,3 +65,21 @@ const logoutAxios = () => {
         method: 'post',
     })
 }
+
+
+//模拟数据请求接口
+//生成全部模拟数据请求
+const generateFullSimulatedDataAxios = () => {
+    return $axios({
+        url: '/common/fullSimulatedData',
+        method: 'post',
+    })
+}
+
+//生成部分模拟数据
+const generateBasicSimulatedDataAxios = () => {
+    return $axios({
+        url: '/common/basicSimulatedData',
+        method: 'post',
+    })
+}

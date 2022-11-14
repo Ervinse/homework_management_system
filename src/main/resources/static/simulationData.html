@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>生成模拟数据</title>
+
+    <!--引入vue框架-->
+    <script src="framework/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+    <!--引入element UI样式和组件-->
+    <link href="framework/element/index.css" rel="stylesheet" type="text/css">
+    <script src="framework/element/index.js" type="text/javascript" charset="utf-8"></script>
+    <!--引入axios框架-->
+    <script src="framework/axios/axios.js" type="text/javascript" charset="utf-8"></script>
+    <!--引入请求相关文件-->
+    <script src="api/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/request.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div id="vue">
+    <h1>生成模拟数据</h1>
+
+    <el-button
+            size="mini"
+            @click="generateFullSimulatedData">生成全部模拟数据
+    </el-button>
+    <el-button
+            size="mini"
+            @click="generateBasicSimulatedData">生成部分模拟数据
+    </el-button>
+</div>
+
+<script>
+
+    var vueObj = new Vue({
+        el: "#vue",
+        data: {},
+        methods: {
+            generateFullSimulatedData: function () {
+                console.log(1)
+                generateFullSimulatedDataAxios().then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            this.$message.success('生成全部模拟数据成功');
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                });
+            },
+            generateBasicSimulatedData: function () {
+                console.log(2)
+                generateBasicSimulatedDataAxios().then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            this.$message.success('生成部分模拟数据成功');
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                });
+            }
+        },
+        mounted() {
+        }
+    })
+
+</script>
+</body>
+</html>

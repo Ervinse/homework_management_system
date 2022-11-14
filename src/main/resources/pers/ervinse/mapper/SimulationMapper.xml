@@ -1,0 +1,825 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace:命名空间，与下面语句的id一起组成查询的标识(相当于文件夹功能)-->
+<!--namespace在使用动态代理时需要和dao接口的全类名相同-->
+<mapper namespace="pers.ervinse.mapper.SimulationMapper">
+
+    <insert id="generateFullSimulatedData">
+
+
+        /*
+         Navicat Premium Data Transfer
+
+         生成全部模拟数据(包含作业,作业答案以及相关文件,图片数据)
+
+         Source Server         : 阿里云-RDS-华东杭州1
+         Source Server Type    : MySQL
+         Source Server Version : 80025
+         Source Schema         : homework_management_system
+
+         Target Server Type    : MySQL
+         Target Server Version : 80025
+         File Encoding         : 65001
+
+         Date: 14/11/2022 14:17:49
+        */
+
+        SET NAMES utf8mb4;
+        SET FOREIGN_KEY_CHECKS = 0;
+
+        -- ----------------------------
+        -- Table structure for clase
+        -- ----------------------------
+        DROP TABLE IF EXISTS `clase`;
+        CREATE TABLE `clase`
+        (
+            `id`                 bigint NOT NULL,
+            `clase_name`         varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `time_of_enrollment` year                                                    DEFAULT NULL,
+            `clase_teacher_id`   bigint                                                  DEFAULT NULL,
+            `clase_leader_id`    bigint                                                  DEFAULT NULL,
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `clase_name` (`clase_name`) USING BTREE
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of clase
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `clase` (`id`, `clase_name`, `time_of_enrollment`, `clase_teacher_id`, `clase_leader_id`)
+        VALUES (1591792368347041793, '21级1班', 2021, 1584869756014542850, 1591788499906908162);
+        INSERT INTO `clase` (`id`, `clase_name`, `time_of_enrollment`, `clase_teacher_id`, `clase_leader_id`)
+        VALUES (1591792416665423874, '21级2班', 2021, 1585165822299488258, 1591788647059869697);
+        INSERT INTO `clase` (`id`, `clase_name`, `time_of_enrollment`, `clase_teacher_id`, `clase_leader_id`)
+        VALUES (1591792444549156866, '21级3班', 2021, 1585165694255775746, 1591788704559583234);
+        INSERT INTO `clase` (`id`, `clase_name`, `time_of_enrollment`, `clase_teacher_id`, `clase_leader_id`)
+        VALUES (1591792494306185217, '21级4班', 2021, 1584869971752763394, 1591788781621530625);
+        COMMIT;
+
+        -- ----------------------------
+        -- Table structure for clase_course
+        -- ----------------------------
+        DROP TABLE IF EXISTS `clase_course`;
+        CREATE TABLE `clase_course`
+        (
+            `id`        bigint NOT NULL,
+            `course_id` bigint DEFAULT NULL,
+            `clase_id`  bigint DEFAULT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of clase_course
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792368460288002, 1591792006210834433, 1591792368347041793);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792556503519233, 1591792006210834433, 1591792416665423874);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792556629348354, 1591792062385147906, 1591792416665423874);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792622437978113, 1591792006210834433, 1591792444549156866);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792622538641409, 1591792062385147906, 1591792444549156866);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792622626721794, 1591792123160612865, 1591792444549156866);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792656856436737, 1591792006210834433, 1591792494306185217);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792656965488642, 1591792062385147906, 1591792494306185217);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792657082929153, 1591792123160612865, 1591792494306185217);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792657196175362, 1591792202994995201, 1591792494306185217);
+        COMMIT;
+
+        -- ----------------------------
+        -- Table structure for course
+        -- ----------------------------
+        DROP TABLE IF EXISTS `course`;
+        CREATE TABLE `course`
+        (
+            `id`                 bigint NOT NULL,
+            `course_name`        varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `course_address`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `course_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `course_teacher_id`  bigint                                                  DEFAULT NULL,
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `course_name` (`course_name`) USING BTREE
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of course
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `course` (`id`, `course_name`, `course_address`, `course_description`, `course_teacher_id`)
+        VALUES (1591792006210834433, '语文', '南教101', '基础课程-语文', 1584869756014542850);
+        INSERT INTO `course` (`id`, `course_name`, `course_address`, `course_description`, `course_teacher_id`)
+        VALUES (1591792062385147906, '数学', '南教102', '基础课程-数学', 1585165822299488258);
+        INSERT INTO `course` (`id`, `course_name`, `course_address`, `course_description`, `course_teacher_id`)
+        VALUES (1591792123160612865, '英语', '南教103', '基础课程-英语', 1585165694255775746);
+        INSERT INTO `course` (`id`, `course_name`, `course_address`, `course_description`, `course_teacher_id`)
+        VALUES (1591792202994995201, '物理', '南教104', '选修课程-物理', 1584869971752763394);
+        COMMIT;
+
+        -- ----------------------------
+        -- Table structure for file
+        -- ----------------------------
+        DROP TABLE IF EXISTS `file`;
+        CREATE TABLE `file`
+        (
+            `id`             bigint NOT NULL,
+            `file_name`      varchar(255) DEFAULT NULL,
+            `file_user_name` varchar(255) DEFAULT NULL,
+            `reference_id`   bigint       DEFAULT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of file
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `file` (`id`, `file_name`, `file_user_name`, `reference_id`)
+        VALUES (1591839037331611650, '8de4c5c8-ae95-4563-aad2-edafcf4582b0.txt', '数学作业1-萧子玟.txt', 1591839036601802754);
+        INSERT INTO `file` (`id`, `file_name`, `file_user_name`, `reference_id`)
+        VALUES (1591839192600551425, '0bae4f95-1083-4041-a121-e5e28f0a0008.txt', '数学作业2-杨子涵.txt', 1591839191954628609);
+        INSERT INTO `file` (`id`, `file_name`, `file_user_name`, `reference_id`)
+        VALUES (1591839192860598274, '379b5e57-7f4a-4f31-8655-9c8e1d3a036f.txt', '数学作业1-杨子涵.txt', 1591839191954628609);
+        INSERT INTO `file` (`id`, `file_name`, `file_user_name`, `reference_id`)
+        VALUES (1592033399089000449, '00ec2946-5618-42aa-84d9-19f53243611f.txt', '语文作业-王天磊.txt', 1592033398728290306);
+        INSERT INTO `file` (`id`, `file_name`, `file_user_name`, `reference_id`)
+        VALUES (1592033607713681409, '179002b8-afff-44f1-ae67-bebed8dbffb5.txt', '语文作业-萧子玟.txt', 1592033607487188993);
+        COMMIT;
+
+        -- ----------------------------
+        -- Table structure for homework
+        -- ----------------------------
+        DROP TABLE IF EXISTS `homework`;
+        CREATE TABLE `homework`
+        (
+            `id`                   bigint NOT NULL,
+            `homework_name`        varchar(255)                                            DEFAULT NULL,
+            `homework_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `clase_course_id`      bigint                                                  DEFAULT NULL,
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `homework_name` (`homework_name`) USING BTREE
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of homework
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `homework` (`id`, `homework_name`, `homework_description`, `clase_course_id`)
+        VALUES (1591831703695925249, '21级4班数学作业1', '1.完成作业班p11-13', 1591792656965488642);
+        INSERT INTO `homework` (`id`, `homework_name`, `homework_description`, `clase_course_id`)
+        VALUES (1591831809597906946, '21级4班数学作业2', '1.完成试卷2份', 1591792656965488642);
+        INSERT INTO `homework` (`id`, `homework_name`, `homework_description`, `clase_course_id`)
+        VALUES (1592029311202881538, '21级1班语文作业1', '完成课堂作文', 1591792368460288002);
+        INSERT INTO `homework` (`id`, `homework_name`, `homework_description`, `clase_course_id`)
+        VALUES (1592029453922463745, '21级4班语文作业1', '完成课堂作文', 1591792656856436737);
+        COMMIT;
+
+        -- ----------------------------
+        -- Table structure for homework_answer
+        -- ----------------------------
+        DROP TABLE IF EXISTS `homework_answer`;
+        CREATE TABLE `homework_answer`
+        (
+            `id`                      bigint NOT NULL,
+            `homework_answer_content` varchar(255) DEFAULT NULL,
+            `homework_rate`           int          DEFAULT NULL,
+            `update_time`             datetime     DEFAULT NULL,
+            `homework_id`             bigint       DEFAULT NULL,
+            `student_id`              bigint       DEFAULT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of homework_answer
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `homework_answer` (`id`, `homework_answer_content`, `homework_rate`, `update_time`, `homework_id`,
+                                       `student_id`)
+        VALUES (1591838069810536450, '作业答案：\n1.A 2.B 3.A 4.A 5.D\n(6). 27     (7). 2687   (8). 101 ', 9,
+                '2022-11-14 01:01:37', 1591831703695925249, 1591789274754240513);
+        INSERT INTO `homework_answer` (`id`, `homework_answer_content`, `homework_rate`, `update_time`, `homework_id`,
+                                       `student_id`)
+        VALUES (1591838221111664642, '作业答案：\n1.A 2.B 3.A 4.A 5.A\n(6). 27     (7). 1798   (8). 199 ', 7,
+                '2022-11-14 01:01:52', 1591831703695925249, 1591789390961627137);
+        INSERT INTO `homework_answer` (`id`, `homework_answer_content`, `homework_rate`, `update_time`, `homework_id`,
+                                       `student_id`)
+        VALUES (1591839036601802754, '', -1, '2022-11-14 01:02:56', 1591831809597906946, 1591789274754240513);
+        INSERT INTO `homework_answer` (`id`, `homework_answer_content`, `homework_rate`, `update_time`, `homework_id`,
+                                       `student_id`)
+        VALUES (1591839191954628609, '', -1, '2022-11-14 01:03:33', 1591831809597906946, 1591789390961627137);
+        INSERT INTO `homework_answer` (`id`, `homework_answer_content`, `homework_rate`, `update_time`, `homework_id`,
+                                       `student_id`)
+        VALUES (1592033398728290306, '', -1, '2022-11-14 13:55:15', 1592029311202881538, 1591788499906908162);
+        INSERT INTO `homework_answer` (`id`, `homework_answer_content`, `homework_rate`, `update_time`, `homework_id`,
+                                       `student_id`)
+        VALUES (1592033607487188993, '', -1, '2022-11-14 13:56:05', 1592029453922463745, 1591789274754240513);
+        COMMIT;
+
+        -- ----------------------------
+        -- Table structure for image
+        -- ----------------------------
+        DROP TABLE IF EXISTS `image`;
+        CREATE TABLE `image`
+        (
+            `id`           bigint NOT NULL,
+            `image_name`   varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `reference_id` bigint                                                  DEFAULT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of image
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `image` (`id`, `image_name`, `reference_id`)
+        VALUES (1591839036924764100, '68635bdb-1f7e-4b58-a378-32e3a361ccc1.jpg', 1591831809597906946);
+        INSERT INTO `image` (`id`, `image_name`, `reference_id`)
+        VALUES (1591839036924764101, '72bbffa9-8a2f-4153-bf8d-4a975de6f6fb.jpg', 1591831809597906946);
+        INSERT INTO `image` (`id`, `image_name`, `reference_id`)
+        VALUES (1591839036924764161, 'bcdcf3cc-513a-42af-a626-a2a5c09cf46a.jpg', 1591839036601802754);
+        INSERT INTO `image` (`id`, `image_name`, `reference_id`)
+        VALUES (1591839037142867970, '8cda12cc-ee23-4006-a7fb-51e534d586e9.jpg', 1591839036601802754);
+        INSERT INTO `image` (`id`, `image_name`, `reference_id`)
+        VALUES (1591839192160149505, '747bf5ef-f4ac-44c3-855b-175750331956.jpg', 1591839191954628609);
+        INSERT INTO `image` (`id`, `image_name`, `reference_id`)
+        VALUES (1591839192395030530, '0eaef902-cde5-461f-be12-a90241f86be1.jpg', 1591839191954628609);
+        INSERT INTO `image` (`id`, `image_name`, `reference_id`)
+        VALUES (1592029311815249921, '76c7b57c-52f5-404f-9f34-c85b50f52051.jpg', 1592029311202881538);
+        INSERT INTO `image` (`id`, `image_name`, `reference_id`)
+        VALUES (1592029454438363138, '9a89b661-9655-44d6-a17d-00aa3df3d2eb.jpg', 1592029453922463745);
+        COMMIT;
+
+        -- ----------------------------
+        -- Table structure for student
+        -- ----------------------------
+        DROP TABLE IF EXISTS `student`;
+        CREATE TABLE `student`
+        (
+            `id`               bigint NOT NULL,
+            `student_number`   varchar(255)                                            DEFAULT NULL,
+            `student_name`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `student_gender`   varchar(255)                                            DEFAULT NULL,
+            `account_name`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `account_password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `phone_number`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `account_portrait` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `clase_id`         bigint                                                  DEFAULT NULL,
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `student_number` (`student_number`) USING BTREE,
+            UNIQUE KEY `account_name` (`account_name`) USING BTREE
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of student
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1584784701653118977, '1000', '管理员', '1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '18858230855',
+                'deecd872-85f1-4aa2-95d7-9cd32cb80ff6.jpg', 1591792368347041793);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1584902243537133569, '1001', '赵若曦', '2', '赵若曦_ZRX', 'e10adc3949ba59abbe56e057f20f883e', '18858230855',
+                NULL, 1591792368347041793);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788499906908162, '20230211', '王天磊', '1', 'wtl', 'e10adc3949ba59abbe56e057f20f883e', '17107456970',
+                '750030f3-ab55-4ac4-8b4b-c7e6472f24f5.jpg', 1591792368347041793);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788647059869697, '11524482', '陈越彬', '1', 'cyb', 'e10adc3949ba59abbe56e057f20f883e', '15217892806',
+                '750030f3-ab55-4ac4-8b4b-c7e6472f24f5.jpg', 1591792416665423874);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788704559583234, '95159581', '田昊强', '1', 'thq', 'e10adc3949ba59abbe56e057f20f883e', '17340863483',
+                NULL, 1591792444549156866);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788781621530625, '45797636', '蒋文博', '1', 'jwb', 'e10adc3949ba59abbe56e057f20f883e', '14500556412',
+                NULL, 1591792494306185217);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788846113148929, '26821089', '唐雨霖', '2', 'tyl', 'e10adc3949ba59abbe56e057f20f883e', '15681005844',
+                NULL, 1591792494306185217);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788918024491010, '73866899', '魏弘文', '1', 'whe', 'e10adc3949ba59abbe56e057f20f883e', '15354820350',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788985783472129, '23704174', '方晓博', '1', 'fxb', 'e10adc3949ba59abbe56e057f20f883e', '14762531024',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789054146433026, '92819020', '马博文', '1', 'mbw', 'e10adc3949ba59abbe56e057f20f883e', '17257928730',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789132147904513, '23123408', '何致远', '1', 'hzy', 'e10adc3949ba59abbe56e057f20f883e', '18103705092',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789195536420865, '82006683', '罗文', '1', 'lw', 'e10adc3949ba59abbe56e057f20f883e', '18440478749',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789274754240513, '39065409', '萧子玟', '2', 'xzw', 'e10adc3949ba59abbe56e057f20f883e', '15642739203',
+                '31c1962d-703f-4151-8669-2952cf29d401.jpg', 1591792494306185217);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789338952257537, '47379406', '黄建辉', '1', 'hjh', 'e10adc3949ba59abbe56e057f20f883e', '17674779739',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789390961627137, '20772693', '杨子涵', '2', 'yzh', 'e10adc3949ba59abbe56e057f20f883e', '15806196088',
+                '35409f60-49f3-4a68-9ad4-2a2aa24e52fe.jpg', 1591792494306185217);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789447135940609, '72767654', '邹胤祥', '1', 'zyx', 'e10adc3949ba59abbe56e057f20f883e', '17001417461',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789505386434562, '02727629', '梁浩轩', '1', 'lhx', 'e10adc3949ba59abbe56e057f20f883e', '17353496734',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789570318454785, '81347890', '石子瑄', '1', 'szh', 'e10adc3949ba59abbe56e057f20f883e', '17863930344',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789635053342721, '67528489', '程鹏煊', '1', 'cpx', 'e10adc3949ba59abbe56e057f20f883e', '17554349484',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789699792424962, '35120935', '金轩伊', '2', 'jxy', 'e10adc3949ba59abbe56e057f20f883e', '15609568387',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789818327650306, '12918570', '吕甜', '2', 'lt', 'e10adc3949ba59abbe56e057f20f883e', '15830720207',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591805877646540802, '1010', '测试人员1', '1', 'test1', 'e10adc3949ba59abbe56e057f20f883e', '18858230855',
+                NULL, 1591792368347041793);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591805928183709697, '1011', '测试人员2', '1', 'test2', 'e10adc3949ba59abbe56e057f20f883e', '18858230855',
+                NULL, 1591792368347041793);
+        COMMIT;
+
+        -- ----------------------------
+        -- Table structure for teacher
+        -- ----------------------------
+        DROP TABLE IF EXISTS `teacher`;
+        CREATE TABLE `teacher`
+        (
+            `id`               bigint NOT NULL,
+            `teacher_name`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `teacher_gender`   varchar(255)                                            DEFAULT NULL,
+            `account_name`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `account_password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `account_type`     varchar(255)                                            DEFAULT NULL,
+            `account_status`   varchar(255)                                            DEFAULT NULL,
+            `phone_number`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `account_portrait` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `account_name` (`account_name`) USING BTREE
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of teacher
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1584784464016437250, '管理员', '1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '1', '1', '18858230855',
+                '7bfd7de7-aa2b-4d30-859b-ecd176612337.jpg');
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1584869756014542850, '赵若曦', '2', '赵若曦_ZRX', 'e10adc3949ba59abbe56e057f20f883e', '1', '1', '18858230855',
+                'fbc26fdc-a055-4c94-969b-ad74b94a6597.jpg');
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1584869971752763394, '周擎宇', '1', '周擎宇_ZQY', 'e10adc3949ba59abbe56e057f20f883e', '2', '1', '18858230855',
+                NULL);
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1585165694255775746, '杜嘉熙', '2', '杜嘉熙_djx', 'e10adc3949ba59abbe56e057f20f883e', '2', '1', '13566778899',
+                '13a3a51a-bd33-4591-bd96-0bbf0ea13fd4');
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1585165822299488258, '叶绍辉', '1', '叶绍辉_ysh', 'e10adc3949ba59abbe56e057f20f883e', '2', '1', '13566778899',
+                NULL);
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1585165905443176450, '韩梓晨', '1', '韩梓晨_hzc', 'e10adc3949ba59abbe56e057f20f883e', '2', '1', '13566778899',
+                NULL);
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1591788093021671425, '林文轩', '1', '林文轩_lwx', 'e10adc3949ba59abbe56e057f20f883e', '2', '0', '13194475587',
+                NULL);
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1591803880117682178, '测试账户1', '1', 'test1', 'e10adc3949ba59abbe56e057f20f883e', '1', '1', '18858230855',
+                NULL);
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1591803915303698433, '测试账户2', '2', 'test2', 'e10adc3949ba59abbe56e057f20f883e', '2', '0', '18858230855',
+                NULL);
+        COMMIT;
+
+        SET FOREIGN_KEY_CHECKS = 1;
+
+
+    </insert>
+
+
+
+
+    <insert id="generateBasicSimulatedData">
+
+
+
+        /*
+         Navicat Premium Data Transfer
+
+         生成基本模拟数据(仅包含教师,学生,班级,课程数据,不包含作业,作业答案以及相关文件,图片数据)
+
+         Source Server         : 阿里云-RDS-华东杭州1
+         Source Server Type    : MySQL
+         Source Server Version : 80025
+         Source Schema         : homework_management_system
+
+         Target Server Type    : MySQL
+         Target Server Version : 80025
+         File Encoding         : 65001
+
+         Date: 14/11/2022 14:17:49
+        */
+
+        SET NAMES utf8mb4;
+        SET FOREIGN_KEY_CHECKS = 0;
+
+        -- ----------------------------
+        -- Table structure for clase
+        -- ----------------------------
+        DROP TABLE IF EXISTS `clase`;
+        CREATE TABLE `clase`
+        (
+            `id`                 bigint NOT NULL,
+            `clase_name`         varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `time_of_enrollment` year                                                    DEFAULT NULL,
+            `clase_teacher_id`   bigint                                                  DEFAULT NULL,
+            `clase_leader_id`    bigint                                                  DEFAULT NULL,
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `clase_name` (`clase_name`) USING BTREE
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of clase
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `clase` (`id`, `clase_name`, `time_of_enrollment`, `clase_teacher_id`, `clase_leader_id`)
+        VALUES (1591792368347041793, '21级1班', 2021, 1584869756014542850, 1591788499906908162);
+        INSERT INTO `clase` (`id`, `clase_name`, `time_of_enrollment`, `clase_teacher_id`, `clase_leader_id`)
+        VALUES (1591792416665423874, '21级2班', 2021, 1585165822299488258, 1591788647059869697);
+        INSERT INTO `clase` (`id`, `clase_name`, `time_of_enrollment`, `clase_teacher_id`, `clase_leader_id`)
+        VALUES (1591792444549156866, '21级3班', 2021, 1585165694255775746, 1591788704559583234);
+        INSERT INTO `clase` (`id`, `clase_name`, `time_of_enrollment`, `clase_teacher_id`, `clase_leader_id`)
+        VALUES (1591792494306185217, '21级4班', 2021, 1584869971752763394, 1591788781621530625);
+        COMMIT;
+
+        -- ----------------------------
+        -- Table structure for clase_course
+        -- ----------------------------
+        DROP TABLE IF EXISTS `clase_course`;
+        CREATE TABLE `clase_course`
+        (
+            `id`        bigint NOT NULL,
+            `course_id` bigint DEFAULT NULL,
+            `clase_id`  bigint DEFAULT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of clase_course
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792368460288002, 1591792006210834433, 1591792368347041793);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792556503519233, 1591792006210834433, 1591792416665423874);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792556629348354, 1591792062385147906, 1591792416665423874);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792622437978113, 1591792006210834433, 1591792444549156866);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792622538641409, 1591792062385147906, 1591792444549156866);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792622626721794, 1591792123160612865, 1591792444549156866);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792656856436737, 1591792006210834433, 1591792494306185217);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792656965488642, 1591792062385147906, 1591792494306185217);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792657082929153, 1591792123160612865, 1591792494306185217);
+        INSERT INTO `clase_course` (`id`, `course_id`, `clase_id`)
+        VALUES (1591792657196175362, 1591792202994995201, 1591792494306185217);
+        COMMIT;
+
+        -- ----------------------------
+        -- Table structure for course
+        -- ----------------------------
+        DROP TABLE IF EXISTS `course`;
+        CREATE TABLE `course`
+        (
+            `id`                 bigint NOT NULL,
+            `course_name`        varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `course_address`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `course_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `course_teacher_id`  bigint                                                  DEFAULT NULL,
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `course_name` (`course_name`) USING BTREE
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of course
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `course` (`id`, `course_name`, `course_address`, `course_description`, `course_teacher_id`)
+        VALUES (1591792006210834433, '语文', '南教101', '基础课程-语文', 1584869756014542850);
+        INSERT INTO `course` (`id`, `course_name`, `course_address`, `course_description`, `course_teacher_id`)
+        VALUES (1591792062385147906, '数学', '南教102', '基础课程-数学', 1585165822299488258);
+        INSERT INTO `course` (`id`, `course_name`, `course_address`, `course_description`, `course_teacher_id`)
+        VALUES (1591792123160612865, '英语', '南教103', '基础课程-英语', 1585165694255775746);
+        INSERT INTO `course` (`id`, `course_name`, `course_address`, `course_description`, `course_teacher_id`)
+        VALUES (1591792202994995201, '物理', '南教104', '选修课程-物理', 1584869971752763394);
+        COMMIT;
+
+        -- ----------------------------
+        -- Table structure for file
+        -- ----------------------------
+        DROP TABLE IF EXISTS `file`;
+        CREATE TABLE `file`
+        (
+            `id`             bigint NOT NULL,
+            `file_name`      varchar(255) DEFAULT NULL,
+            `file_user_name` varchar(255) DEFAULT NULL,
+            `reference_id`   bigint       DEFAULT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Table structure for homework
+        -- ----------------------------
+        DROP TABLE IF EXISTS `homework`;
+        CREATE TABLE `homework`
+        (
+            `id`                   bigint NOT NULL,
+            `homework_name`        varchar(255)                                            DEFAULT NULL,
+            `homework_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `clase_course_id`      bigint                                                  DEFAULT NULL,
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `homework_name` (`homework_name`) USING BTREE
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+
+        -- ----------------------------
+        -- Table structure for homework_answer
+        -- ----------------------------
+        DROP TABLE IF EXISTS `homework_answer`;
+        CREATE TABLE `homework_answer`
+        (
+            `id`                      bigint NOT NULL,
+            `homework_answer_content` varchar(255) DEFAULT NULL,
+            `homework_rate`           int          DEFAULT NULL,
+            `update_time`             datetime     DEFAULT NULL,
+            `homework_id`             bigint       DEFAULT NULL,
+            `student_id`              bigint       DEFAULT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Table structure for image
+        -- ----------------------------
+        DROP TABLE IF EXISTS `image`;
+        CREATE TABLE `image`
+        (
+            `id`           bigint NOT NULL,
+            `image_name`   varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `reference_id` bigint                                                  DEFAULT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+
+        -- ----------------------------
+        -- Table structure for student
+        -- ----------------------------
+        DROP TABLE IF EXISTS `student`;
+        CREATE TABLE `student`
+        (
+            `id`               bigint NOT NULL,
+            `student_number`   varchar(255)                                            DEFAULT NULL,
+            `student_name`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `student_gender`   varchar(255)                                            DEFAULT NULL,
+            `account_name`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `account_password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `phone_number`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `account_portrait` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `clase_id`         bigint                                                  DEFAULT NULL,
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `student_number` (`student_number`) USING BTREE,
+            UNIQUE KEY `account_name` (`account_name`) USING BTREE
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of student
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1584784701653118977, '1000', '管理员', '1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '18858230855',
+                'deecd872-85f1-4aa2-95d7-9cd32cb80ff6.jpg', 1591792368347041793);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1584902243537133569, '1001', '赵若曦', '2', '赵若曦_ZRX', 'e10adc3949ba59abbe56e057f20f883e', '18858230855',
+                NULL, 1591792368347041793);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788499906908162, '20230211', '王天磊', '1', 'wtl', 'e10adc3949ba59abbe56e057f20f883e', '17107456970',
+                '750030f3-ab55-4ac4-8b4b-c7e6472f24f5.jpg', 1591792368347041793);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788647059869697, '11524482', '陈越彬', '1', 'cyb', 'e10adc3949ba59abbe56e057f20f883e', '15217892806',
+                '750030f3-ab55-4ac4-8b4b-c7e6472f24f5.jpg', 1591792416665423874);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788704559583234, '95159581', '田昊强', '1', 'thq', 'e10adc3949ba59abbe56e057f20f883e', '17340863483',
+                NULL, 1591792444549156866);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788781621530625, '45797636', '蒋文博', '1', 'jwb', 'e10adc3949ba59abbe56e057f20f883e', '14500556412',
+                NULL, 1591792494306185217);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788846113148929, '26821089', '唐雨霖', '2', 'tyl', 'e10adc3949ba59abbe56e057f20f883e', '15681005844',
+                NULL, 1591792494306185217);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788918024491010, '73866899', '魏弘文', '1', 'whe', 'e10adc3949ba59abbe56e057f20f883e', '15354820350',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591788985783472129, '23704174', '方晓博', '1', 'fxb', 'e10adc3949ba59abbe56e057f20f883e', '14762531024',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789054146433026, '92819020', '马博文', '1', 'mbw', 'e10adc3949ba59abbe56e057f20f883e', '17257928730',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789132147904513, '23123408', '何致远', '1', 'hzy', 'e10adc3949ba59abbe56e057f20f883e', '18103705092',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789195536420865, '82006683', '罗文', '1', 'lw', 'e10adc3949ba59abbe56e057f20f883e', '18440478749',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789274754240513, '39065409', '萧子玟', '2', 'xzw', 'e10adc3949ba59abbe56e057f20f883e', '15642739203',
+                '31c1962d-703f-4151-8669-2952cf29d401.jpg', 1591792494306185217);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789338952257537, '47379406', '黄建辉', '1', 'hjh', 'e10adc3949ba59abbe56e057f20f883e', '17674779739',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789390961627137, '20772693', '杨子涵', '2', 'yzh', 'e10adc3949ba59abbe56e057f20f883e', '15806196088',
+                '35409f60-49f3-4a68-9ad4-2a2aa24e52fe.jpg', 1591792494306185217);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789447135940609, '72767654', '邹胤祥', '1', 'zyx', 'e10adc3949ba59abbe56e057f20f883e', '17001417461',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789505386434562, '02727629', '梁浩轩', '1', 'lhx', 'e10adc3949ba59abbe56e057f20f883e', '17353496734',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789570318454785, '81347890', '石子瑄', '1', 'szh', 'e10adc3949ba59abbe56e057f20f883e', '17863930344',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789635053342721, '67528489', '程鹏煊', '1', 'cpx', 'e10adc3949ba59abbe56e057f20f883e', '17554349484',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789699792424962, '35120935', '金轩伊', '2', 'jxy', 'e10adc3949ba59abbe56e057f20f883e', '15609568387',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591789818327650306, '12918570', '吕甜', '2', 'lt', 'e10adc3949ba59abbe56e057f20f883e', '15830720207',
+                NULL, 0);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591805877646540802, '1010', '测试人员1', '1', 'test1', 'e10adc3949ba59abbe56e057f20f883e', '18858230855',
+                NULL, 1591792368347041793);
+        INSERT INTO `student` (`id`, `student_number`, `student_name`, `student_gender`, `account_name`,
+                               `account_password`, `phone_number`, `account_portrait`, `clase_id`)
+        VALUES (1591805928183709697, '1011', '测试人员2', '1', 'test2', 'e10adc3949ba59abbe56e057f20f883e', '18858230855',
+                NULL, 1591792368347041793);
+        COMMIT;
+
+        -- ----------------------------
+        -- Table structure for teacher
+        -- ----------------------------
+        DROP TABLE IF EXISTS `teacher`;
+        CREATE TABLE `teacher`
+        (
+            `id`               bigint NOT NULL,
+            `teacher_name`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `teacher_gender`   varchar(255)                                            DEFAULT NULL,
+            `account_name`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `account_password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `account_type`     varchar(255)                                            DEFAULT NULL,
+            `account_status`   varchar(255)                                            DEFAULT NULL,
+            `phone_number`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `account_portrait` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `account_name` (`account_name`) USING BTREE
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8mb3;
+
+        -- ----------------------------
+        -- Records of teacher
+        -- ----------------------------
+        BEGIN;
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1584784464016437250, '管理员', '1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '1', '1', '18858230855',
+                '7bfd7de7-aa2b-4d30-859b-ecd176612337.jpg');
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1584869756014542850, '赵若曦', '2', '赵若曦_ZRX', 'e10adc3949ba59abbe56e057f20f883e', '1', '1', '18858230855',
+                'fbc26fdc-a055-4c94-969b-ad74b94a6597.jpg');
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1584869971752763394, '周擎宇', '1', '周擎宇_ZQY', 'e10adc3949ba59abbe56e057f20f883e', '2', '1', '18858230855',
+                NULL);
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1585165694255775746, '杜嘉熙', '2', '杜嘉熙_djx', 'e10adc3949ba59abbe56e057f20f883e', '2', '1', '13566778899',
+                '13a3a51a-bd33-4591-bd96-0bbf0ea13fd4');
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1585165822299488258, '叶绍辉', '1', '叶绍辉_ysh', 'e10adc3949ba59abbe56e057f20f883e', '2', '1', '13566778899',
+                NULL);
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1585165905443176450, '韩梓晨', '1', '韩梓晨_hzc', 'e10adc3949ba59abbe56e057f20f883e', '2', '1', '13566778899',
+                NULL);
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1591788093021671425, '林文轩', '1', '林文轩_lwx', 'e10adc3949ba59abbe56e057f20f883e', '2', '0', '13194475587',
+                NULL);
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1591803880117682178, '测试账户1', '1', 'test1', 'e10adc3949ba59abbe56e057f20f883e', '1', '1', '18858230855',
+                NULL);
+        INSERT INTO `teacher` (`id`, `teacher_name`, `teacher_gender`, `account_name`, `account_password`,
+                               `account_type`, `account_status`, `phone_number`, `account_portrait`)
+        VALUES (1591803915303698433, '测试账户2', '2', 'test2', 'e10adc3949ba59abbe56e057f20f883e', '2', '0', '18858230855',
+                NULL);
+        COMMIT;
+
+        SET FOREIGN_KEY_CHECKS = 1;
+
+
+    </insert>
+
+
+</mapper>

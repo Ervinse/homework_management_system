@@ -240,7 +240,7 @@
                                 <h3>当前作业信息 </h3>
                             </template>
 
-                            <el-descriptions direction="vertical" :column="4" border>
+                            <el-descriptions direction="vertical" :column="5" border>
                                 <el-descriptions-item label="作业名">{{homeworkDetailData.homeworkName}}
                                 </el-descriptions-item>
                                 <el-descriptions-item label="班级名">{{homeworkDetailData.claseName}}
@@ -249,6 +249,9 @@
                                 </el-descriptions-item>
                                 <el-descriptions-item label="课程任课老师">
                                     {{homeworkDetailData.claseTeacherName}}
+                                </el-descriptions-item>
+                                <el-descriptions-item label="评分">
+                                    {{homeworkRateFormatter(homeworkRate)}}
                                 </el-descriptions-item>
                                 <el-descriptions-item label="作业描述">
                                     {{homeworkDetailData.homeworkDescription}}
@@ -362,6 +365,7 @@
             studentList: [],
             //作业详情数据
             homeworkDetailData: {},
+            homeworkRate: '',
 
             //页面显示
             //列表页面显示
@@ -428,7 +432,6 @@
                 if (loginUser.accountPortrait == null) {
                     loginUser.accountPortrait = "defaultPortrait.png";
                 }
-                console.log(loginUser);
 
                 this.loginUser = loginUser;
             },
@@ -449,6 +452,18 @@
                     courseDescription: ""
                 }
             },
+
+            // 表单数据格式转换
+            homeworkRateFormatter: function (rate) {
+                if (rate === -1) {
+                    return "未评分";
+                } else if (rate === -2) {
+                    return "未提交"
+                } else {
+                    return rate;
+                }
+            },
+
 
             //数据请求函数
             //候选数据函数
@@ -504,11 +519,24 @@
 
                 this.showHomeworkSubmitPage();
                 var vueObj = this;
+                //查询作业详情数据
                 await getHomeworkDetailAxios(row.homeworkId).then(
                     (response) => {
                         if (response.data.code === 1) {
                             vueObj.homeworkDetailData = response.data.data;
                             vueObj.form.homeworkId = vueObj.homeworkDetailData.homeworkId;
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                });
+
+                //查询该学生的该作业评分数据
+                await getHomeworkRateAxios(row.homeworkId, this.loginUser.id).then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            vueObj.homeworkRate = response.data.data;
                         } else {
                             this.$message.error(response.data.msg)
                         }
@@ -611,7 +639,6 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    console.log(this.form);
                     submitHomeworkAnswerAxios(this.form).then(
                         res => {
                             if (res.data.code === 1) {
@@ -648,7 +675,6 @@
                 } else {
                     this.$message.error(response.msg)
                 }
-                console.log(this.form.imageUploadNameList);
             },
             //图片删除回调函数
             //file为删除的图片，fileList为剩下的图片
@@ -675,7 +701,6 @@
                         this.form.imageUploadNameList.splice(i, 1);
                     }
                 }
-                console.log(this.form.imageUploadNameList);
             },
             //图片上传预览
             handlePictureCardPreview(file) {
@@ -709,7 +734,6 @@
 
             //文件上传成功回调函数
             handleFileSuccess: function (response, file) {
-                console.log(file);
                 if (response.code === 1) {
                     //将服务器中重命名的文件名传入fileUploadNameList
                     this.form.fileUploadNameList.push(response.data);
@@ -718,8 +742,6 @@
                 } else {
                     this.$message.error(response.msg)
                 }
-                console.log(this.form.fileUploadNameList);
-                console.log(this.form.fileUploadUserNameList);
             },
 
             //文件删除回调函数
@@ -753,8 +775,6 @@
                         this.form.fileUploadUserNameList.splice(i, 1);
                     }
                 }
-                console.log(this.form.fileUploadNameList);
-                console.log(this.form.fileUploadUserNameList);
             },
             //上传文件前校验
             beforeFileUpload(file) {
@@ -767,7 +787,6 @@
             },
             logout: function () {
 
-                console.log('logout');
                 this.$confirm('即将退出系统, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',

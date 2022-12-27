@@ -100,6 +100,35 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
         return homeworkAnswerMapper.selectList(wrapper);
     }
 
+    /**
+     * 根据作业id和学生id获取作业答案评分
+     *
+     * @param homeworkId 作业id
+     * @param studentId 学生id
+     * @return 作业答案评分
+     */
+    @Override
+    public int selectHomeworkAnswerRateByStudentAndHomework(Long homeworkId, Long studentId) {
+        log.info("HomeworkAnswerService - selectHomeworkRateByStudentAndHomework :homeworkAnswerId = {} , studentId = {}", homeworkId, studentId);
+
+        //创建条件构造器
+        LambdaQueryWrapper<HomeworkAnswer> wrapper = new LambdaQueryWrapper<>();
+        //添加过滤条件
+        //成立条件:name值不为空时过滤条件成立
+        //过滤条件:实体类对应字段 == 变量
+        wrapper.eq(HomeworkAnswer::getHomeworkId, homeworkId)
+                .eq(HomeworkAnswer::getStudentId, studentId);
+
+        List<HomeworkAnswer> homeworkAnswerList = homeworkAnswerMapper.selectList(wrapper);
+        //查询到提交记录,即作业答案已提交状态
+        //评分大于等于0为正常评分,-1为未评分,-2为未提交作业
+        if (homeworkAnswerList.size() > 0) {
+            return homeworkAnswerList.get(0).getHomeworkRate();
+        } else {    //没有查询到提交记录,即作业未提交
+            return -2;
+        }
+    }
+
 
     /**
      * 添加作业答案
@@ -188,11 +217,11 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
      * 根据作业答案的作业答案id或作业id删除作业答案
      *
      * @param homeworkAnswer 含有要删除的作业答案信息的作业答案对象
-     * @param isCoercive 是否强制删除
+     * @param isCoercive     是否强制删除
      */
     @Override
-    public void deleteHomeworkAnswer(HomeworkAnswer homeworkAnswer,boolean isCoercive) {
-        log.info("HomeworkAnswerService - deleteHomeworkAnswer :homeworkAnswer = {},isCoercive = {}", homeworkAnswer,isCoercive);
+    public void deleteHomeworkAnswer(HomeworkAnswer homeworkAnswer, boolean isCoercive) {
+        log.info("HomeworkAnswerService - deleteHomeworkAnswer :homeworkAnswer = {},isCoercive = {}", homeworkAnswer, isCoercive);
 
         //构建 "根据作业答案的作业答案id或作业id" 条件
         LambdaQueryWrapper<HomeworkAnswer> wrapper = new LambdaQueryWrapper<>();
@@ -211,7 +240,7 @@ public class HomeworkAnswerServiceImpl implements HomeworkAnswerService {
         }
         int affectRows = homeworkAnswerMapper.delete(wrapper);
 
-        if (isCoercive){
+        if (isCoercive) {
             if (affectRows > 0) {
                 log.info("删除作业答案成功,影响了" + affectRows + "条数据");
             } else {

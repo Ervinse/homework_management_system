@@ -240,7 +240,7 @@
                                 <h3>当前作业信息 </h3>
                             </template>
 
-                            <el-descriptions direction="vertical" :column="4" border>
+                            <el-descriptions direction="vertical" :column="5" border>
                                 <el-descriptions-item label="作业名">{{homeworkDetailData.homeworkName}}
                                 </el-descriptions-item>
                                 <el-descriptions-item label="班级名">{{homeworkDetailData.claseName}}
@@ -249,6 +249,9 @@
                                 </el-descriptions-item>
                                 <el-descriptions-item label="课程任课老师">
                                     {{homeworkDetailData.claseTeacherName}}
+                                </el-descriptions-item>
+                                <el-descriptions-item label="评分">
+                                    {{homeworkRateFormatter(homeworkRate)}}
                                 </el-descriptions-item>
                                 <el-descriptions-item label="作业描述">
                                     {{homeworkDetailData.homeworkDescription}}
@@ -362,6 +365,7 @@
             studentList: [],
             //作业详情数据
             homeworkDetailData: {},
+            homeworkRate: '',
 
             //页面显示
             //列表页面显示
@@ -449,6 +453,18 @@
                 }
             },
 
+            // 表单数据格式转换
+            homeworkRateFormatter: function (rate) {
+                if (rate === -1) {
+                    return "未评分";
+                } else if (rate === -2) {
+                    return "未提交"
+                } else {
+                    return rate;
+                }
+            },
+
+
             //数据请求函数
             //候选数据函数
             getTeacherList: function () {
@@ -503,11 +519,24 @@
 
                 this.showHomeworkSubmitPage();
                 var vueObj = this;
+                //查询作业详情数据
                 await getHomeworkDetailAxios(row.homeworkId).then(
                     (response) => {
                         if (response.data.code === 1) {
                             vueObj.homeworkDetailData = response.data.data;
                             vueObj.form.homeworkId = vueObj.homeworkDetailData.homeworkId;
+                        } else {
+                            this.$message.error(response.data.msg)
+                        }
+                    }).catch((err) => {
+                    this.$message.error('请求出错了：' + err);
+                });
+
+                //查询该学生的该作业评分数据
+                await getHomeworkRateAxios(row.homeworkId, this.loginUser.id).then(
+                    (response) => {
+                        if (response.data.code === 1) {
+                            vueObj.homeworkRate = response.data.data;
                         } else {
                             this.$message.error(response.data.msg)
                         }

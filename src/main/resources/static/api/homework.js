@@ -56,6 +56,17 @@ const getHomeworkAnswerDetailAxios = (homeworkAnswerId) => {
     })
 }
 
+// 查询指定学生的作业评分接口
+const getHomeworkRateAxios = (homeworkId,studentId) => {
+    return $axios({
+        url: '/homeworkAnswer/rate',
+        method: 'get',
+        params: {
+            homeworkId: homeworkId,
+            studentId: studentId
+        }
+    })
+}
 
 
 //操作接口

@@ -39,6 +39,7 @@ public class HomeworkAnswerController {
 
     /**
      * 根据作业id获取作业答案列表
+     *
      * @param homeworkId 作业id
      * @return 作业答案列表
      */
@@ -50,7 +51,7 @@ public class HomeworkAnswerController {
         List<HomeworkAnswerDto> homeworkAnswerDtoList = homeworkAnswerList.stream().map(homeworkAnswer -> {
             Student student = studentService.selectStudentById(homeworkAnswer.getStudentId());
             HomeworkAnswerDto homeworkAnswerDto = new HomeworkAnswerDto();
-            BeanUtils.copyProperties(homeworkAnswer,homeworkAnswerDto);
+            BeanUtils.copyProperties(homeworkAnswer, homeworkAnswerDto);
             homeworkAnswerDto.setStudentName(student.getStudentName());
             return homeworkAnswerDto;
         }).collect(Collectors.toList());
@@ -59,11 +60,12 @@ public class HomeworkAnswerController {
 
     /**
      * 根据作业答案id获取作业答案
+     *
      * @param homeworkAnswerId 作业答案id
      * @return 作业答案对象
      */
     @GetMapping
-    public R<HomeworkAnswerDto> getHomeworkAnswerById(Long homeworkAnswerId){
+    public R<HomeworkAnswerDto> getHomeworkAnswerById(Long homeworkAnswerId) {
         log.info("HomeworkAnswerController - getHomeworkAnswerById :homeworkAnswerId = {}", homeworkAnswerId);
 
         HomeworkAnswer homeworkAnswer = homeworkAnswerService.selectHomeworkAnswerById(homeworkAnswerId);
@@ -75,7 +77,7 @@ public class HomeworkAnswerController {
         Image imageToSearch = new Image();
         imageToSearch.setReferenceId(homeworkAnswerId);
         List<Image> imageList = imageService.selectImageListByConditionInOr(imageToSearch);
-        if (imageList.size() > 0){
+        if (imageList.size() > 0) {
             List<String> imageNameList = imageList.stream().map(Image::getImageName).collect(Collectors.toList());
             homeworkAnswerDto.setImageUploadNameList(imageNameList);
         }
@@ -83,24 +85,40 @@ public class HomeworkAnswerController {
         File fileToSearch = new File();
         fileToSearch.setReferenceId(homeworkAnswerId);
         List<File> fileList = fileService.selectFileListByConditionInOr(fileToSearch);
-        if (fileList.size() > 0){
+        if (fileList.size() > 0) {
             List<String> fileNameList = fileList.stream().map(File::getFileName).collect(Collectors.toList());
             List<String> fileUserNameList = fileList.stream().map(File::getFileUserName).collect(Collectors.toList());
             homeworkAnswerDto.setFileUploadNameList(fileNameList);
             homeworkAnswerDto.setFileUploadUserNameList(fileUserNameList);
         }
 
-        BeanUtils.copyProperties(homeworkAnswer,homeworkAnswerDto);
+        BeanUtils.copyProperties(homeworkAnswer, homeworkAnswerDto);
         return R.getSuccessInstance(homeworkAnswerDto);
     }
 
     /**
+     * 根据作业id和学生id获取作业答案评分
+     *
+     * @param homeworkId 作业id
+     * @param studentId 学生id
+     * @return 作业答案评分
+     */
+    @GetMapping("/rate")
+    public R<Integer> getHomeworkAnswerRateByStudentAndHomework(Long homeworkId, Long studentId) {
+        log.info("HomeworkAnswerController - getHomeworkAnswerRateByStudentAndHomework :homeworkId = {},studentId = {}", homeworkId, studentId);
+
+        int homeworkAnswerRate = homeworkAnswerService.selectHomeworkAnswerRateByStudentAndHomework(homeworkId, studentId);
+        return R.getSuccessInstance(homeworkAnswerRate);
+    }
+
+    /**
      * 添加作业答案
+     *
      * @param homeworkAnswerDto 含有所属作业信息和提交相关信息的作业答案传输对象
      * @return 添加作业答案响应
      */
     @PostMapping
-    public R<String> addHomeworkAnswer(@RequestBody HomeworkAnswerDto homeworkAnswerDto){
+    public R<String> addHomeworkAnswer(@RequestBody HomeworkAnswerDto homeworkAnswerDto) {
         log.info("HomeworkAnswerController - addHomeworkAnswer :homeworkAnswerDto = {}", homeworkAnswerDto);
 
         homeworkAnswerService.addHomeworkAnswer(homeworkAnswerDto);
@@ -111,11 +129,12 @@ public class HomeworkAnswerController {
 
     /**
      * 更新作业评分
+     *
      * @param homeworkAnswer 含有作业评分的作业答案对象
      * @return 更新作业评分响应
      */
     @PutMapping("/updateRate")
-    public R<String> updateRate(@RequestBody HomeworkAnswer homeworkAnswer){
+    public R<String> updateRate(@RequestBody HomeworkAnswer homeworkAnswer) {
         log.info("HomeworkAnswerController - updateRate :homeworkAnswer = {}", homeworkAnswer);
 
         homeworkAnswerService.updateRate(homeworkAnswer);

@@ -12,6 +12,8 @@ public interface HomeworkAnswerService {
 
     List<HomeworkAnswer> selectHomeworkAnswerListByConditionInAnd(HomeworkAnswer homeworkAnswer);
 
+    int selectHomeworkAnswerRateByStudentAndHomework(Long homeworkAnswerId, Long studentId);
+
     void addHomeworkAnswer(HomeworkAnswerDto homeworkAnswerDto);
 
     void deleteHomeworkAnswer(HomeworkAnswer homeworkAnswer, boolean isCoercive);

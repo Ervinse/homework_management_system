@@ -8,7 +8,7 @@ public interface CommonService {
 
     String uploadFile(MultipartFile file);
 
-    void deleteImage(String imageName);
+    boolean deleteImage(String imageName);
 
-    void deleteFile(String fileName);
+    boolean deleteFile(String fileName);
 }

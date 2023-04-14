@@ -172,8 +172,13 @@ public class CommonController {
     public R<String> deleteImage(String imageName) {
         log.info("CommonController - deleteImage : imageName = {}", imageName);
 
-        commonService.deleteImage(imageName);
-        return R.getSuccessOperationInstance();
+        boolean success = commonService.deleteImage(imageName);
+        if (success) {
+            return R.getSuccessOperationInstance();
+        } else {
+            log.error("无法找到图片，删除图片失败，跳过此步骤");
+            return R.getErrorInstance("无法找到图片");
+        }
     }
 
     /**
@@ -186,17 +191,23 @@ public class CommonController {
     public R<String> deleteFile(String fileName) {
         log.info("CommonController - deleteFile : fileName = {}", fileName);
 
-        commonService.deleteFile(fileName);
-        return R.getSuccessOperationInstance();
+        boolean success = commonService.deleteFile(fileName);
+        if (success) {
+            return R.getSuccessOperationInstance();
+        } else {
+            log.error("无法找到文件，删除文件失败，跳过此步骤");
+            return R.getErrorInstance("无法找到文件");
+        }
     }
 
 
     /**
      * 生成全部模拟数据(包含作业,作业答案以及相关文件,图片数据)
+     *
      * @return 生成模拟数据响应
      */
     @PostMapping("/fullSimulatedData")
-    public R<String> generateFullSimulatedData(){
+    public R<String> generateFullSimulatedData() {
         log.info("CommonController - generateFullSimulatedData");
 
         simulationMapper.generateFullSimulatedData();
@@ -206,10 +217,11 @@ public class CommonController {
 
     /**
      * 生成部分模拟数据(仅包含教师,学生,班级,课程数据,不包含作业,作业答案以及相关文件,图片数据)
+     *
      * @return 生成模拟数据响应
      */
     @PostMapping("/basicSimulatedData")
-    public R<String> generateBasicSimulatedData(){
+    public R<String> generateBasicSimulatedData() {
         log.info("CommonController - generateBasicSimulatedData");
 
         simulationMapper.generateBasicSimulatedData();

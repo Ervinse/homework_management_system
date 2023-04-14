@@ -52,39 +52,40 @@ public class CommonServiceImpl implements CommonService {
     }
 
 
-
     /**
-     * 根据图片文件名删除图片
-     * @param imageName 图片文件名
+     * 根据图片名删除图片
+     * 如果由于图片名无效而删除失败，直接抛出异常，回滚操作
+     * 如果由于io异常（无法读取文件等），跳过删除步骤，继续执行操作
+     * @param imageName 要删除的图片名
+     * @return 是否成功删除
      */
     @Override
-    public void deleteImage(String imageName) {
+    public boolean deleteImage(String imageName) {
 
         if (imageName == null){
             throw new ProgramException("服务器错误,图片删除异常");
         }
         File imageFile = new File(imageDirectoryPath + imageName);
 
-        if (!imageFile.delete()){
-            throw new ProgramException("服务器错误,图片删除异常");
-        }
+        return imageFile.delete();
     }
 
     /**
      * 根据文件文件名删除文件
-     * @param fileName 文件文件名
+     * @param fileName 要删除的文件名
+     * 如果由于文件名无效而删除失败，直接抛出异常，回滚操作
+     * 如果由于io异常（无法读取文件等），跳过删除步骤，继续执行操作
+     * @return 是否成功删除
      */
     @Override
-    public void deleteFile(String fileName) {
+    public boolean deleteFile(String fileName) {
 
         if (fileName == null){
             throw new ProgramException("服务器错误,文件删除异常");
         }
-        File imageFile = new File(fileDirectoryPath + fileName);
+        File file = new File(fileDirectoryPath + fileName);
 
-        if (!imageFile.delete()){
-            throw new ProgramException("服务器错误,文件删除异常");
-        }
+        return file.delete();
     }
 
 
